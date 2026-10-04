@@ -120,7 +120,7 @@ export default function SidekicksLanding() {
       <header className="site-header">
         <nav className="site-nav" aria-label="Main navigation">
           <a href="#" className="wordmark">
-            <Avatar type="clover" color="#f58632" size={36} />
+            <Avatar type="flower" color="#f65baa" size={36} />
             Sidekicks<span className="beta">BETA</span>
           </a>
           <div className="nav-links">
@@ -452,7 +452,7 @@ export default function SidekicksLanding() {
           </div>
         </section>
         <section className="download-section container" id="download">
-          <Avatar type="clover" color="#f58632" size={106} />
+          <Avatar type="flower" color="#f65baa" size={106} />
           <span className="eyebrow">LET’S MAKE SOMETHING</span>
           <h2>Make room for your next project.</h2>
           <p>Sidekicks for Mac. iPhone access in the private beta.</p>
@@ -469,7 +469,7 @@ export default function SidekicksLanding() {
       </main>
       <footer className="site-footer container">
         <a className="wordmark" href="#">
-          <Avatar type="clover" color="#f58632" size={29} />
+          <Avatar type="flower" color="#f65baa" size={29} />
           Sidekicks
         </a>
         <p>A little crew. A lot done.</p>
