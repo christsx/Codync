@@ -1,6 +1,6 @@
 # Sidekicks private mobile pilot QA — 2026-10-03
 
-Status: build 2.3.1 (24) uploaded and processed in TestFlight; internal pilot group configured with the account holder. Build 25 is being prepared with the corrected Sidekicks iOS icon. Changes are pushed on the pilot branch, not merged. External testing and live functional QA remain incomplete.
+Status: build 2.3.1 (25) is Testing in the internal TestFlight pilot, with the account holder invited. Correct Sidekicks icon verified in the App Store Connect header. Changes are pushed on the pilot branch, not merged. External testing and live functional QA remain incomplete.
 
 ## Verified
 
@@ -46,3 +46,5 @@ Deployed the tested cloud relay-presence fix to sidekicks-cloud-dev; Worker vers
 User spotted the upstream iOS icon in build 24. Replaced it with the existing desktop furry-orange mascot, packaged as an opaque 1024x1024 iOS icon using scripts/design/package-ios-icon.swift; raised build number to 25. Icon-only iOS packaging change: desktop, Linux and TUI rendering are unaffected.
 
 Build 25 signed archive and upload succeeded. Apple TestFlight lists 2.3.1 (25) as Processing. The archive metadata confirms build 25; iOS icon source is opaque 1024x1024, using the desktop mascot. The missing WebRTC dSYM warning remains non-blocking. Await processing before moving the internal pilot to build 25.
+
+Build 25 processing completed. Assigned it to Sidekicks Internal Pilot, saved its test instructions, and removed the group from build 24. Group Builds now shows one build: 2.3.1 (25), Testing. Account holder status is Invited. App Store draft version changed to 2.3.1 with build 25 selected; visually verified furry orange icon beside the app name. No public App Store review submission or release performed. External tester emails, review-contact phone, privacy policy URL, and review access remain missing.
