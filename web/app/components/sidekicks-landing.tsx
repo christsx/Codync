@@ -149,7 +149,7 @@ export default function SidekicksLanding() {
               <Desktop size={18} /> Get Sidekicks for Mac
             </a>
             <a className="button secondary" href="#preview">
-              Explore the app <ArrowDown size={15} />
+              Explore the app
             </a>
           </div>
         </section>
