@@ -21,7 +21,7 @@ must be installed and authenticated in the new workspace before it can run tasks
 
 ## Activation and remaining verification
 
-The backend is deployed; TestFlight build 25 does not include this setup. Snapshot
+The backend is deployed and TestFlight build 26 includes this setup. Snapshot
 `sidekicks-host-2-3-1-v4` was built in the Personal Daytona organization.
 Release checklist:
 
@@ -53,7 +53,7 @@ Shared Swift clients gain cloud provisioning without changing existing routing.
 - Shared Swift: 73 tests passed, including account-isolated workspace preference
   storage and erasure.
 - iOS Release simulator build passed. The new setup screen still needs a visual
-  check in a signed-in mobile session before upload.
+  check in a signed-in mobile session.
 - Live private Daytona sandbox: the Linux host booted, signed a claim, produced
   a v3 pairing offer pointing to the Sidekicks backend, and could not see
   `/Users/chris`. Repeated setup left exactly one host process.
@@ -74,6 +74,8 @@ test found that Daytona's raw REST payload uses `env`, while its SDK uses
 `envVars`. The backend now sends `env`; the corrected live pairing offer points
 to the Sidekicks backend. Regression coverage checks that payload explicitly.
 
-Build 26 was archived successfully. Full mobile pairing, coding-agent
+Build 26 was archived, uploaded, and processed successfully. App Store Connect
+shows 2.3.1 (26) as Testing in Sidekicks Internal Pilot, with test instructions
+saved. Full mobile pairing, coding-agent
 authentication, an actual agent task with the laptop offline, and visual review
 still need verification in TestFlight.
