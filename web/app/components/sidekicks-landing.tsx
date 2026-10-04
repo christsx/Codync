@@ -139,9 +139,9 @@ export default function SidekicksLanding() {
             Meet <Avatar {...crew[0]} size={86} animated /> Sidekicks
           </h1>
           <p className="hero-copy">
-            Your sidekicks, ready to build with you. Connect your coding agents,
-            <br className="desktop-break" /> give them a task, and keep the work
-            moving from Mac or iPhone.
+            Your coding agents, together in one native app.
+            <br className="desktop-break" /> Give them work. Review what comes
+            back. Keep going from Mac or iPhone.
           </p>
           <div className="hero-actions">
             <a className="button primary" href="#download">
@@ -302,7 +302,7 @@ export default function SidekicksLanding() {
         <section className="workflow-section container" id="workflow">
           <Reveal>
             <div className="section-heading">
-              <h2>Less switching. More building.</h2>
+              <h2>One place for the work you hand off.</h2>
               <p>
                 Your agents, conversations, and account connections in one app.
               </p>
@@ -312,7 +312,7 @@ export default function SidekicksLanding() {
             <article>
               <span>01</span>
               <div>
-                <h3>Give each task its own space.</h3>
+                <h3>A conversation for every project.</h3>
                 <p>
                   Keep a feature, a fix, and a review in separate conversations.
                   Pick the coding agent for each one.
@@ -322,7 +322,7 @@ export default function SidekicksLanding() {
             <article>
               <span>02</span>
               <div>
-                <h3>See the work. Decide what’s next.</h3>
+                <h3>Progress and approvals, together.</h3>
                 <p>
                   Follow progress and review permission requests in the same
                   conversation.
@@ -345,17 +345,15 @@ export default function SidekicksLanding() {
           <Reveal>
             <div className="everywhere-card">
               <div>
-                <span className="eyebrow">MAC + IPHONE</span>
                 <h2>
-                  Step away.
+                  Your workspace,
                   <br />
-                  Stay in the loop.
+                  wherever you are.
                 </h2>
                 <p>
-                  Start on your Mac. Check in from your iPhone.
-                  <br />
-                  Cloud Workspace is available in the private beta, with the
-                  option to connect your computer.
+                  Check progress and review requests from iPhone. Use Cloud
+                  Workspace in the private beta, or connect your Mac to run work
+                  locally.
                 </p>
                 <a href="#download" className="text-link">
                   Explore the beta <ArrowRight size={16} />
@@ -389,12 +387,10 @@ export default function SidekicksLanding() {
         </section>
         <section className="tools-section container">
           <div>
-            <span className="eyebrow">AT HOME IN YOUR WORKFLOW</span>
-            <h2>Bring your tools.</h2>
+            <h2>Connect the accounts you work in.</h2>
             <p>
-              Connect the apps you already work in.
-              <br />
-              Keep each account’s connections its own.
+              GitHub for code. Slack for conversations. Your connections stay
+              tied to your account.
             </p>
           </div>
           <div className="tool-grid">
@@ -419,8 +415,7 @@ export default function SidekicksLanding() {
         </section>
         <section className="faq-section container" id="faq">
           <div className="section-heading">
-            <span className="eyebrow">A FEW THINGS TO KNOW</span>
-            <h2>Before you meet.</h2>
+            <h2>A few practical details.</h2>
           </div>
           <div className="faq-list">
             {[
@@ -453,8 +448,7 @@ export default function SidekicksLanding() {
         </section>
         <section className="download-section container" id="download">
           <Avatar type="flower" color="#f65baa" size={106} />
-          <span className="eyebrow">LET’S MAKE SOMETHING</span>
-          <h2>Make room for your next project.</h2>
+          <h2>Meet your next work companions.</h2>
           <p>Sidekicks for Mac. iPhone access in the private beta.</p>
           <a href={`${GITHUB}/releases`} className="button primary">
             <Desktop size={19} /> View Mac releases <ArrowRight size={16} />
