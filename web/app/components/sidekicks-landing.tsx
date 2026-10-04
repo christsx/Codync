@@ -415,7 +415,7 @@ export default function SidekicksLanding() {
             {[
               [
                 "What is Sidekicks?",
-                "A native app that turns coding agents into named work companions. Chat with your Sidekicks, give them tasks, and review their work from Mac or iPhone.",
+                "A native app that brings your coding agents together. Chat with your Sidekicks, give them tasks, and review their work from Mac or iPhone.",
               ],
               [
                 "Do I need a new AI subscription?",
@@ -442,7 +442,7 @@ export default function SidekicksLanding() {
         </section>
         <section className="download-section container" id="download">
           <Avatar type="flower" color="#f65baa" size={106} />
-          <h2>Meet your next work companions.</h2>
+          <h2>A little crew. A lot done.</h2>
           <p>Sidekicks for Mac. iPhone access in the private beta.</p>
           <a href={`${GITHUB}/releases`} className="button primary">
             <Desktop size={19} /> View Mac releases <ArrowRight size={16} />
