@@ -368,7 +368,6 @@ export default function SidekicksLanding() {
                       <strong>{member.name}</strong>
                       <small>{member.role}</small>
                     </span>
-                    <span className="online-dot" />
                   </div>
                 ))}
                 <div className="phone-cloud">
