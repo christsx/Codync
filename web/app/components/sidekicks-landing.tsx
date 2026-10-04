@@ -214,42 +214,41 @@ export default function SidekicksLanding() {
                     <span>
                       <Avatar {...crew[0]} size={30} /> Codex
                     </span>
-                    <small>EXAMPLE CONVERSATION</small>
+                    <small className="chat-connected">
+                      <Desktop size={12} /> Connected
+                    </small>
                   </div>
                   <div className="product-chat-body">
+                    <div className="conversation-date">Today 9:41 AM</div>
                     <div className="product-request">
-                      Simplify onboarding. Keep account connections optional and
-                      take people straight to their workspace.
+                      Simplify onboarding. Make account connections optional.
                     </div>
-                    <div className="product-response">
-                      <Avatar {...crew[0]} size={35} />
-                      <div>
-                        <strong>Codex</strong>
-                        <p>
-                          I’ve shortened the flow to two steps and added a skip
-                          option for connections.
-                        </p>
-                        <div className="product-change">
-                          <span>OnboardingView.swift</span>
-                          <small>+24 −61</small>
-                        </div>
-                        <div className="product-change">
-                          <span>AccountConnections.swift</span>
-                          <small>+12 −8</small>
-                        </div>
-                        <p className="product-result">Ready for your review.</p>
-                      </div>
+                    <div className="message-time sent-time">9:41 AM</div>
+                    <div className="native-reply">
+                      I’ve shortened the flow to two steps and added a skip
+                      option for connections.
+                      <br />
+                      <br />
+                      The changes are ready for your review.
                     </div>
+                    <div className="message-time">9:42 AM</div>
                   </div>
                   <div className="product-input">
-                    <span className="composer-add" aria-hidden="true"><Plus size={18} /></span>
-                    <div className="composer-field"><span>Ask Codex</span><span className="composer-send" aria-hidden="true"><ArrowUp size={18} weight="bold" /></span></div>
+                    <span className="composer-add" aria-hidden="true">
+                      <Plus size={18} />
+                    </span>
+                    <div className="composer-field">
+                      <span>Ask Codex</span>
+                      <span className="composer-send" aria-hidden="true">
+                        <ArrowUp size={18} weight="bold" />
+                      </span>
+                    </div>
                   </div>
                   <button
                     className="preview-reset"
                     onClick={() => setDashboardStarted(false)}
                   >
-                    View welcome screen
+                    Example conversation · View welcome screen
                   </button>
                 </div>
               ) : (
