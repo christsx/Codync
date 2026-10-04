@@ -140,7 +140,17 @@ export default function SidekicksLanding() {
             <ArrowRight size={13} />
           </a>
           <h1 className="meet-title">
-            Meet <Avatar {...crew[0]} size={86} animated /> Sidekicks
+            Meet{" "}
+            <span className="avatar hero-logo" aria-hidden="true">
+              <Image
+                src="/sidekicks/logo.webp"
+                width={86}
+                height={86}
+                alt=""
+                priority
+              />
+            </span>{" "}
+            Sidekicks
           </h1>
           <p className="hero-copy">
             Your sidekicks, ready to build with you. Connect your coding agents,
