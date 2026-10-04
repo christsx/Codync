@@ -98,10 +98,10 @@ function Avatar({
         shine={(type === "clover" || type === "flower") ? 0.3 : 0}
         furDensity={0.65}
         paused={!active}
-        speed={0.35}
-        turn={0.3}
-        jumpEvery={0}
-        interactive={false}
+        speed={size >= 80 ? 0.7 : 0.35}
+        turn={size >= 80 ? 1 : 0.3}
+        jumpEvery={size >= 80 ? 8 : 0}
+        interactive={size >= 80}
         theme="dark"
         whirl={0}
       />
