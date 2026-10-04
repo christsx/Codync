@@ -348,9 +348,6 @@ export default function SidekicksLanding() {
                   Workspace in the private beta, or connect your Mac to run work
                   locally.
                 </p>
-                <a href="#download" className="text-link">
-                  Explore the beta
-                </a>
               </div>
               <div className="phone">
                 <div className="phone-island" />
