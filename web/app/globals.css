@@ -1947,3 +1947,8 @@ input {
     font-size: 16px;
   }
 }
+
+.everywhere-card .text-link,
+.everywhere-card .text-link:hover {
+  color: #fff;
+}
