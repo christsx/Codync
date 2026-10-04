@@ -8,13 +8,11 @@ import {
   ArrowRight,
   Check,
   Cloud,
-  Command,
   Desktop,
   GithubLogo,
   PaperPlaneTilt,
   Plus,
   ShieldCheck,
-  Sparkle,
 } from "@phosphor-icons/react";
 import Reveal from "./reveal";
 import { GITHUB } from "../links";
@@ -33,7 +31,7 @@ const crew = [
     name: "Claude Code",
     role: "Coding agent",
     type: "star" as BotAvatarType,
-    color: "#a59b8d",
+    color: "#a48cda",
     task: "Give the homepage a little personality",
     reply:
       "A quieter layout, a warmer palette, and a little movement. I put together a fresh direction for the homepage. Take a look.",
@@ -42,7 +40,7 @@ const crew = [
     name: "Cursor",
     role: "Coding agent",
     type: "blob" as BotAvatarType,
-    color: "#929b97",
+    color: "#72b1d5",
     task: "Help me plan the next release",
     reply:
       "I drafted a release checklist with the remaining fixes and review steps. You can choose what to tackle first.",
@@ -92,7 +90,7 @@ function Avatar({
         color={color}
         size={size}
         shading="fabric"
-        saturation={color === "#d99154" ? 0.8 : 0.1}
+        saturation={1.15}
         furDensity={0.65}
         paused={!active}
         speed={0.55}
@@ -121,8 +119,8 @@ export default function SidekicksLanding() {
             Sidekicks<span className="beta">BETA</span>
           </a>
           <div className="nav-links">
-            <a href="#meet">Meet the crew</a>
-            <a href="#workflow">How it works</a>
+            <a href="#preview">Overview</a>
+            <a href="#workflow">Features</a>
             <a href="#faq">FAQ</a>
           </div>
           <a className="button small" href="#download">
@@ -132,41 +130,26 @@ export default function SidekicksLanding() {
       </header>
       <main>
         <section className="hero-section">
-          <div className="hero-crew">
-            <div className="hero-pal left">
-              <Avatar {...crew[2]} size={144} animated />
-            </div>
-            <div className="hero-pal middle">
-              <Avatar {...crew[0]} size={208} animated />
-            </div>
-            <div className="hero-pal right">
-              <Avatar {...crew[1]} size={138} animated />
-            </div>
-          </div>
-          <div className="eyebrow">
-            <span className="status-dot" /> A LITTLE CREW. A LOT DONE.
-          </div>
-          <h1>
-            Your sidekicks.
-            <br />
-            <span>Ready to build with you.</span>
+          <a className="launch-pill" href="#download">
+            Sidekicks for Mac <span>Private beta</span>
+            <ArrowRight size={13} />
+          </a>
+          <h1 className="meet-title">
+            Meet <Avatar {...crew[0]} size={86} animated /> Sidekicks
           </h1>
           <p className="hero-copy">
-            Your coding agents, together in one clean workspace.
-            <br className="desktop-break" /> Give them real work. Stay in the
-            loop. Make something great.
+            Your sidekicks, ready to build with you. Connect your coding agents,
+            <br className="desktop-break" /> give them a task, and keep the work
+            moving from Mac or iPhone.
           </p>
           <div className="hero-actions">
             <a className="button primary" href="#download">
-              <Desktop size={19} /> Get Sidekicks for Mac
+              <Desktop size={18} /> Get Sidekicks for Mac
             </a>
-            <a className="text-link" href="#preview">
-              Take a look <ArrowDown size={16} />
+            <a className="button secondary" href="#preview">
+              Explore the app <ArrowDown size={15} />
             </a>
           </div>
-          <p className="availability">
-            Made for Mac. Take your crew with you on iPhone.
-          </p>
         </section>
         <section
           className="preview-section container"
@@ -230,9 +213,7 @@ export default function SidekicksLanding() {
                   aria-labelledby={`pal-tab-${selected}`}
                 >
                   <div className="chat-heading">
-                    <span>
-                      {pal.name}
-                    </span>
+                    <span>{pal.name}</span>
                     <span className="ready">
                       <span className="status-dot" /> Ready
                     </span>
@@ -290,81 +271,73 @@ export default function SidekicksLanding() {
             <span className="muted">& more</span>
           </div>
         </section>
-        <section className="meet-section container" id="meet">
-          <Reveal>
-            <div className="section-heading">
-              <span className="eyebrow">MEET YOUR SIDEKICKS</span>
-              <h2>Built around the way you work.</h2>
-              <p>
-                Connect the coding agents you already use.
-                <br />
-                Keep tasks, conversations, and approvals together.
-              </p>
-            </div>
-          </Reveal>
-          <div className="crew-cards">
-            {crew.map((member, i) => (
-              <Reveal key={member.name} delay={i * 0.07}>
-                <div className={`crew-card crew-${i}`}>
-                  <Avatar {...member} size={154} />
-                  <div>
-                    <h3>{["Build", "Create", "Plan"][i]}</h3>
-                    <p>
-                      {
-                        [
-                          "From a rough idea to a working feature. One conversation at a time.",
-                          "A fresh set of eyes for the details that make your work feel right.",
-                          "For the fixes, plans, and little things that keep a project moving.",
-                        ][i]
-                      }
-                    </p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <p className="crew-caption">Choose your own characters in the app.</p>
-        </section>
         <section className="workflow-section container" id="workflow">
           <Reveal>
             <div className="section-heading">
-              <span className="eyebrow">LESS SETUP. MORE MAKING.</span>
-              <h2>Good work starts with a hello.</h2>
+              <h2>Give your agents a place to work.</h2>
+              <p>
+                One conversation for each Sidekick. A clear view of what’s
+                happening.
+                <br />
+                Your favorite agents, with a little more personality.
+              </p>
             </div>
           </Reveal>
-          <div className="steps">
-            {[
-              [
-                Command,
-                "01",
-                "Bring your favorite agent",
-                "Choose your coding agent and sign into your own account. Your tools, your choice.",
-              ],
-              [
-                Sparkle,
-                "02",
-                "Make it your Sidekick",
-                "Choose a character and a task. Keep each conversation easy to find.",
-              ],
-              [
-                ShieldCheck,
-                "03",
-                "Build together",
-                "Send a task, follow the conversation, and review approvals when your Sidekick needs you.",
-              ],
-            ].map(([Icon, number, title, description]) => {
-              const StepIcon = Icon as typeof Command;
-              return (
-                <div className="step" key={String(number)}>
-                  <div className="step-top">
-                    <StepIcon size={23} />
-                    <span>{String(number)}</span>
-                  </div>
-                  <h3>{String(title)}</h3>
-                  <p>{String(description)}</p>
+          <div className="feature-grid">
+            <Reveal>
+              <article className="feature-panel">
+                <div className="feature-visual">
+                  <Avatar {...crew[0]} size={104} />
                 </div>
-              );
-            })}
+                <h3>Start with a conversation</h3>
+                <p>
+                  Ask for a feature, hand off a fix, or work through an idea.
+                  Keep the task and its updates in the same chat.
+                </p>
+                <div className="mini-message">
+                  Can you clean up the onboarding?
+                  <ArrowRight size={15} />
+                </div>
+              </article>
+            </Reveal>
+            <Reveal delay={0.06}>
+              <article className="feature-panel">
+                <div className="feature-visual feature-pair">
+                  <Avatar {...crew[1]} size={98} />
+                  <Avatar {...crew[2]} size={98} />
+                </div>
+                <h3>Make room for more work</h3>
+                <p>
+                  Create separate Sidekicks for different tasks. Choose the
+                  agents you want and keep their conversations organized.
+                </p>
+                <div className="mini-status">
+                  <span className="status-dot" /> Coding{" "}
+                  <span className="status-dot" /> Reviewing{" "}
+                  <span className="status-dot" /> Planning
+                </div>
+              </article>
+            </Reveal>
+            <Reveal>
+              <article className="feature-panel compact">
+                <ShieldCheck size={29} />
+                <h3>Stay in control</h3>
+                <p>
+                  Review requests and approve actions when your agent needs
+                  permission. See the work before deciding what comes next.
+                </p>
+              </article>
+            </Reveal>
+            <Reveal delay={0.06}>
+              <article className="feature-panel compact">
+                <Cloud size={29} />
+                <h3>Choose where work runs</h3>
+                <p>
+                  Use your own computer, or a separate Cloud Workspace in the
+                  private beta. Your workspace belongs to your account.
+                </p>
+              </article>
+            </Reveal>
           </div>
         </section>
         <section className="everywhere-section container">
@@ -484,7 +457,7 @@ export default function SidekicksLanding() {
         <section className="download-section container" id="download">
           <Image
             src="/sidekicks/logo.webp"
-            alt="Orange plush Sidekicks clover"
+            alt="Orange plush Sidekicks character"
             width={106}
             height={106}
           />

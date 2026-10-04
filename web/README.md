@@ -3,7 +3,7 @@
 Dark, responsive marketing site for https://usesidekicks.com. Uses the app's
 orange plush logo, Libraries.dev bot avatars, restrained animations, an
 interactive illustrative app preview, native FAQ disclosure, and local brand
-assets. Only three hero avatars animate; animation pauses offscreen, when the
+assets. Only the title avatar animates; animation pauses offscreen, when the
 page is hidden, and for reduced-motion preferences.
 
 Run `npm ci`, then `npm run dev`. Validate with `npm run lint` and `npm run build`.

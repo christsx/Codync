@@ -7,7 +7,7 @@ iPhone preview, FAQ, and honest private-beta download status. The public Mac
 installer has not been released; download links point to the owned release page.
 The domain is configured in metadata and CNAME; hosting/DNS is not yet published.
 
-Only three hero characters animate, with offscreen, hidden-page, and reduced
+Only the title character animates, with offscreen, hidden-page, and reduced
 motion pauses. Other character renders are paused. No RGB glow or animated
 background is introduced. Onboarding in iOS and macOS uses orange and gray
 characters, preserving silhouettes and motion. Shared avatars and user-selected
@@ -22,3 +22,8 @@ inspection and TestFlight device verification remain pending.
 The landing page has no invented character names or introductions. Product
 preview rows use the actual agent names. Build 2.3.1 (28) is uploaded and Testing
 in Sidekicks Internal Pilot, with onboarding test instructions saved.
+
+The landing page now uses the x.ai/bot page as a layout reference: compact
+centered title, pill actions, a prominent app preview, and simple feature panels.
+The characters retain orange, purple, and blue colors. The website change does
+not alter native app onboarding or TestFlight build 28.

@@ -1039,3 +1039,266 @@ summary {
 .crew-2 h3 span {
   color: #a1988d;
 }
+
+/* Product-led landing layout, with color reserved for the characters. */
+.site-nav {
+  height: 76px;
+}
+.hero-section {
+  padding: 68px 24px 62px;
+}
+.launch-pill {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  background: #1b1b1c;
+  padding: 7px 13px;
+  border-radius: 30px;
+  font-size: 11px;
+  color: #d2d0ce;
+}
+.launch-pill span {
+  color: #8a8987;
+}
+.hero-section .meet-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: clamp(38px, 5.8vw, 60px);
+  letter-spacing: -2.2px;
+  margin: 22px 0 15px;
+  line-height: 1.2;
+}
+.meet-title .avatar {
+  margin: -15px -8px;
+}
+.hero-copy {
+  max-width: 750px;
+  margin: auto;
+  color: #939391;
+  line-height: 1.7;
+  font-size: 17px;
+}
+.hero-actions {
+  margin-top: 29px;
+  gap: 12px;
+}
+.button,
+.button.small {
+  border-radius: 40px;
+}
+.button.primary {
+  background: #f1efec;
+  color: #191919;
+}
+.button.primary:hover {
+  background: #fff;
+}
+.button.secondary {
+  background: #252525;
+  color: #e2e1df;
+}
+.app-window {
+  border-radius: 22px;
+  box-shadow: 0 0 0 1px #ffffff0b;
+}
+.app-body {
+  min-height: 460px;
+  grid-template-columns: 265px 1fr;
+}
+.app-sidebar {
+  background: #1c1c1d;
+}
+.pal-row.selected {
+  background: #2d2b28;
+}
+.chat-demo {
+  background: #19191a;
+  padding: 22px 30px 14px;
+}
+.agent-message p {
+  font-size: 14px;
+}
+.user-message {
+  font-size: 13px;
+}
+.chat-heading {
+  font-size: 15px;
+}
+.agent-message {
+  padding-top: 34px;
+}
+.demo-composer {
+  background: #272728;
+}
+.agent-strip {
+  padding: 40px 0 95px;
+}
+.section-heading h2 {
+  font-size: clamp(30px, 4vw, 43px);
+}
+.section-heading .eyebrow,
+.tools-section .eyebrow,
+.everywhere-card .eyebrow {
+  display: none;
+}
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 40px;
+}
+.feature-panel {
+  background: #19191a;
+  border-radius: 20px;
+  padding: 34px;
+  min-height: 330px;
+}
+.feature-visual {
+  height: 114px;
+  display: flex;
+  align-items: center;
+}
+.feature-pair {
+  gap: 8px;
+}
+.feature-panel h3 {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.65px;
+  margin: 18px 0 11px;
+}
+.feature-panel p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #91918f;
+  max-width: 415px;
+}
+.mini-message {
+  margin-top: 26px;
+  padding: 12px 15px;
+  border-radius: 13px;
+  background: #252526;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  color: #bab9b6;
+  font-size: 11px;
+}
+.mini-status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  color: #94938f;
+  margin-top: 31px;
+}
+.feature-panel.compact {
+  min-height: 220px;
+  padding-top: 35px;
+}
+.feature-panel.compact > svg {
+  color: #b0aea9;
+}
+.everywhere-card {
+  background: #19191a;
+}
+.tools-section {
+  padding-block: 105px;
+}
+.download-section .eyebrow {
+  display: none;
+}
+.download-section h2 {
+  font-size: clamp(34px, 4.5vw, 49px);
+}
+@media (max-width: 760px) {
+  .hero-section {
+    padding: 52px 22px;
+  }
+  .hero-section .meet-title {
+    font-size: 48px;
+  }
+  .app-body {
+    grid-template-columns: 200px 1fr;
+  }
+  .feature-panel {
+    padding: 26px;
+  }
+  .hero-copy {
+    font-size: 15px;
+  }
+  .hero-actions {
+    flex-direction: row;
+  }
+  .agent-message p {
+    font-size: 12px;
+  }
+}
+@media (max-width: 520px) {
+  .hero-section {
+    padding: 45px 18px 40px;
+  }
+  .hero-section .meet-title {
+    font-size: 37px;
+    gap: 5px;
+    letter-spacing: -1.5px;
+  }
+  .meet-title .avatar {
+    width: 60px !important;
+    height: 60px !important;
+    margin: -6px -4px;
+  }
+  .meet-title canvas {
+    width: 60px !important;
+    height: 60px !important;
+  }
+  .hero-copy {
+    max-width: 340px;
+    font-size: 14px;
+  }
+  .hero-actions {
+    gap: 9px;
+  }
+  .hero-actions .button {
+    font-size: 11px;
+    padding: 11px 14px;
+    min-height: 42px;
+  }
+  .hero-actions svg {
+    width: 14px;
+  }
+  .app-body {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  .chat-demo {
+    padding: 18px 17px 12px;
+    min-height: 365px;
+  }
+  .agent-strip {
+    padding-bottom: 65px;
+  }
+  .feature-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  .feature-panel {
+    min-height: 0;
+    padding: 25px;
+  }
+  .feature-panel h3 {
+    font-size: 21px;
+  }
+  .feature-panel p {
+    font-size: 13px;
+  }
+  .mini-status {
+    flex-wrap: wrap;
+  }
+  .feature-panel.compact {
+    min-height: 0;
+  }
+}
