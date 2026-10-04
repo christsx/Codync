@@ -9,14 +9,14 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, monospace;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 :root {
   --background: #0d0b0d;
@@ -70,7 +70,7 @@ summary {
   gap: 10px;
   font-size: 19px;
   font-weight: 600;
-  letter-spacing: -0.7px;
+  letter-spacing: -0.02em;
   color: var(--foreground);
 }
 .wordmark img {
@@ -182,7 +182,7 @@ summary {
 .hero-section h1 {
   font-size: clamp(40px, 5.5vw, 66px);
   line-height: 1.08;
-  letter-spacing: -3.1px;
+  letter-spacing: -0.02em;
   font-weight: 500;
   margin: 22px 0;
 }
@@ -465,7 +465,7 @@ summary {
   font-size: clamp(29px, 3.5vw, 42px);
   line-height: 1.15;
   font-weight: 500;
-  letter-spacing: -1.6px;
+  letter-spacing: -0.02em;
   margin: 17px 0;
 }
 .section-heading p {
@@ -500,7 +500,7 @@ summary {
   margin: 0;
   font-size: 18px;
   font-weight: 500;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.02em;
 }
 .crew-card h3 span {
   display: block;
@@ -616,7 +616,7 @@ summary {
   justify-content: space-between;
   font-weight: 500;
   font-size: 20px;
-  letter-spacing: -0.7px;
+  letter-spacing: -0.02em;
   margin: 15px 0;
 }
 .phone-pal {
@@ -725,7 +725,7 @@ summary {
 }
 .download-section h2 {
   font-size: clamp(35px, 4.5vw, 53px);
-  letter-spacing: -2px;
+  letter-spacing: -0.02em;
   line-height: 1.13;
   font-weight: 500;
   margin: 19px 0;
@@ -800,7 +800,7 @@ summary {
     margin-bottom: 13px;
   }
   .hero-section h1 {
-    letter-spacing: -1.8px;
+    letter-spacing: -0.02em;
   }
   .hero-copy {
     font-size: 14px;
@@ -1066,7 +1066,7 @@ summary {
   justify-content: center;
   gap: 10px;
   font-size: clamp(38px, 5.8vw, 60px);
-  letter-spacing: -2.2px;
+  letter-spacing: -0.02em;
   margin: 22px 0 15px;
   line-height: 1.2;
 }
@@ -1166,7 +1166,7 @@ summary {
 .feature-panel h3 {
   font-size: 22px;
   font-weight: 500;
-  letter-spacing: -0.65px;
+  letter-spacing: -0.02em;
   margin: 18px 0 11px;
 }
 .feature-panel p {
@@ -1244,7 +1244,7 @@ summary {
   .hero-section .meet-title {
     font-size: 37px;
     gap: 5px;
-    letter-spacing: -1.5px;
+    letter-spacing: -0.02em;
   }
   .meet-title .avatar {
     width: 60px !important;
@@ -1420,7 +1420,7 @@ summary {
 }
 .desktop-welcome h2 {
   font-size: 21px;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.02em;
   margin: 0 0 16px;
 }
 .desktop-welcome p {
@@ -1495,7 +1495,7 @@ summary {
   font-size: 22px;
   font-weight: 500;
   margin: 0 0 9px;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.02em;
 }
 .workflow-lines p {
   color: #999;
@@ -1642,7 +1642,7 @@ summary {
 .hero-copy {
   font-size: 19px;
   line-height: 1.65;
-  letter-spacing: -0.25px;
+  letter-spacing: -0.02em;
   color: #a6a0a6;
 }
 .hero-actions .button.secondary {
@@ -1660,7 +1660,7 @@ summary {
 .workflow-section .section-heading h2 {
   font-size: 42px;
   font-weight: 500;
-  letter-spacing: -1.4px;
+  letter-spacing: -0.02em;
 }
 .workflow-section .section-heading p {
   margin: 16px 0 0;
@@ -1683,7 +1683,7 @@ summary {
 .mobile-editorial h2 {
   font-size: 40px;
   font-weight: 500;
-  letter-spacing: -1.2px;
+  letter-spacing: -0.02em;
   line-height: 1.15;
   margin: 0 0 23px;
 }
@@ -1723,7 +1723,7 @@ summary {
 .tools-section h2 {
   font-size: 30px;
   font-weight: 500;
-  letter-spacing: -0.8px;
+  letter-spacing: -0.02em;
 }
 .faq-section .section-heading {
   text-align: left;
@@ -1742,7 +1742,7 @@ summary {
 .download-section h2 {
   font-size: 36px;
   font-weight: 500;
-  letter-spacing: -1px;
+  letter-spacing: -0.02em;
 }
 @media (max-width: 650px) {
   .hero-section {
@@ -1774,3 +1774,8 @@ summary {
     font-size: 29px;
   }
 }
+
+.hero-section .meet-title { font-weight:600; letter-spacing:-0.025em; }
+.hero-copy { font-weight:400; letter-spacing:0; }
+button, input { font-family:inherit; }
+.release-label, .editorial-label, .eyebrow { letter-spacing:.06em; }
