@@ -40,8 +40,7 @@ export default function Terms() {
         </Section>
 
         <Section title="4. Intellectual property">
-          The source code is available at github.com/christsx/Codync under the
-          MIT license. Names and logos of third-party agents belong to their
+          The source code is provided under the MIT license. Names and logos of third-party agents belong to their
           owners.
         </Section>
 
@@ -63,14 +62,8 @@ export default function Terms() {
         </Section>
 
         <Section title="8. Contact">
-          Questions? Open an issue at{" "}
-          <a
-            href="https://github.com/christsx/Codync/issues"
-            className="text-white underline"
-          >
-            github.com/christsx/Codync/issues
-          </a>
-          .
+          For questions during the private beta, contact the person who
+          invited you to Sidekicks.
         </Section>
 
         <div className="pt-4">

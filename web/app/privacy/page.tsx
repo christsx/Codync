@@ -41,16 +41,8 @@ export default function Privacy() {
           workspace or files held by your host or third-party providers.
         </Section>
         <Section title="Contact">
-          For questions or account-data requests, contact the project owner
-          through{" "}
-          <a
-            href="https://github.com/christsx/Codync/issues"
-            className="text-white underline"
-          >
-            the Sidekicks repository
-          </a>
-          . Do not include passwords, API keys, or private workspace contents in
-          a public issue.
+          For questions or account-data requests during the private beta,
+          contact the person who invited you to Sidekicks.
         </Section>
       </article>
     </main>

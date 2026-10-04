@@ -15,7 +15,6 @@ import {
   Plus,
 } from "@phosphor-icons/react";
 import Reveal from "./reveal";
-import { GITHUB } from "../links";
 
 const crew = [
   {
@@ -350,7 +349,7 @@ export default function SidekicksLanding() {
                   locally.
                 </p>
                 <a href="#download" className="text-link">
-                  Explore the beta <ArrowRight size={16} />
+                  Explore the beta
                 </a>
               </div>
               <div className="phone">
@@ -426,7 +425,7 @@ export default function SidekicksLanding() {
               ],
               [
                 "Can I download it now?",
-                "Sidekicks is in private beta. iPhone testing is invite-only through TestFlight. A public Mac installer is coming; the release page will list it when it is ready.",
+                "Sidekicks is in private beta. iPhone testing is invite-only through TestFlight. A public Mac installer is coming soon.",
               ],
             ].map(([question, answer]) => (
               <details key={question}>
@@ -443,9 +442,6 @@ export default function SidekicksLanding() {
           <Avatar type="flower" color="#f65baa" size={106} />
           <h2>A little crew. A lot done.</h2>
           <p>Sidekicks for Mac. iPhone access in the private beta.</p>
-          <a href={`${GITHUB}/releases`} className="button primary">
-            <Desktop size={19} /> View Mac releases <ArrowRight size={16} />
-          </a>
           <p className="download-status">
             Public Mac download coming soon · macOS 14+
           </p>
@@ -470,9 +466,7 @@ export default function SidekicksLanding() {
         </nav>
         <nav className="footer-group" aria-label="Download links">
           <h3>Get Sidekicks</h3>
-          <a href={`${GITHUB}/releases`}>Mac releases</a>
           <a href="#download">iPhone beta</a>
-          <a href={GITHUB}>GitHub</a>
         </nav>
         <nav className="footer-group" aria-label="Legal links">
           <h3>Legal</h3>
