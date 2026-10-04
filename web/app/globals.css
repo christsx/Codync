@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0a;
+  --background: #0d0b0d;
   --foreground: #ededed;
   color-scheme: dark;
 }
@@ -19,7 +19,7 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 :root {
-  --background: #0c0c0d;
+  --background: #0d0b0d;
   --foreground: #f1f0ed;
   --accent: #dba16e;
   --muted: #8d8b89;
@@ -51,7 +51,7 @@ summary {
   position: sticky;
   top: 0;
   z-index: 30;
-  background: #0c0c0de8;
+  background: #0d0b0de8;
   backdrop-filter: blur(12px);
 }
 .site-nav {
