@@ -117,7 +117,7 @@ export default function SidekicksLanding() {
       <header className="site-header">
         <nav className="site-nav" aria-label="Main navigation">
           <a href="#" className="wordmark">
-            <Avatar type="clover" color="#f58632" size={36} />
+            <Image src="/sidekicks/logo.webp" width={36} height={36} alt="" priority />
             Sidekicks<span className="beta">BETA</span>
           </a>
           <div className="nav-links">
