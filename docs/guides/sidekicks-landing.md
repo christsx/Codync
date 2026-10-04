@@ -18,3 +18,7 @@ Validation: website production export, lint, and diff check passed. Browser chec
 at 390px showed no horizontal overflow; Sidekick selection and FAQ disclosure
 worked. macOS Debug build and signed iOS build 28 archive passed. Native visual
 inspection and TestFlight device verification remain pending.
+
+The landing page has no invented character names or introductions. Product
+preview rows use the actual agent names. Build 2.3.1 (28) is uploaded and Testing
+in Sidekicks Internal Pilot, with onboarding test instructions saved.
