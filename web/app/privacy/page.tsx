@@ -1,75 +1,69 @@
-import Link from "next/link";
-
 export default function Privacy() {
   return (
     <main className="flex-1 flex flex-col items-center px-6 py-16">
       <article className="max-w-2xl w-full space-y-6">
         <h1 className="text-3xl font-bold text-white">Privacy Policy</h1>
-        <p className="text-neutral-400 text-sm">Last updated: September 25, 2026</p>
+        <p className="text-neutral-400 text-sm">
+          Last updated: October 3, 2026
+        </p>
 
         <Section title="Overview">
-          Codync lets you message the coding agents that run on your own computer. It is built so that your code, conversations and credentials stay on your devices.
+          Sidekicks lets you work with coding agents from Mac and iPhone. This
+          policy describes the current private beta.
         </Section>
-
-        <Section title="What stays on your devices">
-          <ul className="list-disc pl-5 space-y-2">
-            <li><strong>Bots and conversations</strong> are stored by the Codync host on your computer (in <code>~/.codync</code>). Your phone keeps a cache so the app opens instantly.</li>
-            <li><strong>Your phone talks directly to your computer</strong> over your local network or Tailscale. There is no Codync server in between and no Codync account.</li>
-            <li><strong>Agents run with your own logins</strong> (Claude Code, Codex, Cursor and others). Codync never sees or stores their credentials.</li>
-            <li><strong>Usage limits</strong> are read locally from the agents installed on your computer. Only percentages reach your phone.</li>
-          </ul>
+        <Section title="Your account and workspace">
+          Sign-in is provided by Clerk. Sidekicks uses Cloudflare to store
+          account, device, and workspace records and to relay encrypted device
+          traffic. Conversations and agent settings live on the host running
+          your Sidekicks, with a cache on your device.
         </Section>
-
-        <Section title="Push notifications">
-          To notify you when a bot needs you or finishes, your computer sends a short alert (the bot&apos;s name and a one-line preview) through our push relay, a Cloudflare Worker that forwards it to Apple Push Notification service. The relay does not store notifications. Your device token is encrypted into a ticket that only the relay can read; your computer never sees the raw token.
+        <Section title="Cloud Workspace">
+          If you use Cloud Workspace, your host runs in a private Daytona
+          sandbox associated with your account. Workspace files, conversations,
+          and coding-agent credentials may be stored there. Cloud infrastructure
+          providers process data needed to operate that workspace. A cloud
+          workspace is separate from your personal computer.
         </Section>
-
-        <Section title="Data we collect">
-          None. Codync has no analytics, no tracking and no advertising identifiers.
+        <Section title="Connected agents and apps">
+          Coding agents run using the accounts you connect, under their
+          providers’ terms. App connections are managed through Composio and the
+          services you authorize. Review the permissions before connecting an
+          app or approving a task.
         </Section>
-
-        <Section title="Third-party services">
-          <ul className="list-disc pl-5 space-y-2">
-            <li><strong>Apple Push Notification service</strong>: delivers notifications and Live Activity updates.</li>
-            <li><strong>Cloudflare Workers</strong>: runs the push relay (nothing stored).</li>
-            <li><strong>The coding agents you choose</strong>: they run on your computer under their own terms and privacy policies.</li>
-          </ul>
+        <Section title="Notifications">
+          Notifications use Apple’s notification service and a relay. Your host
+          encrypts notification content for your device. Notification delivery
+          depends on the current beta configuration.
         </Section>
-
-        <Section title="Data retention">
-          Everything lives on your devices. Delete a bot to remove its conversation; uninstall the host and delete <code>~/.codync</code> to remove all of it. Deleting the iPhone app removes its cache.
+        <Section title="Signing out">
+          Signing out removes the account’s local device keys and cached
+          computer data from that device. Signing out does not delete the
+          workspace or files held by your host or third-party providers.
         </Section>
-
-        <Section title="Children's privacy">
-          Codync is not directed at children under the age of 13.
-        </Section>
-
-        <Section title="Changes">
-          We may update this policy. Changes will be posted on this page with a new date.
-        </Section>
-
         <Section title="Contact">
-          Questions? Open an issue at{" "}
-          <a href="https://github.com/leepokai/Codync/issues" className="text-white underline">github.com/leepokai/Codync/issues</a>.
+          For questions or account-data requests, contact the project owner
+          through{" "}
+          <a
+            href="https://github.com/christsx/Codync/issues"
+            className="text-white underline"
+          >
+            the Sidekicks repository
+          </a>
+          . Do not include passwords, API keys, or private workspace contents in
+          a public issue.
         </Section>
-
-        <div className="pt-4">
-          <p className="text-neutral-400">
-            <Link href="/terms" className="text-white underline">Terms of Use</Link>
-          </p>
-        </div>
-
-        <div className="pt-4">
-          <Link href="/" className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors">
-            &larr; Back to home
-          </Link>
-        </div>
       </article>
     </main>
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
     <section>
       <h2 className="text-xl font-semibold text-white mb-2">{title}</h2>
