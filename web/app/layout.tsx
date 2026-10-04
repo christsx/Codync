@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     url: "https://usesidekicks.com",
     siteName: "Sidekicks",
   },
-  icons: { icon: "/sidekicks/logo.webp", apple: "/apple-touch-icon.png" },
+  icons: { icon: "/sidekicks/pink-icon.png", apple: "/sidekicks/pink-icon.png" },
 };
 
 export default function RootLayout({
