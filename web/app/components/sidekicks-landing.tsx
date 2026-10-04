@@ -4,6 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { BotAvatar, type BotAvatarType } from "bot-avatars";
 import {
+  Gear,
+  CaretDoubleRight,
+  Export,
+  Power,
+  Folder,
+  ChatText,
   ArrowUp,
   ArrowRight,
   Cloud,
@@ -185,7 +191,7 @@ export default function SidekicksLanding() {
                         <Avatar {...member} size={40} />
                         <span>
                           {member.name}
-                          <small>{member.role}</small>
+                          <small>{member.reply}</small>
                         </span>
                       </div>
                     ))
@@ -214,6 +220,7 @@ export default function SidekicksLanding() {
                     <small className="chat-connected">
                       <Desktop size={12} /> Connected
                     </small>
+                    <Export className="chat-export" size={20} />
                   </div>
                   <div className="product-chat-body">
                     <div className="conversation-date">Today 9:41 AM</div>
@@ -241,12 +248,6 @@ export default function SidekicksLanding() {
                       </span>
                     </div>
                   </div>
-                  <button
-                    className="preview-reset"
-                    onClick={() => setDashboardStarted(false)}
-                  >
-                    Example conversation · View welcome screen
-                  </button>
                 </div>
               ) : (
                 <div className="desktop-welcome">
@@ -268,7 +269,29 @@ export default function SidekicksLanding() {
                   </button>
                 </div>
               )}
+              {dashboardStarted && (
+                <aside className="dashboard-details">
+                  <div className="details-heading"><strong>Details</strong><Gear size={19} /><CaretDoubleRight size={19} /></div>
+                  <div className="details-computer">
+                    <div><Desktop size={24} /><span><strong>My Mac</strong><small>Remote screen</small></span></div>
+                    <p><Power size={17} /> Remote screen is off</p>
+                  </div>
+                  <div className="details-routines">
+                    <h4>Routines <ChatText size={18} /><Plus size={18} /></h4>
+                    <p>No routines yet. Ask the sidekick for one, or set it up yourself with +.</p>
+                  </div>
+                  <div className="details-agent">
+                    <h4>Agent</h4>
+                    <p><span>Runtime</span><strong>Codex</strong></p>
+                    <small><Folder size={15} /> Workspace</small>
+                    <div>Personal · managed by Sidekicks</div>
+                  </div>
+                </aside>
+              )}
             </div>
+            <button className="preview-reset" onClick={() => setDashboardStarted(!dashboardStarted)}>
+              {dashboardStarted ? "View welcome screen" : "View conversation"}
+            </button>
           </Reveal>
         </section>
         <section

@@ -1953,3 +1953,51 @@ input {
 .everywhere-card .text-link:hover {
   color: #fff;
 }
+
+/* Match the native Mac window: sidebar, conversation, and Details. */
+.desktop-dashboard { min-height: 560px; }
+.desktop-sidebar { width: 26%; flex-shrink: 0; padding: 14px 12px; }
+.desktop-search { margin-top: 18px; }
+.desktop-sidekicks { padding-top: 12px; }
+.desktop-member { font-weight: 600; }
+.desktop-member small { max-width: 155px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 400; color: #999; }
+.desktop-member:first-child { background: #353535; }
+.product-conversation { flex: 1; min-width: 0; padding: 18px 16px; }
+.product-chat-header { margin: -18px -16px 0; padding: 12px 16px; gap: 10px; justify-content: flex-start; min-height: 52px; }
+.product-chat-header > span { white-space: nowrap; }
+.product-chat-header .chat-connected { font-size: 10px; white-space: nowrap; }
+.chat-export { margin-left: auto; flex-shrink: 0; color: #999; }
+.product-chat-body { flex: 1; padding-top: 26px; }
+.product-request { max-width: 90%; font-size: 12px; }
+.native-reply { max-width: 92%; font-size: 12px; padding: 12px 14px; }
+.dashboard-details { width: 26%; flex-shrink: 0; border-left: 1px solid #242424; padding: 15px 16px; background: #090909; font-size: 12px; }
+.details-heading { display: flex; align-items: center; gap: 18px; color: #999; height: 23px; }
+.details-heading strong { margin-right: auto; font-size: 13px; }
+.details-computer { background: #131313; border-radius: 14px; padding: 16px; margin-top: 22px; }
+.details-computer > div { display: flex; gap: 12px; align-items: center; }
+.details-computer strong, .details-computer small { display: block; }
+.details-computer strong { font-size: 13px; }
+.details-computer small { color: #999; margin-top: 4px; }
+.details-computer p { display: flex; align-items: center; gap: 8px; margin: 16px 0 0; font-weight: 500; }
+.dashboard-details h4 { display: flex; align-items: center; gap: 10px; font-size: 13px; margin: 0 0 18px; }
+.details-routines { margin-top: 32px; }
+.details-routines h4 svg:first-of-type { margin-left: auto; }
+.details-routines p { color: #999; line-height: 1.5; }
+.details-agent { margin-top: 30px; }
+.details-agent p { display: flex; justify-content: space-between; margin-bottom: 18px; }
+.details-agent p span, .details-agent small { color: #999; }
+.details-agent small { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.details-agent > div { margin-top: 8px; line-height: 1.5; }
+.preview-section .preview-reset { display: block; margin: 14px auto 0; font-size: 11px; }
+@media (max-width: 900px) {
+  .dashboard-details { display: none; }
+  .desktop-sidebar { width: 28%; }
+}
+@media (max-width: 650px) {
+  .desktop-dashboard { min-height: 480px; }
+  .desktop-sidebar { width: 32%; padding: 12px 8px; }
+  .product-conversation { padding: 14px 12px; }
+  .product-chat-header { margin: -14px -12px 0; padding: 10px 12px; }
+  .product-chat-header .chat-connected { display: none; }
+  .desktop-member small { max-width: 75px; }
+}
