@@ -1309,7 +1309,7 @@ summary {
   border-radius: 18px;
   overflow: hidden;
   background: #090909;
-  box-shadow: 0 24px 80px #0005;
+  box-shadow: none;
   text-align: left;
 }
 .desktop-sidebar {
