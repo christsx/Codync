@@ -117,7 +117,7 @@ export default function SidekicksLanding() {
       <header className="site-header">
         <nav className="site-nav" aria-label="Main navigation">
           <a href="#" className="wordmark">
-            <Image src="/sidekicks/logo.webp" width={36} height={36} alt="" priority />
+            <Avatar type="clover" color="#f58632" size={36} />
             Sidekicks<span className="beta">BETA</span>
           </a>
           <div className="nav-links">
@@ -172,12 +172,7 @@ export default function SidekicksLanding() {
               <div className="app-body">
                 <aside className="app-sidebar">
                   <div className="workspace-label">
-                    <Image
-                      src="/sidekicks/logo.webp"
-                      alt=""
-                      width={28}
-                      height={28}
-                    />
+                    <Avatar type="clover" color="#f58632" size={28} />
                     Your workspace
                   </div>
                   <div className="sidebar-heading">
@@ -457,12 +452,7 @@ export default function SidekicksLanding() {
           </div>
         </section>
         <section className="download-section container" id="download">
-          <Image
-            src="/sidekicks/logo.webp"
-            alt="Orange plush Sidekicks character"
-            width={106}
-            height={106}
-          />
+          <Avatar type="clover" color="#f58632" size={106} />
           <span className="eyebrow">LET’S MAKE SOMETHING</span>
           <h2>
             Your next idea
@@ -483,7 +473,7 @@ export default function SidekicksLanding() {
       </main>
       <footer className="site-footer container">
         <a className="wordmark" href="#">
-          <Image src="/sidekicks/logo.webp" alt="" width={29} height={29} />
+          <Avatar type="clover" color="#f58632" size={29} />
           Sidekicks
         </a>
         <p>A little crew. A lot done.</p>
