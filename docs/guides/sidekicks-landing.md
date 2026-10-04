@@ -1,0 +1,20 @@
+# Sidekicks landing and welcome palette
+
+The website in `web/` is a dark landing page for usesidekicks.com, using the
+existing orange plush logo and Libraries.dev React avatars. It includes a
+responsive illustrative app preview, agent and integration logos, workflow,
+iPhone preview, FAQ, and honest private-beta download status. The public Mac
+installer has not been released; download links point to the owned release page.
+The domain is configured in metadata and CNAME; hosting/DNS is not yet published.
+
+Only three hero characters animate, with offscreen, hidden-page, and reduced
+motion pauses. Other character renders are paused. No RGB glow or animated
+background is introduced. Onboarding in iOS and macOS uses orange and gray
+characters, preserving silhouettes and motion. Shared avatars and user-selected
+character colors are unchanged. Linux and terminal clients have no equivalent
+Clerk welcome character scene and need no palette change.
+
+Validation: website production export, lint, and diff check passed. Browser checks
+at 390px showed no horizontal overflow; Sidekick selection and FAQ disclosure
+worked. macOS Debug build and signed iOS build 28 archive passed. Native visual
+inspection and TestFlight device verification remain pending.

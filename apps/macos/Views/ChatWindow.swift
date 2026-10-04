@@ -203,15 +203,15 @@ private struct WelcomeCrew: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let members: [(shape: String, color: String, size: CGFloat, x: CGFloat, y: CGFloat, mood: CharacterAvatar.Mood)] = [
-        ("blob", "blue", 92, 0, 0, .working),
+        ("blob", "orange", 92, 0, 0, .working),
         ("squircle", "orange", 64, -104, -34, .idle),
-        ("teardrop", "violet", 58, 100, -46, .working),
-        ("hex", "green", 48, -76, 64, .idle),
-        ("cloud", "magenta", 52, 84, 58, .needsInput),
+        ("teardrop", "gray", 58, 100, -46, .working),
+        ("hex", "gray", 48, -76, 64, .idle),
+        ("cloud", "gray", 52, 84, 58, .needsInput),
         ("star", "orange", 44, -150, 40, .idle),
-        ("cat", "violet", 46, 148, 0, .idle),
-        ("flower", "green", 38, 38, -85, .idle),
-        ("ghost", "blue", 36, -40, -84, .idle),
+        ("cat", "gray", 46, 148, 0, .idle),
+        ("flower", "gray", 38, 38, -85, .idle),
+        ("ghost", "gray", 36, -40, -84, .idle),
     ]
 
     var body: some View {
