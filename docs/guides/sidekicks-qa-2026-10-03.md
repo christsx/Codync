@@ -44,3 +44,5 @@ Created App Store Connect app 6818920368, named Sidekicks - AI Employees (the pl
 Deployed the tested cloud relay-presence fix to sidekicks-cloud-dev; Worker version e0e33ab3-af75-4ad0-9459-af9d1a7daaa1. Live /v1/health returned ok. Uploaded build has a non-blocking missing WebRTC dSYM warning, limiting symbols for that framework.
 
 User spotted the upstream iOS icon in build 24. Replaced it with the existing desktop furry-orange mascot, packaged as an opaque 1024x1024 iOS icon using scripts/design/package-ios-icon.swift; raised build number to 25. Icon-only iOS packaging change: desktop, Linux and TUI rendering are unaffected.
+
+Build 25 signed archive and upload succeeded. Apple TestFlight lists 2.3.1 (25) as Processing. The archive metadata confirms build 25; iOS icon source is opaque 1024x1024, using the desktop mascot. The missing WebRTC dSYM warning remains non-blocking. Await processing before moving the internal pilot to build 25.
