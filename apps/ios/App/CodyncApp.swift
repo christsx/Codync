@@ -21,7 +21,7 @@ struct CodyncApp: App {
                 .environment(app.account)
                 .tint(Palette.accent)
                 .codyncSheet(isPresented: Binding(
-                    get: { (onboardingCompleted || app.account.isSignedIn) && app.account.showSwitcher },
+                    get: { app.account.isSignedIn && app.account.showSwitcher },
                     set: { app.account.showSwitcher = $0 }
                 )) {
                     // Holds the pushes inside the sheet (Computers & settings, Widgets); no bar shows.
@@ -117,6 +117,7 @@ final class AppStore {
         contextID = storage.id
         tab = .bots
         showComputers = false
+        showUsage = false
         marketplace = nil
         (accounts, cloud) = Self.makeAccounts(storage, session: account)
         BotsWidgetFeed.reset()
@@ -128,6 +129,7 @@ final class AppStore {
         guard let userID = account.userID else { return }
         await account.signOut()
         guard account.userID != userID, !account.accounts.contains(where: { $0.id == userID }) else { return }
+        account.showSwitcher = false
         // Retire its stores first: a retiring store saves its cache one last time.
         switchAccount(to: account.userID)
         SharedStore.Context(accountID: userID).erase()

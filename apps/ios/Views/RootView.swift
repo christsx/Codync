@@ -9,9 +9,6 @@ struct RootView: View {
     @Environment(AccountSession.self) private var account
     @AppStorage("onboardingCompleted") private var onboardingCompleted = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    /// First launch only: past the welcome, on to setup.
-    @State private var welcomed = false
-    @State private var showsSignIn = false
 
     /// The open bot, as a NavigationStack path.
     private var path: Binding<[BotReference]> {
@@ -20,26 +17,19 @@ struct RootView: View {
 
     var body: some View {
         Group {
-            if showsSignIn && !account.isSignedIn {
-                WelcomeView { showsSignIn = false }
+            // Authentication is the source of truth across account-context rebuilds.
+            // Onboarding completion must never bypass the signed-out welcome.
+            if !account.isSignedIn {
+                WelcomeView {}
                     .transition(.opacity)
             } else if !onboardingCompleted && accounts.computers.isEmpty && accounts.cloudComputers.isEmpty {
-                if !welcomed && !account.isSignedIn {
-                    WelcomeView { withAnimation(Motion.reduced(Motion.layout, reduceMotion)) { welcomed = true } }
-                        .transition(.move(edge: .leading).combined(with: .opacity))
-                } else {
-                    WorkspaceSetupView { onboardingCompleted = true }
+                WorkspaceSetupView { onboardingCompleted = true }
                     .transition(.move(edge: .trailing).combined(with: .opacity))
-                }
             } else {
                 tabs
             }
         }
         .background(Palette.background)
-        .onChange(of: account.isSignedIn) { wasSignedIn, signedIn in
-            if wasSignedIn && !signedIn { showsSignIn = true }
-            if signedIn { showsSignIn = false }
-        }
         .onChange(of: accounts.computers.isEmpty, initial: true) { _, empty in
             // Pairing or explicitly skipping completes setup. Keep this
             // device-level milestone across account changes and unpairing.
