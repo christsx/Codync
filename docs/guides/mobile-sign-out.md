@@ -23,6 +23,7 @@ Their corresponding account/connections screens were inspected and require no
 routing change.
 
 Validation: the signed iOS Release archive passed and the diff check passed.
-Build 27 upload and TestFlight distribution are in progress.
+Build 2.3.1 (27) uploaded successfully and is Testing in Sidekicks Internal
+Pilot. Regression instructions are saved in App Store Connect.
 The authenticated phone sign-out flow still needs real-device verification;
 this repository has no iOS UI-test target for Clerk session transitions.
