@@ -278,13 +278,18 @@ export default function SidekicksLanding() {
           <p>Works with the coding agents you already use.</p>
           <div>
             {[
-              ["openai", "Codex"],
-              ["claude", "Claude Code"],
-              ["cursor", "Cursor"],
+              ["openai.png", "Codex"],
+              ["claude.png", "Claude Code"],
+              ["cursor.png", "Cursor"],
+              ["opencode.png", "OpenCode"],
+              ["kimi.svg", "Kimi"],
+              ["zai.svg", "Z.ai"],
+              ["gemini.png", "Gemini CLI"],
+              ["cline.svg", "Cline"],
             ].map(([logo, name]) => (
               <span key={name}>
                 <Image
-                  src={`/brands/${logo}.png`}
+                  src={`/brands/${logo}`} 
                   alt=""
                   width={22}
                   height={22}

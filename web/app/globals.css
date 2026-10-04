@@ -438,6 +438,7 @@ summary {
 }
 .agent-strip > div {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 39px;
   align-items: center;
