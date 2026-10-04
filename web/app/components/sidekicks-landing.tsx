@@ -22,7 +22,7 @@ const crew = [
     name: "Codex",
     role: "Coding agent",
     type: "clover" as BotAvatarType,
-    color: "#d99154",
+    color: "#ff8b32",
     task: "Polish the onboarding flow",
     reply:
       "The onboarding is simpler now. I tightened the spacing, cleaned up the buttons, and kept the dark theme. Ready for your review.",
@@ -90,7 +90,9 @@ function Avatar({
         color={color}
         size={size}
         shading="fabric"
-        saturation={1.15}
+        saturation={type === "clover" ? 1.5 : 1.15}
+        brightness={type === "clover" ? 1.08 : 1}
+        shadow={type === "clover" ? 0.65 : 1.15}
         furDensity={0.65}
         paused={!active}
         speed={0.55}
