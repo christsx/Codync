@@ -167,3 +167,7 @@ xcodebuild -project apps/Codync.xcodeproj -scheme iOS -configuration Release -sd
 ```
 
 Terminate the old simulator app, install the signed build, and relaunch. On 2026-10-03 this reached the correct ultimate-chow-8201 Clerk endpoint and opened Google authentication successfully. Google credential completion and the callback/session still require live verification. Physical-device/TestFlight signing remains blocked by the missing owning Apple Developer account.
+
+## Sidekicks Apple signing ownership
+
+Xcode now uses Christian Garcia team 9S7MDN3QVL. iOS distribution bundle IDs are com.christsx.Sidekicks.ios, com.christsx.Sidekicks.ios.LiveActivity, and com.christsx.Sidekicks.ios.NotificationService. The app, widgets, notification extension and SharedStore use group.com.christsx.Sidekicks; the former Codync identifiers belong to another team and cannot be provisioned by ours. This shared-storage namespace starts fresh; old development caches are not migrated. The registered Google callback remains com.pokai.Codync.ios://callback and is independent of the distribution bundle ID. Native Apple sign-in configuration and our own APNs relay credentials still need verification for this new App ID.

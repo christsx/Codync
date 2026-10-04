@@ -12,7 +12,7 @@
 	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.pokai.Codync</string>
+		<string>group.com.christsx.Sidekicks</string>
 	</array>
 	<key>keychain-access-groups</key>
 	<array>

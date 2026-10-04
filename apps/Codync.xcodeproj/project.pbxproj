@@ -551,23 +551,23 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					72F29E7EBE9A88B16B4E608A = {
-						DevelopmentTeam = 7FUM8A8H72;
+						DevelopmentTeam = 9S7MDN3QVL;
 						ProvisioningStyle = Automatic;
 					};
 					907F1F4A709111FC7178EAE9 = {
-						DevelopmentTeam = 7FUM8A8H72;
+						DevelopmentTeam = 9S7MDN3QVL;
 						ProvisioningStyle = Automatic;
 					};
 					913BDA9F79CE8C35A9E35830 = {
-						DevelopmentTeam = 7FUM8A8H72;
+						DevelopmentTeam = 9S7MDN3QVL;
 						ProvisioningStyle = Automatic;
 					};
 					A27E4E88D6A5B9850734B594 = {
-						DevelopmentTeam = 7FUM8A8H72;
+						DevelopmentTeam = 9S7MDN3QVL;
 						ProvisioningStyle = Automatic;
 					};
 					C42E5E078332C6C2B35AF5FA = {
-						DevelopmentTeam = 7FUM8A8H72;
+						DevelopmentTeam = 9S7MDN3QVL;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -823,7 +823,7 @@
 				CURRENT_PROJECT_VERSION = 24;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 7FUM8A8H72;
+				DEVELOPMENT_TEAM = 9S7MDN3QVL;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -906,7 +906,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pokai.Codync.ios.LiveActivity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.christsx.Sidekicks.ios.LiveActivity;
 				PRODUCT_NAME = CodyncWidgets;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -926,7 +926,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pokai.Codync.ios.NotificationService;
+				PRODUCT_BUNDLE_IDENTIFIER = com.christsx.Sidekicks.ios.NotificationService;
 				PRODUCT_NAME = CodyncNotificationService;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -995,7 +995,7 @@
 				CURRENT_PROJECT_VERSION = 24;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 7FUM8A8H72;
+				DEVELOPMENT_TEAM = 9S7MDN3QVL;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -1052,7 +1052,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pokai.Codync.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.christsx.Sidekicks.ios;
 				PRODUCT_NAME = Sidekicks;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1071,7 +1071,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pokai.Codync.ios.NotificationService;
+				PRODUCT_BUNDLE_IDENTIFIER = com.christsx.Sidekicks.ios.NotificationService;
 				PRODUCT_NAME = CodyncNotificationService;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1104,7 +1104,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pokai.Codync.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.christsx.Sidekicks.ios;
 				PRODUCT_NAME = Sidekicks;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1123,7 +1123,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pokai.Codync.ios.LiveActivity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.christsx.Sidekicks.ios.LiveActivity;
 				PRODUCT_NAME = CodyncWidgets;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;

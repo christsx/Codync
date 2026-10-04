@@ -4,7 +4,7 @@ import Foundation
 /// Values shared between the app, its widgets and its notification extension through the App Group,
 /// one namespace per account context so a signed-out account's data never shows in another.
 public enum SharedStore {
-    public static let appGroup = "group.com.pokai.Codync"
+    public static let appGroup = "group.com.christsx.Sidekicks"
     /// The APNs push relay (relay/ in this repo).
     public static let relayURL = "https://codync-relay.kevin2005ha.workers.dev"
 

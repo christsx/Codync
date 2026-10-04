@@ -61,7 +61,12 @@ final class AccountSession {
             clerk = nil
             return
         }
+        // Keep the registered OAuth callback stable when the distribution bundle ID changes.
+        #if os(iOS)
+        let scheme = "com.pokai.Codync.ios"
+        #else
         let scheme = Bundle.main.bundleIdentifier ?? "com.pokai.Codync"
+        #endif
         #if DEBUG
         // Keep ad hoc development builds away from the installed app's Keychain ACL.
         // A stable, instance-specific service still securely persists development sessions.

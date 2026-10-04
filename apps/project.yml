@@ -28,7 +28,7 @@ settings:
     SWIFT_VERSION: "6.0"
     SWIFT_STRICT_CONCURRENCY: complete
     CODE_SIGN_STYLE: Automatic
-    DEVELOPMENT_TEAM: 7FUM8A8H72
+    DEVELOPMENT_TEAM: 9S7MDN3QVL
     DEAD_CODE_STRIPPING: YES
     ENABLE_USER_SCRIPT_SANDBOXING: NO
   configs:
@@ -176,7 +176,7 @@ targets:
     settings:
       base:
         PRODUCT_NAME: Sidekicks
-        PRODUCT_BUNDLE_IDENTIFIER: com.pokai.Codync.ios
+        PRODUCT_BUNDLE_IDENTIFIER: com.christsx.Sidekicks.ios
         INFOPLIST_FILE: ios/Resources/Info.plist
         GENERATE_INFOPLIST_FILE: YES
         CODE_SIGN_ENTITLEMENTS: ios/Resources/iOS.entitlements
@@ -209,7 +209,7 @@ targets:
     settings:
       base:
         PRODUCT_NAME: CodyncWidgets
-        PRODUCT_BUNDLE_IDENTIFIER: com.pokai.Codync.ios.LiveActivity
+        PRODUCT_BUNDLE_IDENTIFIER: com.christsx.Sidekicks.ios.LiveActivity
         INFOPLIST_FILE: ios/Widgets/Resources/Info.plist
         GENERATE_INFOPLIST_FILE: YES
         CODE_SIGN_ENTITLEMENTS: ios/Widgets/Resources/Widgets.entitlements
@@ -228,7 +228,7 @@ targets:
     settings:
       base:
         PRODUCT_NAME: CodyncNotificationService
-        PRODUCT_BUNDLE_IDENTIFIER: com.pokai.Codync.ios.NotificationService
+        PRODUCT_BUNDLE_IDENTIFIER: com.christsx.Sidekicks.ios.NotificationService
         INFOPLIST_FILE: ios/NotificationService/Info.plist
         GENERATE_INFOPLIST_FILE: YES
         CODE_SIGN_ENTITLEMENTS: ios/NotificationService/NotificationService.entitlements
