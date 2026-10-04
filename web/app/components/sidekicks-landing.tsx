@@ -6,6 +6,7 @@ import { BotAvatar, type BotAvatarType } from "bot-avatars";
 import {
   ArrowDown,
   ArrowRight,
+  Cloud,
   Desktop,
   GithubLogo,
   MagnifyingGlass,
@@ -134,17 +135,17 @@ export default function SidekicksLanding() {
       </header>
       <main>
         <section className="hero-section">
-          <p className="release-label">MAC & IPHONE · PRIVATE BETA</p>
           <h1 className="meet-title">
             Meet <Avatar {...crew[0]} size={86} animated /> Sidekicks
           </h1>
           <p className="hero-copy">
-            A home for your coding agents.
-            <br /> Start a task on Mac. Follow the work from iPhone.
+            Your sidekicks, ready to build with you. Connect your coding agents,
+            <br className="desktop-break" /> give them a task, and keep the work
+            moving from Mac or iPhone.
           </p>
           <div className="hero-actions">
             <a className="button primary" href="#download">
-              <Desktop size={18} /> View Mac releases
+              <Desktop size={18} /> Get Sidekicks for Mac
             </a>
             <a className="button secondary" href="#preview">
               Explore the app <ArrowDown size={15} />
@@ -340,30 +341,60 @@ export default function SidekicksLanding() {
             </article>
           </div>
         </section>
-        <section className="mobile-editorial container">
-          <span className="editorial-label">AWAY FROM YOUR DESK</span>
-          <div>
-            <h2>
-              The same workspace.
-              <br />A smaller screen.
-            </h2>
-            <p>
-              Read updates and review requests on iPhone. Cloud Workspace runs
-              independently of your Mac; connecting your computer remains an
-              option.
-            </p>
-            <a href="#download" className="text-link">
-              About the iPhone beta <ArrowRight size={16} />
-            </a>
-          </div>
+        <section className="everywhere-section container">
+          <Reveal>
+            <div className="everywhere-card">
+              <div>
+                <span className="eyebrow">MAC + IPHONE</span>
+                <h2>
+                  Step away.
+                  <br />
+                  Stay in the loop.
+                </h2>
+                <p>
+                  Start on your Mac. Check in from your iPhone.
+                  <br />
+                  Cloud Workspace is available in the private beta, with the
+                  option to connect your computer.
+                </p>
+                <a href="#download" className="text-link">
+                  Explore the beta <ArrowRight size={16} />
+                </a>
+              </div>
+              <div className="phone">
+                <div className="phone-island" />
+                <div className="phone-top">
+                  9:41 <span>•••</span>
+                </div>
+                <h3>
+                  Your Sidekicks <Plus size={18} />
+                </h3>
+                {crew.map((member) => (
+                  <div className="phone-pal" key={member.name}>
+                    <Avatar {...member} size={55} />
+                    <span>
+                      <strong>{member.name}</strong>
+                      <small>{member.role}</small>
+                    </span>
+                    <span className="online-dot" />
+                  </div>
+                ))}
+                <div className="phone-cloud">
+                  <Cloud size={15} /> Cloud Workspace
+                </div>
+                <div className="phone-home" />
+              </div>
+            </div>
+          </Reveal>
         </section>
         <section className="tools-section container">
           <div>
-            <span className="eyebrow">CONNECTIONS</span>
-            <h2>Your accounts, connected.</h2>
+            <span className="eyebrow">AT HOME IN YOUR WORKFLOW</span>
+            <h2>Bring your tools.</h2>
             <p>
-              Connect the services your work depends on. Each user connects
-              their own accounts.
+              Connect the apps you already work in.
+              <br />
+              Keep each account’s connections its own.
             </p>
           </div>
           <div className="tool-grid">
@@ -388,8 +419,8 @@ export default function SidekicksLanding() {
         </section>
         <section className="faq-section container" id="faq">
           <div className="section-heading">
-            <span className="eyebrow">DETAILS</span>
-            <h2>Before you install.</h2>
+            <span className="eyebrow">A FEW THINGS TO KNOW</span>
+            <h2>Before you meet.</h2>
           </div>
           <div className="faq-list">
             {[
@@ -421,8 +452,9 @@ export default function SidekicksLanding() {
           </div>
         </section>
         <section className="download-section container" id="download">
-          <span className="eyebrow">AVAILABILITY</span>
-          <h2>Sidekicks is in private beta.</h2>
+          <Avatar type="clover" color="#f58632" size={106} />
+          <span className="eyebrow">LET’S MAKE SOMETHING</span>
+          <h2>Make room for your next project.</h2>
           <p>Sidekicks for Mac. iPhone access in the private beta.</p>
           <a href={`${GITHUB}/releases`} className="button primary">
             <Desktop size={19} /> View Mac releases <ArrowRight size={16} />
@@ -440,7 +472,7 @@ export default function SidekicksLanding() {
           <Avatar type="clover" color="#f58632" size={29} />
           Sidekicks
         </a>
-        <p>Built for Mac. Connected to iPhone.</p>
+        <p>A little crew. A lot done.</p>
         <div>
           <a href="/privacy">Privacy</a>
           <a href="/terms">Terms</a>

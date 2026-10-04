@@ -70,7 +70,7 @@ summary {
   gap: 10px;
   font-size: 19px;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.7px;
   color: var(--foreground);
 }
 .wordmark img {
@@ -182,7 +182,7 @@ summary {
 .hero-section h1 {
   font-size: clamp(40px, 5.5vw, 66px);
   line-height: 1.08;
-  letter-spacing: -0.02em;
+  letter-spacing: -3.1px;
   font-weight: 500;
   margin: 22px 0;
 }
@@ -465,7 +465,7 @@ summary {
   font-size: clamp(29px, 3.5vw, 42px);
   line-height: 1.15;
   font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: -1.6px;
   margin: 17px 0;
 }
 .section-heading p {
@@ -500,7 +500,7 @@ summary {
   margin: 0;
   font-size: 18px;
   font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.5px;
 }
 .crew-card h3 span {
   display: block;
@@ -616,7 +616,7 @@ summary {
   justify-content: space-between;
   font-weight: 500;
   font-size: 20px;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.7px;
   margin: 15px 0;
 }
 .phone-pal {
@@ -725,7 +725,7 @@ summary {
 }
 .download-section h2 {
   font-size: clamp(35px, 4.5vw, 53px);
-  letter-spacing: -0.02em;
+  letter-spacing: -2px;
   line-height: 1.13;
   font-weight: 500;
   margin: 19px 0;
@@ -800,7 +800,7 @@ summary {
     margin-bottom: 13px;
   }
   .hero-section h1 {
-    letter-spacing: -0.02em;
+    letter-spacing: -1.8px;
   }
   .hero-copy {
     font-size: 14px;
@@ -1066,7 +1066,7 @@ summary {
   justify-content: center;
   gap: 10px;
   font-size: clamp(38px, 5.8vw, 60px);
-  letter-spacing: -0.02em;
+  letter-spacing: -2.2px;
   margin: 22px 0 15px;
   line-height: 1.2;
 }
@@ -1166,7 +1166,7 @@ summary {
 .feature-panel h3 {
   font-size: 22px;
   font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.65px;
   margin: 18px 0 11px;
 }
 .feature-panel p {
@@ -1244,7 +1244,7 @@ summary {
   .hero-section .meet-title {
     font-size: 37px;
     gap: 5px;
-    letter-spacing: -0.02em;
+    letter-spacing: -1.5px;
   }
   .meet-title .avatar {
     width: 60px !important;
@@ -1420,7 +1420,7 @@ summary {
 }
 .desktop-welcome h2 {
   font-size: 21px;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.5px;
   margin: 0 0 16px;
 }
 .desktop-welcome p {
@@ -1495,7 +1495,7 @@ summary {
   font-size: 22px;
   font-weight: 500;
   margin: 0 0 9px;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.5px;
 }
 .workflow-lines p {
   color: #999;
@@ -1625,157 +1625,8 @@ summary {
   }
 }
 
-.product-response > .avatar {
-  flex: none;
-}
+.product-response > .avatar { flex: none; }
 
-.release-label {
-  color: #8e898e;
-  font-size: 10px;
-  letter-spacing: 1.8px;
-  margin: 0 0 24px;
-}
-.hero-section {
-  padding-top: 88px;
-  padding-bottom: 64px;
-}
-.hero-copy {
-  font-size: 19px;
-  line-height: 1.65;
-  letter-spacing: -0.02em;
-  color: #a6a0a6;
-}
-.hero-actions .button.secondary {
-  background: transparent;
-  padding-inline: 14px;
-  color: #aaa;
-}
-.desktop-dashboard {
-  box-shadow: none;
-  border: 1px solid #ffffff0c;
-}
-.workflow-section .section-heading {
-  text-align: left;
-}
-.workflow-section .section-heading h2 {
-  font-size: 42px;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-}
-.workflow-section .section-heading p {
-  margin: 16px 0 0;
-  font-size: 16px;
-}
-.mobile-editorial {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 48px;
-  padding-top: 75px;
-  padding-bottom: 75px;
-  border-top: 1px solid #ffffff12;
-}
-.editorial-label {
-  font-size: 10px;
-  color: #888;
-  letter-spacing: 1.3px;
-  padding-top: 9px;
-}
-.mobile-editorial h2 {
-  font-size: 40px;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-  margin: 0 0 23px;
-}
-.mobile-editorial p {
-  font-size: 16px;
-  line-height: 1.7;
-  color: #999;
-  max-width: 490px;
-  margin-bottom: 24px;
-}
-.tools-section {
-  border-top: 1px solid #ffffff12;
-  padding-block: 65px;
-  gap: 50px;
-}
-.tool-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 28px;
-  align-items: center;
-}
-.tool-grid > div {
-  padding: 0;
-  background: transparent;
-  border-radius: 0;
-  min-height: 0;
-  flex-direction: row;
-  gap: 9px;
-}
-.tool-grid img {
-  width: 22px;
-  height: 22px;
-}
-.tool-grid span {
-  font-size: 13px;
-}
-.tools-section h2 {
-  font-size: 30px;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-}
-.faq-section .section-heading {
-  text-align: left;
-}
-.faq-section .section-heading h2 {
-  font-size: 30px;
-  font-weight: 500;
-}
-.download-section {
-  text-align: left;
-  align-items: flex-start;
-  border-top: 1px solid #ffffff12;
-  padding-top: 60px;
-  padding-bottom: 70px;
-}
-.download-section h2 {
-  font-size: 36px;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-}
-@media (max-width: 650px) {
-  .hero-section {
-    padding-top: 50px;
-    padding-bottom: 40px;
-  }
-  .hero-copy {
-    font-size: 16px;
-  }
-  .workflow-section .section-heading h2 {
-    font-size: 31px;
-  }
-  .mobile-editorial {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    padding-block: 45px;
-  }
-  .mobile-editorial h2 {
-    font-size: 32px;
-  }
-  .tools-section {
-    gap: 25px;
-    padding-block: 45px;
-  }
-  .tool-grid {
-    gap: 22px;
-  }
-  .download-section h2 {
-    font-size: 29px;
-  }
-}
-
-.hero-section .meet-title { font-weight:600; letter-spacing:-0.025em; }
-.hero-copy { font-weight:400; letter-spacing:0; }
+.hero-section .meet-title { letter-spacing:-.025em; }
+.hero-copy { letter-spacing:0; }
 button, input { font-family:inherit; }
-.release-label, .editorial-label, .eyebrow { letter-spacing:.06em; }

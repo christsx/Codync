@@ -35,3 +35,5 @@ The landing preview reproduces the desktop welcome dashboard: connected-computer
 The refined landing defaults to a clearly labeled example conversation in the desktop dashboard shell, with an optional welcome-screen view. Motion is limited to the hero character; feature cards are replaced by concise numbered workflow rows.
 
 The product page now uses editorial typography and a plain mobile-access section instead of a decorative phone mockup. Integration logos appear inline, and availability copy explicitly describes the private beta. The hero links to the project’s Mac releases rather than promising an available installer.
+
+The earlier centered landing layout is restored per user preference. The uppercase Mac/iPhone beta label is removed; the dashboard example, quieter motion, native system font, and dark background remain. The mobile phone preview and original section arrangement are restored.
