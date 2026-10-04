@@ -33,3 +33,5 @@ not alter native app onboarding or TestFlight build 28.
 The landing preview reproduces the desktop welcome dashboard: connected-computer header, search sidebar, Marketplace and Account footer, three-character welcome roster, and New Sidekick action. The action populates example sidebar entries without creating real sidekicks. All canvas avatars animate at a consistent pace while visible, pause in hidden tabs or offscreen, and respect reduced-motion preferences. This website-only preview does not change native clients.
 
 The refined landing defaults to a clearly labeled example conversation in the desktop dashboard shell, with an optional welcome-screen view. Motion is limited to the hero character; feature cards are replaced by concise numbered workflow rows.
+
+The product page now uses editorial typography and a plain mobile-access section instead of a decorative phone mockup. Integration logos appear inline, and availability copy explicitly describes the private beta. The hero links to the project’s Mac releases rather than promising an available installer.

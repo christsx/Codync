@@ -1625,4 +1625,152 @@ summary {
   }
 }
 
-.product-response > .avatar { flex: none; }
+.product-response > .avatar {
+  flex: none;
+}
+
+.release-label {
+  color: #8e898e;
+  font-size: 10px;
+  letter-spacing: 1.8px;
+  margin: 0 0 24px;
+}
+.hero-section {
+  padding-top: 88px;
+  padding-bottom: 64px;
+}
+.hero-copy {
+  font-size: 19px;
+  line-height: 1.65;
+  letter-spacing: -0.25px;
+  color: #a6a0a6;
+}
+.hero-actions .button.secondary {
+  background: transparent;
+  padding-inline: 14px;
+  color: #aaa;
+}
+.desktop-dashboard {
+  box-shadow: none;
+  border: 1px solid #ffffff0c;
+}
+.workflow-section .section-heading {
+  text-align: left;
+}
+.workflow-section .section-heading h2 {
+  font-size: 42px;
+  font-weight: 500;
+  letter-spacing: -1.4px;
+}
+.workflow-section .section-heading p {
+  margin: 16px 0 0;
+  font-size: 16px;
+}
+.mobile-editorial {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 48px;
+  padding-top: 75px;
+  padding-bottom: 75px;
+  border-top: 1px solid #ffffff12;
+}
+.editorial-label {
+  font-size: 10px;
+  color: #888;
+  letter-spacing: 1.3px;
+  padding-top: 9px;
+}
+.mobile-editorial h2 {
+  font-size: 40px;
+  font-weight: 500;
+  letter-spacing: -1.2px;
+  line-height: 1.15;
+  margin: 0 0 23px;
+}
+.mobile-editorial p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #999;
+  max-width: 490px;
+  margin-bottom: 24px;
+}
+.tools-section {
+  border-top: 1px solid #ffffff12;
+  padding-block: 65px;
+  gap: 50px;
+}
+.tool-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  align-items: center;
+}
+.tool-grid > div {
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  min-height: 0;
+  flex-direction: row;
+  gap: 9px;
+}
+.tool-grid img {
+  width: 22px;
+  height: 22px;
+}
+.tool-grid span {
+  font-size: 13px;
+}
+.tools-section h2 {
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -0.8px;
+}
+.faq-section .section-heading {
+  text-align: left;
+}
+.faq-section .section-heading h2 {
+  font-size: 30px;
+  font-weight: 500;
+}
+.download-section {
+  text-align: left;
+  align-items: flex-start;
+  border-top: 1px solid #ffffff12;
+  padding-top: 60px;
+  padding-bottom: 70px;
+}
+.download-section h2 {
+  font-size: 36px;
+  font-weight: 500;
+  letter-spacing: -1px;
+}
+@media (max-width: 650px) {
+  .hero-section {
+    padding-top: 50px;
+    padding-bottom: 40px;
+  }
+  .hero-copy {
+    font-size: 16px;
+  }
+  .workflow-section .section-heading h2 {
+    font-size: 31px;
+  }
+  .mobile-editorial {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding-block: 45px;
+  }
+  .mobile-editorial h2 {
+    font-size: 32px;
+  }
+  .tools-section {
+    gap: 25px;
+    padding-block: 45px;
+  }
+  .tool-grid {
+    gap: 22px;
+  }
+  .download-section h2 {
+    font-size: 29px;
+  }
+}
