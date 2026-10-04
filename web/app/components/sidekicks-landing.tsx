@@ -21,34 +21,31 @@ import { GITHUB } from "../links";
 
 const crew = [
   {
-    name: "Clover",
-    role: "Your builder",
+    name: "Codex",
+    role: "Coding agent",
     type: "clover" as BotAvatarType,
     color: "#d99154",
     task: "Polish the onboarding flow",
     reply:
       "The onboarding is simpler now. I tightened the spacing, cleaned up the buttons, and kept the dark theme. Ready for your review.",
-    agent: "Codex",
   },
   {
-    name: "Nova",
-    role: "Your creative",
+    name: "Claude Code",
+    role: "Coding agent",
     type: "star" as BotAvatarType,
     color: "#a59b8d",
     task: "Give the homepage a little personality",
     reply:
       "A quieter layout, a warmer palette, and a little movement. I put together a fresh direction for the homepage. Take a look.",
-    agent: "Claude Code",
   },
   {
-    name: "Mochi",
-    role: "Your helper",
+    name: "Cursor",
+    role: "Coding agent",
     type: "blob" as BotAvatarType,
     color: "#929b97",
     task: "Help me plan the next release",
     reply:
       "I drafted a release checklist with the remaining fixes and review steps. You can choose what to tackle first.",
-    agent: "Cursor",
   },
 ];
 
@@ -95,6 +92,7 @@ function Avatar({
         color={color}
         size={size}
         shading="fabric"
+        saturation={color === "#d99154" ? 0.8 : 0.1}
         furDensity={0.65}
         paused={!active}
         speed={0.55}
@@ -137,14 +135,12 @@ export default function SidekicksLanding() {
           <div className="hero-crew">
             <div className="hero-pal left">
               <Avatar {...crew[2]} size={144} animated />
-              <span>hi, I’m Mochi</span>
             </div>
             <div className="hero-pal middle">
               <Avatar {...crew[0]} size={208} animated />
             </div>
             <div className="hero-pal right">
               <Avatar {...crew[1]} size={138} animated />
-              <span>and I’m Nova ✦</span>
             </div>
           </div>
           <div className="eyebrow">
@@ -156,7 +152,7 @@ export default function SidekicksLanding() {
             <span>Ready to build with you.</span>
           </h1>
           <p className="hero-copy">
-            Turn your favorite coding agents into a crew of familiar faces.
+            Your coding agents, together in one clean workspace.
             <br className="desktop-break" /> Give them real work. Stay in the
             loop. Make something great.
           </p>
@@ -236,7 +232,6 @@ export default function SidekicksLanding() {
                   <div className="chat-heading">
                     <span>
                       {pal.name}
-                      <small>{pal.agent}</small>
                     </span>
                     <span className="ready">
                       <span className="status-dot" /> Ready
@@ -299,11 +294,11 @@ export default function SidekicksLanding() {
           <Reveal>
             <div className="section-heading">
               <span className="eyebrow">MEET YOUR SIDEKICKS</span>
-              <h2>A crew that feels like yours.</h2>
+              <h2>Built around the way you work.</h2>
               <p>
-                Pick a shape. Give it a name. Connect the agent you like.
+                Connect the coding agents you already use.
                 <br />
-                Every Sidekick has a place in your workflow.
+                Keep tasks, conversations, and approvals together.
               </p>
             </div>
           </Reveal>
@@ -313,10 +308,7 @@ export default function SidekicksLanding() {
                 <div className={`crew-card crew-${i}`}>
                   <Avatar {...member} size={154} />
                   <div>
-                    <h3>
-                      {member.name}
-                      <span>{member.role}</span>
-                    </h3>
+                    <h3>{["Build", "Create", "Plan"][i]}</h3>
                     <p>
                       {
                         [
@@ -331,9 +323,7 @@ export default function SidekicksLanding() {
               </Reveal>
             ))}
           </div>
-          <p className="crew-caption">
-            These are just a few faces. Yours can be completely different.
-          </p>
+          <p className="crew-caption">Choose your own characters in the app.</p>
         </section>
         <section className="workflow-section container" id="workflow">
           <Reveal>
@@ -354,7 +344,7 @@ export default function SidekicksLanding() {
                 Sparkle,
                 "02",
                 "Make it your Sidekick",
-                "A name, a plush character, and a job to do. Give your crew a little personality.",
+                "Choose a character and a task. Keep each conversation easy to find.",
               ],
               [
                 ShieldCheck,
