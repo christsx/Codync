@@ -1704,3 +1704,9 @@ input {
     font-size: 14px;
   }
 }
+
+.product-input { background:transparent; padding:0; gap:8px; align-items:center; }
+.product-input .composer-add { display:flex; align-items:center; justify-content:center; flex:0 0 36px; width:36px; height:36px; background:#353535; border-radius:50%; color:#ddd; }
+.composer-field { display:flex; align-items:center; flex:1; min-width:0; background:#353535; border-radius:24px; padding:5px 6px 5px 14px; height:38px; color:#a1a1a1; font-size:13px; }
+.product-input .composer-send { flex:0 0 28px; width:28px; height:28px; border-radius:50%; background:#323232; color:#555; display:flex; align-items:center; justify-content:center; }
+@media(max-width:650px) { .composer-field { font-size:11px; padding-left:11px; } .product-input .composer-add { flex-basis:32px; width:32px; height:32px; } }

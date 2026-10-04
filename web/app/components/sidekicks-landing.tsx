@@ -5,6 +5,7 @@ import Image from "next/image";
 import { BotAvatar, type BotAvatarType } from "bot-avatars";
 import {
   ArrowDown,
+  ArrowUp,
   ArrowRight,
   Cloud,
   Desktop,
@@ -241,9 +242,8 @@ export default function SidekicksLanding() {
                     </div>
                   </div>
                   <div className="product-input">
-                    <Plus size={16} />
-                    <span>Message Codex…</span>
-                    <ArrowRight size={16} />
+                    <span className="composer-add" aria-hidden="true"><Plus size={18} /></span>
+                    <div className="composer-field"><span>Ask Codex</span><span className="composer-send" aria-hidden="true"><ArrowUp size={18} weight="bold" /></span></div>
                   </div>
                   <button
                     className="preview-reset"
