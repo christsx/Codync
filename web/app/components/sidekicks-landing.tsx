@@ -24,8 +24,8 @@ import Reveal from "./reveal";
 
 const crew = [
   {
-    name: "Codex",
-    role: "Coding agent",
+    name: "Pip",
+    role: "Codex",
     type: "flower" as BotAvatarType,
     color: "#f65baa",
     task: "Polish the onboarding flow",
@@ -33,8 +33,8 @@ const crew = [
       "The onboarding is simpler now. I tightened the spacing, cleaned up the buttons, and kept the dark theme. Ready for your review.",
   },
   {
-    name: "Claude Code",
-    role: "Coding agent",
+    name: "Aster",
+    role: "Claude Code",
     type: "star" as BotAvatarType,
     color: "#a78be8",
     task: "Give the homepage a little personality",
@@ -42,13 +42,37 @@ const crew = [
       "A quieter layout, a warmer palette, and a little movement. I put together a fresh direction for the homepage. Take a look.",
   },
   {
-    name: "Cursor",
-    role: "Coding agent",
+    name: "Mochi",
+    role: "Cursor",
     type: "blob" as BotAvatarType,
     color: "#70bce3",
     task: "Help me plan the next release",
     reply:
       "I drafted a release checklist with the remaining fixes and review steps. You can choose what to tackle first.",
+  },
+  {
+    name: "Bramble",
+    role: "OpenCode",
+    type: "clover" as BotAvatarType,
+    color: "#8abf9e",
+    task: "Review the latest changes",
+    reply: "The review is ready.",
+  },
+  {
+    name: "Tiko",
+    role: "Kimi",
+    type: "square" as BotAvatarType,
+    color: "#e9ad67",
+    task: "Fix the sign-in flow",
+    reply: "Sign-in is ready to test.",
+  },
+  {
+    name: "Rue",
+    role: "Gemini CLI",
+    type: "drop" as BotAvatarType,
+    color: "#95a7e8",
+    task: "Check the next release",
+    reply: "The release checklist is ready.",
   },
 ];
 
@@ -191,7 +215,7 @@ export default function SidekicksLanding() {
                         <Avatar {...member} size={40} />
                         <span>
                           {member.name}
-                          <small>{member.reply}</small>
+                          <small>{member.role}</small>
                         </span>
                       </div>
                     ))
@@ -215,7 +239,7 @@ export default function SidekicksLanding() {
                 <div className="product-conversation">
                   <div className="product-chat-header">
                     <span>
-                      <Avatar {...crew[0]} size={30} /> Codex
+                      <Avatar {...crew[0]} size={30} /> Pip
                     </span>
                     <small className="chat-connected">
                       <Desktop size={12} /> Connected
@@ -242,7 +266,7 @@ export default function SidekicksLanding() {
                       <Plus size={18} />
                     </span>
                     <div className="composer-field">
-                      <span>Ask Codex</span>
+                      <span>Ask Pip</span>
                       <span className="composer-send" aria-hidden="true">
                         <ArrowUp size={18} weight="bold" />
                       </span>
@@ -385,7 +409,7 @@ export default function SidekicksLanding() {
                 <h3>
                   Your Sidekicks <Plus size={18} />
                 </h3>
-                {crew.map((member) => (
+                {crew.slice(0, 3).map((member) => (
                   <div className="phone-pal" key={member.name}>
                     <Avatar {...member} size={55} />
                     <span>
