@@ -346,13 +346,15 @@ fn empty_page(ui_new: &gtk::Button) -> gtk::Box {
         10,
     ));
     let title = gtk::Label::builder()
-        .label("Your coding agents, as teammates.")
+        .label("Your sidekicks, ready to build with you.")
         .css_classes(["title2"])
         .build();
     center.append(&title);
     center.append(
         &gtk::Label::builder()
-            .label("Pick a bot, or create one for each kind of work and point it at a project.")
+            .label(
+                "Pick a sidekick, or create one for each kind of work and point it at a project.",
+            )
             .wrap(true)
             .justify(gtk::Justification::Center)
             .max_width_chars(52)
@@ -371,9 +373,9 @@ pub fn build(app: &adw::Application) -> App {
         .placeholder_text("Search")
         .css_classes(["search-field"])
         .build();
-    let banner = adw::Banner::new("Reconnecting to the Codync host…");
+    let banner = adw::Banner::new("Reconnecting to the Sidekicks host…");
     let (sidebar_box, roster, roster_empty, account_btn) = sidebar(&new_btn, &search, &banner);
-    let sidebar_page = adw::NavigationPage::new(&sidebar_box, "Codync");
+    let sidebar_page = adw::NavigationPage::new(&sidebar_box, "Sidekicks");
 
     // Chat header: avatar + name (toggles details), details toggle, more.
     let head_avatar = gtk::Box::new(gtk::Orientation::Horizontal, 0);
@@ -426,7 +428,7 @@ pub fn build(app: &adw::Application) -> App {
     convo.append(&compose.root);
 
     // Details panel (the Mac inspector).
-    let details_gear = icon_button("emblem-system-symbolic", "Bot settings");
+    let details_gear = icon_button("emblem-system-symbolic", "Sidekick settings");
     let details_close = icon_button("sidebar-show-right-symbolic", "Close details");
     let dh = gtk::Box::builder()
         .spacing(4)
@@ -515,7 +517,7 @@ pub fn build(app: &adw::Application) -> App {
     chat_area.append(&side);
 
     let new_bot = gtk::Button::builder()
-        .label("New Bot")
+        .label("New Sidekick")
         .css_classes(["primary-pill"])
         .build();
     let compose_page = compose::build();
@@ -540,7 +542,7 @@ pub fn build(app: &adw::Application) -> App {
     toasts.set_child(Some(&split));
     let window = adw::ApplicationWindow::builder()
         .application(app)
-        .title("Codync")
+        .title("Sidekicks")
         .default_width(1100)
         .default_height(760)
         .width_request(360)
@@ -1029,7 +1031,7 @@ fn notify(ui: &App, old: &Value, new: &Value) {
     }) {
         return;
     }
-    let name = new["name"].as_str().unwrap_or("Bot");
+    let name = new["name"].as_str().unwrap_or("Sidekick");
     let (title, body) = match (old["status"].as_str(), new["status"].as_str()) {
         (Some(o), Some("needsInput")) if o != "needsInput" => (
             format!("{name} needs you"),
@@ -1437,7 +1439,7 @@ fn intro(st: &State, bot: &Value) -> gtk::Box {
             col.append(&centered(desc, &["small", "secondary"]));
         }
         let tip = centered(
-            "Everyone answers in turn. @mention a bot to ask just that one. Each bot works in its own folder.",
+            "Everyone answers in turn. @mention a sidekick to ask just that one. Each sidekick works in its own folder.",
             &["footnote", "tertiary"],
         );
         tip.set_margin_top(4);
@@ -1553,15 +1555,18 @@ fn render_details(ui: &App, st: &State, bot: &Value) {
     let c = &ui.details_content;
     clear(c);
     let group = is_group(bot);
-    ui.details_gear
-        .set_tooltip_text(Some(if group { "Edit group" } else { "Bot settings" }));
+    ui.details_gear.set_tooltip_text(Some(if group {
+        "Edit group"
+    } else {
+        "Sidekick settings"
+    }));
     if group {
         let list = gtk::Box::builder()
             .orientation(gtk::Orientation::Vertical)
             .spacing(2)
             .build();
         let ms = members(st, bot);
-        let title = label(&format!("{} bots", ms.len()), &["body13", "semibold"]);
+        let title = label(&format!("{} sidekicks", ms.len()), &["body13", "semibold"]);
         title.set_margin_bottom(6);
         list.append(&title);
         for m in ms {
@@ -1611,7 +1616,7 @@ fn render_details(ui: &App, st: &State, bot: &Value) {
     } else if screen["connected"] != true {
         "Connecting to computer…"
     } else if screen["agentBot"] == id {
-        "This bot is using your computer"
+        "This sidekick is using your computer"
     } else {
         "Ready · View this computer from your iPhone"
     };
@@ -1836,7 +1841,7 @@ fn update_composer_for(ui: &App, st: &State, chat: &Value, in_thread: bool) {
     c.placeholder.set_label(&if in_thread {
         "Reply…".to_owned()
     } else if is_group(chat) {
-        format!("Message {name} · @ to ask one bot")
+        format!("Message {name} · @ to ask one sidekick")
     } else if busy {
         format!("Queue a message for {name}")
     } else {

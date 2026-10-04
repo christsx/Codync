@@ -93,7 +93,7 @@ private struct ProviderCard: View {
         switch provider.source {
         case "claude": "Claude Code"
         case "statusline": "Claude Code status line"
-        case "agent": "A running bot"
+        case "agent": "A running sidekick"
         case "sessions": "Codex sessions"
         default: provider.source
         }

@@ -154,7 +154,7 @@ struct ComputersView: View {
                 }
             }
             if host.ssh.profiles.isEmpty {
-                Text("Run bots on another computer you reach with SSH. It needs codync-host installed; your SSH keys stay on this Mac.")
+                Text("Run sidekicks on another computer you reach with SSH. It needs codync-host installed; your SSH keys stay on this Mac.")
                     .font(.callout)
                     .foregroundStyle(Palette.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -359,7 +359,7 @@ private struct ManagedComputerCard: View {
             }]
         }
         .codyncDialog("Let account devices in without a code?", isPresented: $confirmAutoApproval,
-                      message: "Any device signed in to your account gets full control of \(store.hostName): its files, terminals and bots, with no check here. If someone gets into your account, or Codync's cloud is ever compromised, they could add their own device and you'd have no chance to stop it. Devices paired with a QR code aren't affected.") {
+                      message: "Any device signed in to your account gets full control of \(store.hostName): its files, terminals and sidekicks, with no check here. If someone gets into your account, or Sidekicks's cloud is ever compromised, they could add their own device and you'd have no chance to stop it. Devices paired with a QR code aren't affected.") {
             [DialogAction("Skip the check", destructive: true) { setApproval(.auto) }]
         }
         .codyncDialog("Remove \(store.hostName) from the account?", isPresented: $confirmUnclaim,
@@ -580,9 +580,9 @@ private struct SSHProfileEditor: View {
                             .transition(.opacity.combined(with: .scale(scale: 0.8)))
                     }
                 }
-                SSHField("Codync port", text: $remotePort, prompt: "")
+                SSHField("Sidekicks port", text: $remotePort, prompt: "")
             }
-            Text("Codync opens an SSH tunnel to codync-host on that computer's loopback. It uses your SSH config and ssh-agent; agent forwarding stays off.")
+            Text("Sidekicks opens an SSH tunnel to codync-host on that computer's loopback. It uses your SSH config and ssh-agent; agent forwarding stays off.")
                 .font(.caption).foregroundStyle(Palette.secondary)
                 .fixedSize(horizontal: false, vertical: true)
             if let problem {
@@ -610,7 +610,7 @@ private struct SSHProfileEditor: View {
             return
         }
         guard let remote = Int(remotePort.trimmingCharacters(in: .whitespaces)) else {
-            problem = "The Codync port must be a number."
+            problem = "The Sidekicks port must be a number."
             return
         }
         p.remotePort = remote

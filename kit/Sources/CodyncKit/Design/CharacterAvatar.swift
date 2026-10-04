@@ -1,9 +1,7 @@
 import SwiftUI
+import BotAvatarsKit
 
-/// Grok-Bot-style character drawn like the app icon: an even grid of dots,
-/// shaded as if the silhouette were a ball, with the eyes left hollow (two
-/// missing pairs of dots). The eyes glance side to side while the bot works
-/// and blink now and then; a badge shows when it needs you.
+/// BotAvatarsKit characters shared by Apple apps, widgets, and notifications.
 public struct CharacterAvatar: View {
     public enum Mood: Sendable { case idle, working, needsInput }
 
@@ -11,6 +9,8 @@ public struct CharacterAvatar: View {
     let color: Color
     let size: CGFloat
     let mood: Mood
+    private var animated = true
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     public init(shape: String, color: String, size: CGFloat = 40, mood: Mood = .idle) {
         self.init(shape: shape, tint: AvatarPalette.color(color), size: size, mood: mood)
@@ -30,87 +30,28 @@ public struct CharacterAvatar: View {
             size: size,
             mood: !animated ? .idle : bot.needsInput ? .needsInput : bot.isWorking ? .working : .idle
         )
+        self.animated = animated
+    }
+
+    private var avatarType: BotAvatarType {
+        switch shape {
+        case "squircle": .square
+        case "tablet": .pill
+        case "wedge": .triangle
+        case "hex": .hexagon
+        case "teardrop": .drop
+        default: BotAvatarType(rawValue: shape) ?? .clover
+        }
     }
 
     public var body: some View {
-        DottedBody(shape: shape, color: color, size: size, mood: mood)
+        BotAvatar(type: avatarType, state: mood == .working ? .working : .default,
+                  size: Double(size), color: BotColor(color), paused: !animated || reduceMotion,
+                  shading: .fabric, shadow: 1.15, highlight: 1.45,
+                  interactive: false)
+            .allowsHitTesting(false)
             .frame(width: size, height: size)
             .accessibilityHidden(true)
-    }
-}
-
-/// Keep the halftone at every size. Small icons use fewer, larger dots so the
-/// gaps and hollow eyes survive rasterization in widgets and the Dynamic Island.
-private struct Grid {
-    let cells: Int
-    init(size: CGFloat) { cells = size < 18 ? 7 : size < 28 ? 9 : 13 }
-    var eyeColumns: [Int] { cells == 7 ? [2, 4] : cells == 9 ? [3, 6] : [4, 8] }
-    var eyeRows: [Int] { cells == 13 ? [4, 5, 6] : cells == 9 ? [3, 4] : [2, 3] }
-}
-
-private struct DottedBody: View {
-    let shape: String
-    let color: Color
-    let size: CGFloat
-    let mood: CharacterAvatar.Mood
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    var body: some View {
-        let grid = Grid(size: size)
-        let step = size / CGFloat(grid.cells)
-        let dots = Self.grid(shape: shape, size: size, step: step, cells: grid.cells)
-        let still = mood == .idle || reduceMotion
-        TimelineView(.animation(paused: still)) { timeline in
-            let t = still ? 0 : timeline.date.timeIntervalSinceReferenceDate.truncatingRemainder(dividingBy: 3600)
-            // Glance: whole-cell steps left / center / right, like a small display.
-            let glance = mood == .working ? Int((sin(t * 2 * .pi / 3.2) * 1.4).rounded()) : 0
-            let blinking = !still && (t / 4.7).truncatingRemainder(dividingBy: 1) < 0.035
-            let eyeRows = blinking ? Array(grid.eyeRows.suffix(1)) : grid.eyeRows
-            let eyeCols = grid.eyeColumns.map { $0 + glance }
-            Canvas { ctx, _ in
-                let half = size / 2
-                let yaw = mood == .working ? t * 1.4 : -0.7
-                let lx = sin(yaw) * 0.8, ly = 0.55, lz = cos(yaw) * 0.5 + 0.6  // never fully behind
-                let ll = (lx * lx + ly * ly + lz * lz).squareRoot()
-                for d in dots where !(eyeCols.contains(d.col) && eyeRows.contains(d.row)) {
-                    let p = d.center
-                    let u = (p.x - half) / half, v = (half - p.y) / half
-                    let z = max(0.2, 1 - u * u - v * v).squareRoot()
-                    let nl = (u * u + v * v + z * z).squareRoot()
-                    var shade = 0.3 + 0.7 * max(0, (u * lx + v * ly + z * lz) / (nl * ll))
-                    if mood == .needsInput {
-                        let ripple = 0.5 + 0.5 * sin((u * u + v * v).squareRoot() * 9 - t * 5)
-                        shade *= 0.6 + 0.4 * ripple
-                    }
-                    let r = step * 0.42 * (0.55 + 0.45 * shade)
-                    let dot = Path(ellipseIn: CGRect(x: p.x - r, y: p.y - r, width: r * 2, height: r * 2))
-                    let ink = grid.cells < 13 ? 0.4 + 0.4 * shade : 0.2 + 0.4 * min(1, shade / 0.7)
-                    ctx.fill(dot, with: .color(Palette.text.opacity(ink)))
-                    if shade > 0.6 {
-                        ctx.fill(dot, with: .color(color.opacity((shade - 0.6) / 0.4)))
-                    }
-                }
-            }
-        }
-    }
-
-    struct Dot {
-        let row: Int
-        let col: Int
-        let center: CGPoint
-    }
-
-    /// Square-grid dot centers that fall inside the silhouette.
-    static func grid(shape: String, size: CGFloat, step: CGFloat, cells: Int) -> [Dot] {
-        let path = CharacterShape(kind: shape).path(in: CGRect(x: 0, y: 0, width: size, height: size))
-        var out: [Dot] = []
-        for row in 0..<cells {
-            for col in 0..<cells {
-                let p = CGPoint(x: (CGFloat(col) + 0.5) * step, y: (CGFloat(row) + 0.5) * step)
-                if path.contains(p) { out.append(Dot(row: row, col: col, center: p)) }
-            }
-        }
-        return out
     }
 }
 

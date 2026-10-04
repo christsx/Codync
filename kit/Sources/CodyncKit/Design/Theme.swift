@@ -53,11 +53,13 @@ public enum Palette {
     public static let accent = Color(light: 0x000000, dark: 0xFFFFFF)
     public static let onAccent = Color(light: 0xFFFFFF, dark: 0x000000)
     public static let accentDim = Color(light: 0xD9D9D9, dark: 0x333333)
-    public static let danger = Color(light: 0xC23A2B, dark: 0xF0A7A7)
+    public static let danger = Color(light: 0xFF3B30, dark: 0xFF453A)
+    /// Red fill with readable white confirmation text.
+    public static let dangerFill = Color(hex: 0xD92D20)
     public static let warning = Color(hex: 0xF0A030)
     public static let codeBackground = Color(light: 0xF4F4F4, dark: 0x111111)
     public static let added = Color(light: 0x2E7D32, dark: 0x8FD18B)
-    public static let removed = Color(light: 0xC62828, dark: 0xF0A7A7)
+    public static let removed = Color(light: 0xC62828, dark: 0xFF453A)
 }
 
 public enum AvatarPalette {
@@ -82,7 +84,7 @@ public enum AvatarPalette {
         .init(id: "gray", label: "Gray", hex: 0x777777),
     ]
 
-    public static let shapes = ["blob", "pebble", "squircle", "tablet", "wedge", "hex", "cloud", "teardrop"]
+    public static let shapes = ["clover", "flower", "triangle", "square", "blob", "ghost", "circle", "drop", "star", "droid", "mech", "alien", "hexagon", "cat", "cloud", "pill", "pebble", "puddle"]
 
     public static func color(_ id: String) -> Color {
         (colors.first { $0.id == id } ?? colors[7]).color

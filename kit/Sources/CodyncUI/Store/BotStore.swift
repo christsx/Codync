@@ -184,7 +184,7 @@ public final class BotStore {
     public func members(of group: Bot) -> [Bot] { group.members.compactMap { bots[$0] } }
 
     /// Display name of an entry's author in a group chat.
-    public func authorName(_ id: String?) -> String { id.flatMap { bots[$0]?.name } ?? "A deleted bot" }
+    public func authorName(_ id: String?) -> String { id.flatMap { bots[$0]?.name } ?? "A deleted sidekick" }
 
     func updateComputer(_ change: (inout Computer) -> Void) {
         var c = computer

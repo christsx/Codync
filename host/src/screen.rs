@@ -441,7 +441,7 @@ impl Screen {
 
     fn link(&self) -> Result<Arc<Link>> {
         if !self.enabled() {
-            bail!("Remote screen is turned off on this computer. Turn it on in Codync's menu there.");
+            bail!("Remote screen is turned off on this computer. Turn it on in Sidekicks's menu there.");
         }
         self.link.locked().clone().ok_or_else(|| anyhow!("The screen helper isn't running on this computer."))
     }
@@ -480,7 +480,7 @@ impl Screen {
     pub async fn offer(&self, owner: &str, sdp: &str, session: Option<&str>, display: Option<u32>) -> Result<Value> {
         let link = self.link()?;
         if !self.status.locked().capture {
-            bail!("Codync isn't allowed to record this computer's screen yet. Allow it in System Settings there.");
+            bail!("Sidekicks isn't allowed to record this computer's screen yet. Allow it in System Settings there.");
         }
         let session = match session {
             Some(id) => id.to_owned(),

@@ -87,12 +87,12 @@ pub fn theme() -> &'static Theme {
         }
         let (text, second, dim, line, band, sel, panel, btn, green, red, add_bg, rm_bg) = if light {
             (
-                0x141414, 0x5F5F5F, 0x8E8E8E, 0xD6D6D6, 0xEFEFEF, 0xE2E2E2, 0xF7F7F7, 0xE4E4E4, 0x2E7D32, 0xC23A2B,
+                0x141414, 0x5F5F5F, 0x8E8E8E, 0xD6D6D6, 0xEFEFEF, 0xE2E2E2, 0xF7F7F7, 0xE4E4E4, 0x2E7D32, 0xFF3B30,
                 0xE3F3E4, 0xF9E3E0,
             )
         } else {
             (
-                0xF2F2F2, 0x9A9A9A, 0x6E6E6E, 0x333333, 0x1C1C1C, 0x262626, 0x141414, 0x2A2A2A, 0x8FD18B, 0xF0A7A7,
+                0xF2F2F2, 0x9A9A9A, 0x6E6E6E, 0x333333, 0x1C1C1C, 0x262626, 0x141414, 0x2A2A2A, 0x8FD18B, 0xFF453A,
                 0x14261A, 0x2A1616,
             )
         };
@@ -549,7 +549,7 @@ fn roster(buf: &mut Buffer, r: Rect, app: &mut App, narrow: bool) {
         } else if !app.online {
             vec![("Connecting…".into(), t.secondary)]
         } else {
-            vec![("No bots yet.".into(), t.text), ("n creates one.".into(), t.dim)]
+            vec![("No sidekicks yet.".into(), t.text), ("n creates one.".into(), t.dim)]
         };
         let mut y = top + 1;
         for (m, s) in &msg {
@@ -614,7 +614,7 @@ fn roster(buf: &mut Buffer, r: Rect, app: &mut App, narrow: bool) {
     if !narrow {
         let hy = r.bottom() - 1;
         let mut x = put(buf, x0 + 1, hy, 2, "n", t.secondary.add_modifier(Modifier::BOLD)) + 1;
-        x = put(buf, x, hy, 10, "new bot", t.dim) + 2;
+        x = put(buf, x, hy, 10, "new sidekick", t.dim) + 2;
         x = put(buf, x, hy, 2, "m", t.secondary.add_modifier(Modifier::BOLD)) + 1;
         x = put(buf, x, hy, 10, "group", t.dim) + 2;
         x = put(buf, x, hy, 3, "^k", t.secondary.add_modifier(Modifier::BOLD)) + 1;
@@ -690,8 +690,8 @@ fn chat(buf: &mut Buffer, r: Rect, app: &mut App, narrow: bool) {
         let msg = match &app.error {
             Some(e) if app.bots.is_empty() => e.as_str(),
             _ if app.bots.is_empty() && !app.online => "Connecting…",
-            _ if app.bots.is_empty() => "n creates your first bot",
-            _ => "Pick a bot",
+            _ if app.bots.is_empty() => "n creates your first sidekick",
+            _ => "Pick a sidekick",
         };
         put(buf, r.x + 2, r.y + 1, r.width.saturating_sub(2), msg, t.dim);
         return;
@@ -780,7 +780,7 @@ fn chat(buf: &mut Buffer, r: Rect, app: &mut App, narrow: bool) {
         } else if app.thread.is_some() {
             "Reply…".to_owned()
         } else if b.group {
-            format!("Message {} · @ to ask one bot", b.name)
+            format!("Message {} · @ to ask one sidekick", b.name)
         } else {
             format!("Message {}…", b.name)
         };
@@ -1049,7 +1049,7 @@ fn intro(out: &mut Built, app: &App, b: &Bot, width: usize) {
         let names: Vec<String> = b.members.iter().map(|m| app.author_name(Some(m))).collect();
         (
             format!("group · {}", names.join(", ")),
-            "Everyone answers in turn unless you @mention someone. Each bot works in its own folder with its own tools."
+            "Everyone answers in turn unless you @mention someone. Each sidekick works in its own folder with its own tools."
                 .to_owned(),
         )
     } else {
@@ -1127,7 +1127,7 @@ fn entry_lines(
             let from = out.lines.len();
             let (name, color) = match author {
                 Some(a) => (a.name.clone(), a.color.as_str()),
-                None => ("A deleted bot".to_owned(), "gray"),
+                None => ("A deleted sidekick".to_owned(), "gray"),
             };
             out.lines.push(Line::from(vec![
                 Span::styled(format!(" {name}"), name_style(color)),
@@ -1489,7 +1489,7 @@ fn build_trace(app: &App, b: &Bot, turn: i64, width: usize, full: bool) -> Vec<L
             if author.is_some() && author != speaker {
                 speaker = author;
                 let (name, color) = author.and_then(|a| app.bots.get(a)).map_or_else(
-                    || ("A deleted bot".to_owned(), "gray".to_owned()),
+                    || ("A deleted sidekick".to_owned(), "gray".to_owned()),
                     |a| (a.name.clone(), a.color.clone()),
                 );
                 out.push(Line::from(Span::styled(format!(" {name}"), name_style(&color))));
@@ -1663,7 +1663,7 @@ fn overlay(buf: &mut Buffer, area: Rect, app: &mut App, top: &Overlay) {
             put(buf, inner.x, inner.y + 1, inner.width, &c.detail, t.text.patch(t.panel));
             put(buf, inner.x, inner.y + 2, inner.width, &c.note, t.secondary.patch(t.panel));
             let danger = if t.color {
-                Style::default().fg(t.on_color).bg(rgb(0xF0A7A7)).add_modifier(Modifier::BOLD)
+                Style::default().fg(rgb(0xFFFFFF)).bg(rgb(0xD92D20)).add_modifier(Modifier::BOLD)
             } else {
                 t.sel
             };
@@ -1676,7 +1676,7 @@ fn overlay(buf: &mut Buffer, area: Rect, app: &mut App, top: &Overlay) {
             let group_row = App::agent_group_row(&a.query.text);
             let h = u(choices.len() + usize::from(group_row) + 8).min(area.height.saturating_sub(2)).max(10);
             let r = centered(area, 74, h);
-            let inner = frame_box(buf, r, t.text, t.panel, Some(("New bot · 1/2 agent", t.text)));
+            let inner = frame_box(buf, r, t.text, t.panel, Some(("New sidekick · 1/2 agent", t.text)));
             field_line(buf, inner, inner.y, &a.query, "type to filter", true);
             let list_h = usize::from(inner.height.saturating_sub(4));
             let off = a.cursor.saturating_sub(list_h.saturating_sub(1));
@@ -1728,7 +1728,7 @@ fn overlay(buf: &mut Buffer, area: Rect, app: &mut App, top: &Overlay) {
                 }
                 put(buf, inner.x, y, 2, "+", t.secondary.patch(base));
                 put(buf, inner.x + 2, y, inner.width / 2, NEW_GROUP, if sel { t.bold } else { t.text }.patch(base));
-                rput(buf, inner.right(), y, "several bots, one chat", t.dim.patch(base));
+                rput(buf, inner.right(), y, "several sidekicks, one chat", t.dim.patch(base));
             }
             put(
                 buf,
@@ -1851,7 +1851,7 @@ fn goto(buf: &mut Buffer, area: Rect, app: &mut App, g: &super::app::Goto, items
         Rect::new(inner.x, inner.y, inner.width.saturating_sub(10), 1),
         inner.y,
         &g.query,
-        "search bots",
+        "search sidekicks",
         true,
     );
     // Filter chips.
@@ -1892,7 +1892,7 @@ fn goto(buf: &mut Buffer, area: Rect, app: &mut App, g: &super::app::Goto, items
                 put(buf, inner.x + 5, y, 10, &b.name, t.bold.patch(base));
                 put(buf, inner.x + 16, y, 10, if b.group { "group" } else { &b.backend }, t.secondary.patch(base));
                 let cwd =
-                    if b.group { format!("{} bots", b.members.len()) } else { truncate(&b.folder(&app.home), 18) };
+                    if b.group { format!("{} sidekicks", b.members.len()) } else { truncate(&b.folder(&app.home), 18) };
                 put(buf, inner.x + 27, y, 19, &cwd, t.secondary.patch(base));
                 let (pv, ps) = preview(b);
                 let room = inner.width.saturating_sub(47);
@@ -1949,9 +1949,9 @@ fn goto(buf: &mut Buffer, area: Rect, app: &mut App, g: &super::app::Goto, items
 const HELP: [(&str, &str, &str); 52] = [
     ("MOVE", "j k  ↑ ↓", "next / previous bot"),
     ("MOVE", "[ ]", "previous / next bot"),
-    ("MOVE", "1…9", "jump to bot 1–9"),
-    ("MOVE", "!", "next bot that needs you"),
-    ("MOVE", "u", "next unread bot"),
+    ("MOVE", "1…9", "jump to sidekick 1–9"),
+    ("MOVE", "!", "next sidekick that needs you"),
+    ("MOVE", "u", "next unread sidekick"),
     ("MOVE", "^k", "go to…"),
     ("MOVE", "tab  h l", "roster ⇄ chat ⇄ trace"),
     ("MOVE", "^d ^u", "half page down / up"),
@@ -1962,7 +1962,7 @@ const HELP: [(&str, &str, &str); 52] = [
     ("CHAT", "n", "reject"),
     ("CHAT", "N", "reject and say why"),
     ("CHAT", "1…9", "pick an approval option"),
-    ("CHAT", "s", "stop the bot"),
+    ("CHAT", "s", "stop the sidekick"),
     ("CHAT", "o", "last turn's steps"),
     ("CHAT", "c", "copy the last reply"),
     ("CHAT", "C", "open connection / login request"),
@@ -1979,16 +1979,16 @@ const HELP: [(&str, &str, &str); 52] = [
     ("TYPE", "^a ^e", "line start / end"),
     ("TYPE", "alt b / f", "word left / right"),
     ("TYPE", "^w ^u", "delete word / line"),
-    ("TYPE", "@name", "group: ask just that bot"),
-    ("BOTS", "n", "new bot"),
+    ("TYPE", "@name", "group: ask just that sidekick"),
+    ("BOTS", "n", "new sidekick"),
     ("BOTS", "m", "new group chat"),
-    ("BOTS", "e", "edit bot or group"),
+    ("BOTS", "e", "edit sidekick or group"),
     ("BOTS", "p", "pin / unpin"),
     ("BOTS", "S", "new session"),
     ("BOTS", "M", "memory"),
     ("BOTS", "R", "routines"),
     ("BOTS", "A", "marketplace, sign-in"),
-    ("BOTS", "x", "delete bot or group"),
+    ("BOTS", "x", "delete sidekick or group"),
     ("VIEW", "t", "trace pane"),
     ("VIEW", "T", "trace full screen"),
     ("VIEW", "{ }", "previous / next turn"),
@@ -1996,7 +1996,7 @@ const HELP: [(&str, &str, &str); 52] = [
     ("VIEW", "U", "usage"),
     ("VIEW", "P", "pair a phone"),
     ("VIEW", "esc", "close / go back"),
-    ("VIEW", "q", "quit; bots keep going"),
+    ("VIEW", "q", "quit; sidekicks keep going"),
     ("MOUSE", "click", "open, press a button"),
     ("MOUSE", "wheel", "scroll under pointer"),
 ];
@@ -2052,7 +2052,7 @@ fn form_view(buf: &mut Buffer, area: Rect, app: &App, f: &Form) {
     let r = centered(area, 88, 30);
     let title = match &f.bot_id {
         Some(_) => format!("Edit {}", f.name.text),
-        None => "New bot · 2/2 name and looks".into(),
+        None => "New sidekick · 2/2 name and looks".into(),
     };
     let inner = frame_box(buf, r, t.text, t.panel, Some((&title, t.text)));
     let wide = inner.width >= 70;
@@ -2261,11 +2261,11 @@ fn group_view(buf: &mut Buffer, area: Rect, app: &App, g: &GroupForm) {
         g.field == GroupField::About,
         false,
     );
-    put(buf, inner.x, inner.y + 4, inner.width, &format!("Bots · {}", g.members.len()), label(on_bots));
+    put(buf, inner.x, inner.y + 4, inner.width, &format!("Sidekicks · {}", g.members.len()), label(on_bots));
     let list_h = usize::from(inner.height.saturating_sub(9));
     let off = g.cursor.saturating_sub(list_h.saturating_sub(1));
     if bots.is_empty() {
-        put(buf, inner.x, inner.y + 5, inner.width, "No bots yet. n creates one.", t.dim.patch(t.panel));
+        put(buf, inner.x, inner.y + 5, inner.width, "No sidekicks yet. n creates one.", t.dim.patch(t.panel));
     }
     for (y, (i, b)) in (inner.y + 5..).zip(bots.iter().enumerate().skip(off).take(list_h)) {
         let sel = on_bots && i == g.cursor;
@@ -2413,7 +2413,7 @@ fn pair(buf: &mut Buffer, area: Rect, url: Option<&str>) {
         inner.x,
         y,
         inner.width,
-        "Scan with the Codync iPhone app, or open on the phone:",
+        "Scan with the Sidekicks iPhone app, or open on the phone:",
         t.secondary.patch(t.panel),
     );
     put(buf, inner.x, y + 1, inner.width, &truncate(url, usize::from(inner.width)), t.dim.patch(t.panel));

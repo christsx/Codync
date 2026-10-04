@@ -29,7 +29,7 @@ public struct BotEditorView: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            ModalHeader(isNew ? "New bot" : "Settings") {
+            ModalHeader(isNew ? "New sidekick" : "Settings") {
                 if saving {
                     Spinner()
                 } else {
@@ -126,8 +126,8 @@ struct BotSettingsForm: View {
                             .background(Palette.bubbleAgent, in: RoundedRectangle(cornerRadius: 20))
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel("Edit Bot avatar")
-                    .help("Edit Bot avatar")
+                    .accessibilityLabel("Edit Sidekick avatar")
+                    .help("Edit Sidekick avatar")
                     .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { avatarFrame = $0 }
                     .codyncOverlay(isPresented: $pickingAvatar) { close in
                         AnchoredPanel(anchor: avatarFrame, close: close) {
@@ -174,7 +174,7 @@ struct BotSettingsForm: View {
                         }
                     }
                     if computer != nil, model.connection != .online {
-                        Text("Connect this computer to create the bot, or choose another computer.")
+                        Text("Connect this computer to create the sidekick, or choose another computer.")
                             .font(.caption).foregroundStyle(Palette.warning)
                     }
                     OptionRow("Agent") {
@@ -210,11 +210,11 @@ struct BotSettingsForm: View {
                             }
                             .pill()
                         }
-                        .help(draft.cwd.isEmpty ? "A persistent workspace allocated for this bot" : draft.cwd)
+                        .help(draft.cwd.isEmpty ? "A persistent workspace allocated for this sidekick" : draft.cwd)
                     }
                     Text(draft.cwd.isEmpty
-                         ? "This bot has its own space for files. It can work in other folders when you ask."
-                         : "This project is the default starting folder. The bot can work elsewhere when you ask.")
+                         ? "This sidekick has its own space for files. It can work in other folders when you ask."
+                         : "This project is the default starting folder. The sidekick can work elsewhere when you ask.")
                         .font(.caption)
                         .foregroundStyle(Palette.secondary)
                     OptionRow("Permissions") {
@@ -224,7 +224,7 @@ struct BotSettingsForm: View {
                     Toggle(isOn: Binding(get: { draft.notify ?? true }, set: { draft.notify = $0 })) {
                         VStack(alignment: .leading, spacing: 3) {
                             Text("Notifications").foregroundStyle(Palette.text)
-                            Text("Get notified when this bot finishes or needs you").font(InterfaceMetrics.secondary).foregroundStyle(Palette.secondary)
+                            Text("Get notified when this sidekick finishes or needs you").font(InterfaceMetrics.secondary).foregroundStyle(Palette.secondary)
                         }
                     }
                     .toggleStyle(.codync)
@@ -233,8 +233,8 @@ struct BotSettingsForm: View {
                             VStack(alignment: .leading, spacing: 3) {
                                 Text("Use the computer").foregroundStyle(Palette.text)
                                 Text(model.screen?.enabled == true
-                                    ? "Let this bot see the screen and use the mouse and keyboard. You can watch and take over from your phone."
-                                    : "Let this bot see the screen and use the mouse and keyboard. Turn on Remote screen in Codync's menu on the computer first.")
+                                    ? "Let this sidekick see the screen and use the mouse and keyboard. You can watch and take over from your phone."
+                                    : "Let this sidekick see the screen and use the mouse and keyboard. Turn on Remote screen in Sidekicks's menu on the computer first.")
                                     .font(InterfaceMetrics.secondary).foregroundStyle(Palette.secondary)
                             }
                         }
@@ -391,6 +391,13 @@ extension BotDraft {
 public extension BotStore {
     /// Picks an installed agent; empty cwd requests a personal workspace from the host.
     func fillDefaults(_ draft: inout BotDraft) {
+        #if os(macOS)
+        let key = "sidekicksDesktopSetupStep." + (storage.accountID ?? "local") + ".agent"
+        if draft.id == nil, let chosen = UserDefaults.standard.string(forKey: key),
+           hello?.backends.contains(where: { $0.id == chosen && $0.available }) == true {
+            draft.backend = chosen
+        }
+        #endif
         if hello?.backends.first(where: { $0.id == draft.backend })?.available != true,
            let first = hello?.backends.first(where: \.available) {
             draft.backend = first.id
@@ -415,21 +422,38 @@ struct AvatarPicker: View {
     @Binding var shape: String
     @Binding var color: String
 
+    private var selectedShape: String {
+        switch shape {
+        case "squircle": "square"
+        case "tablet": "pill"
+        case "wedge": "triangle"
+        case "hex": "hexagon"
+        case "teardrop": "drop"
+        default: shape
+        }
+    }
+
     var body: some View {
         VStack(spacing: 12) {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 10) {
+            ScrollView(.vertical, showsIndicators: false) {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: 6), spacing: 10) {
                     ForEach(AvatarPalette.shapes, id: \.self) { s in
-                        CharacterAvatar(shape: s, color: color, size: 36)
-                            .padding(4)
-                            .background(Circle().strokeBorder(s == shape ? Palette.accent : .clear, lineWidth: 2))
-                            .onTapGesture { withAnimation(Motion.hover) { shape = s } }
-                            .accessibilityLabel("\(s) shape")
-                            .accessibilityAddTraits(s == shape ? .isSelected : [])
+                        Button {
+                            withAnimation(Motion.hover) { shape = s }
+                        } label: {
+                            CharacterAvatar(shape: s, color: color, size: 36)
+                                .padding(4)
+                                .background(Circle().strokeBorder(s == selectedShape ? Palette.accent : .clear, lineWidth: 2))
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("\(s) shape")
+                        .accessibilityAddTraits(s == selectedShape ? .isSelected : [])
                     }
                 }
                 .padding(4)
             }
+            .frame(height: 160)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 10) {
                     ForEach(AvatarPalette.colors) { c in

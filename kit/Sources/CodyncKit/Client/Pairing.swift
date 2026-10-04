@@ -14,8 +14,8 @@ public struct Pairing: Hashable, Sendable {
 
         public var errorDescription: String? {
             switch self {
-            case .notPairingLink: "That isn't a Codync pairing code."
-            case .outdatedHost: "Update Codync on your computer, then show a new pairing code."
+            case .notPairingLink: "That isn't a Sidekicks pairing code."
+            case .outdatedHost: "Update Sidekicks on your computer, then show a new pairing code."
             case .invalid: "This pairing code is damaged. Show a new one on your computer."
             }
         }

@@ -11,7 +11,7 @@ use anyhow::Result;
 use serde_json::json;
 use std::sync::Arc;
 
-pub const PLACEHOLDER: &str = "New Bot";
+pub const PLACEHOLDER: &str = "New Sidekick";
 /// Conversations before the first naming attempt.
 const NAME_AFTER: usize = 3;
 /// The most recent conversations shown to the namer (it retries after each one).

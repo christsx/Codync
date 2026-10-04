@@ -31,6 +31,7 @@ struct CodyncApp: App {
                         .environment(app.account)
                         .tint(Palette.accent)
                 }
+                .preferredColorScheme(.dark)
                 .onChange(of: app.account.userID, initial: true) { _, userID in
                     app.switchAccount(to: userID)
                 }

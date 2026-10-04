@@ -116,9 +116,9 @@ pub fn notify(hub: &Hub, bot: &BotConfig, from: Option<&str>, title: &str, body:
     let Some(relay) = relay_url(hub) else { return };
     // The relay and APNs only see a generic line; the real one is sealed to each device (§6.7).
     let generic = match kind {
-        AlertKind::NeedsInput => "A bot needs your response. Open Codync to review.",
-        AlertKind::Done => "Your task is complete. Open Codync to read the result.",
-        AlertKind::Failed => "A task could not finish. Open Codync to review the issue.",
+        AlertKind::NeedsInput => "A bot needs your response. Open Sidekicks to review.",
+        AlertKind::Done => "Your task is complete. Open Sidekicks to read the result.",
+        AlertKind::Failed => "A task could not finish. Open Sidekicks to review the issue.",
     };
     let subtitle = match kind {
         AlertKind::Done => "Task complete",
@@ -145,7 +145,7 @@ pub fn notify(hub: &Hub, bot: &BotConfig, from: Option<&str>, title: &str, body:
         }
         notifications.push(json!({
             "ticket": t.ticket,
-            "alert": {"title": "Codync", "body": generic},
+            "alert": {"title": "Sidekicks", "body": generic},
             "mutableContent": true,
             "threadId": format!("{computer_id}:{}", bot.id),
             "category": kind,

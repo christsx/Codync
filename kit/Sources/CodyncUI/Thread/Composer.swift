@@ -48,7 +48,7 @@ struct Composer: View {
     private var placeholder: String {
         let name = bot?.name ?? ""
         if thread != nil { return "Reply…" }
-        if bot?.isGroup == true { return "Message \(name) · @ to ask one bot" }
+        if bot?.isGroup == true { return "Message \(name) · @ to ask one sidekick" }
         return working ? "Queue a message for \(name)" : "Ask \(name)"
     }
 

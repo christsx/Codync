@@ -53,7 +53,7 @@ pub fn http() -> &'static reqwest::Client {
 #[command(
     name = "codync-host",
     version,
-    about = "Codync host: runs your coding-agent bots and serves the Codync phone app"
+    about = "Sidekicks host: runs your coding-agent bots and serves the Sidekicks phone app"
 )]
 struct Cli {
     #[command(subcommand)]
@@ -353,14 +353,16 @@ async fn main() -> Result<()> {
             if let Some(home) = dirs::home_dir() {
                 match service::ensure_statusline(&home.join(".claude/settings.json")) {
                     Ok(true) => println!(
-                        "Claude Code's status line now also reports usage limits to Codync (your own status line still shows)."
+                        "Claude Code's status line now also reports usage limits to Sidekicks (your own status line still shows)."
                     ),
                     Ok(false) => {}
                     Err(e) => eprintln!("Couldn't set Claude Code's status line: {e}"),
                 }
             }
             service::install(port)?;
-            println!("Codync host installed and started on port {port}. Run `codync-host pair` to connect your phone.");
+            println!(
+                "Sidekicks host installed and started on port {port}. Run `codync-host pair` to connect your phone."
+            );
             Ok(())
         }
         Sub::Update { check, status, auto, force, port, json, worker } => {
@@ -396,7 +398,7 @@ async fn main() -> Result<()> {
         }
         Sub::Stop => {
             tokio::task::spawn_blocking(service::stop).await??;
-            println!("Codync host stopped.");
+            println!("Sidekicks host stopped.");
             Ok(())
         }
         Sub::Uninstall => {
@@ -406,7 +408,7 @@ async fn main() -> Result<()> {
             {
                 eprintln!("Couldn't restore Claude Code's status line: {e:#}");
             }
-            println!("Codync host service removed. Data is kept in {}", service::data_dir().display());
+            println!("Sidekicks host service removed. Data is kept in {}", service::data_dir().display());
             Ok(())
         }
         Sub::Status { port } => {
@@ -567,14 +569,14 @@ async fn pair(port: u16, as_json: bool) -> Result<()> {
     let url = p["pairingUrl"].as_str().unwrap_or_default();
     let code = qrcode::QrCode::new(url.as_bytes())?;
     println!("{}", code.render::<qrcode::render::unicode::Dense1x2>().quiet_zone(true).build());
-    println!("Scan with the Codync iOS app within 10 minutes, or open this link on the phone:\n{url}\n");
+    println!("Scan with the Sidekicks iOS app within 10 minutes, or open this link on the phone:\n{url}\n");
     if hello["cloud"].is_null()
         && p["urls"].as_array().is_none_or(|u| {
             !u.iter().any(|u| u.as_str().is_some_and(|u| u.contains("://100.") || u.contains(".ts.net")))
         })
     {
         println!(
-            "Tip: the phone reaches this computer on the same network only. Turn on the Codync cloud or Tailscale to reach it from anywhere."
+            "Tip: the phone reaches this computer on the same network only. Turn on the Sidekicks cloud or Tailscale to reach it from anywhere."
         );
     }
     Ok(())

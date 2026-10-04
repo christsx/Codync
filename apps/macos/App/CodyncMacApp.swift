@@ -27,7 +27,7 @@ struct CodyncMacApp: App {
 
     var body: some Scene {
         // First scene: the one SwiftUI opens at launch and when the Dock icon is clicked.
-        Window("Codync", id: "chat") {
+        Window("Sidekicks", id: "chat") {
             ChatWindow()
                 .task { launch() }
                 .modalHost()
@@ -86,7 +86,7 @@ struct MenuView: View {
 
     var body: some View {
         Text(status)
-        Button("Open Codync") { open("chat") }
+        Button("Open Sidekicks") { open("chat") }
             .keyboardShortcut("o")
         if host.state == .running {
             Button("Pair iPhone…") {
@@ -143,7 +143,7 @@ struct MenuView: View {
             }
         }
         if let version = host.version { Text("Version \(version)") }
-        Button("Quit Codync") { NSApp.terminate(nil) }
+        Button("Quit Sidekicks") { NSApp.terminate(nil) }
             .keyboardShortcut("q")
     }
 
@@ -157,9 +157,9 @@ struct MenuView: View {
             if !host.approvals.isEmpty {
                 "A device asks for access"
             } else if host.needsAttention {
-                "A bot needs you"
+                "A sidekick needs you"
             } else if host.working > 0 {
-                "\(host.working) bot\(host.working == 1 ? "" : "s") working"
+                "\(host.working) sidekick\(host.working == 1 ? "" : "s") working"
             } else {
                 "Connected"
             }
@@ -169,7 +169,7 @@ struct MenuView: View {
     @ViewBuilder private var hostItems: some View {
         switch host.state {
         case .missingBinary:
-            Text("Reinstall Codync or install the host with Homebrew.")
+            Text("Reinstall Sidekicks or install the host with Homebrew.")
             Button("Copy host install command") {
                 NSPasteboard.general.clearContents()
                 NSPasteboard.general.setString("brew install leepokai/codync/codync-host", forType: .string)
@@ -226,7 +226,7 @@ struct MenuView: View {
     @ViewBuilder private var bots: some View {
         let roster = host.roster.filter { !$0.bot.isGroup }
         if roster.isEmpty {
-            Text("No bots yet")
+            Text("No sidekicks yet")
         } else {
             ForEach(roster) { item in
                 Menu {
@@ -319,7 +319,7 @@ private struct RemoteScreenMenu: View {
             Text(subtitle(screen))
             if screen.enabled {
                 if host.screenAgentNeedsApproval {
-                    Button("Allow Codync Screen in Login Items…") { host.openLoginItemsSettings() }
+                    Button("Allow Sidekicks Screen in Login Items…") { host.openLoginItemsSettings() }
                 } else if screen.connected {
                     if !screen.capture {
                         Button("Allow Screen Recording…") {
@@ -340,7 +340,7 @@ private struct RemoteScreenMenu: View {
     private func subtitle(_ screen: ScreenState) -> String {
         guard screen.enabled else { return "Control this Mac from your iPhone" }
         if host.screenAgentNeedsApproval { return "Needs approval in System Settings" }
-        if !screen.connected { return "Starting Codync Screen…" }
+        if !screen.connected { return "Starting Sidekicks Screen…" }
         if !screen.capture || !screen.input { return "Needs permission" }
         if screen.viewers > 0 { return screen.viewers == 1 ? "Your iPhone is viewing" : "\(screen.viewers) viewers" }
         if let bot = screen.agentBot, let name = host.store?.bots[bot]?.name { return "\(name) is using it" }
@@ -373,7 +373,7 @@ struct PairingPanel: View {
                         .background(.white, in: RoundedRectangle(cornerRadius: 12))
                         .accessibilityLabel("Pairing code for \(store.hostName)")
                 }
-                Text("Scan with the Codync app or the iPhone Camera. No Tailscale or open ports needed: your iPhone connects directly on the same Wi-Fi, and through the encrypted relay anywhere else.")
+                Text("Scan with the Sidekicks app or the iPhone Camera. No Tailscale or open ports needed: your iPhone connects directly on the same Wi-Fi, and through the encrypted relay anywhere else.")
                     .font(.caption)
                     .foregroundStyle(Palette.secondary)
                     .multilineTextAlignment(.center)

@@ -76,7 +76,7 @@ public struct NewChatView: View {
                             .frame(width: 26, height: 26)
                             .background(Palette.bubbleAgent, in: Circle())
                     } label: {
-                        Text(query.isEmpty ? "Create new Bot" : "Create “\(query)”")
+                        Text(query.isEmpty ? "Create new Sidekick" : "Create “\(query)”")
                     }
                     ForEach(Array(matches.enumerated()), id: \.element.id) { i, bot in
                         PickRow(shortcut: i + 2 <= 9 ? i + 2 : nil, action: { choose(bot) }) {
@@ -125,14 +125,14 @@ public struct NewChatView: View {
     }
 
     private var toPrompt: String {
-        if group { return recipients.count < 2 ? "Add bots to the group" : "Add another bot" }
-        return recipients.isEmpty ? "Search or create bots" : "Add another bot"
+        if group { return recipients.count < 2 ? "Add sidekicks to the group" : "Add another sidekick" }
+        return recipients.isEmpty ? "Search or create sidekicks" : "Add another sidekick"
     }
 
     private var placeholder: String {
         switch picked.count {
-        case _ where group: picked.count < 2 ? "Pick at least two bots" : "Message the group"
-        case 0: "Message Bot"
+        case _ where group: picked.count < 2 ? "Pick at least two sidekicks" : "Message the group"
+        case 0: "Message Sidekick"
         case 1: "Message \(picked[0].name)"
         default: "Message \(picked.map(\.name).joined(separator: ", "))"
         }

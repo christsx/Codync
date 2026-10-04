@@ -68,10 +68,10 @@ final class CallSession {
 
     func start() async {
         guard await AVAudioApplication.requestRecordPermission() else {
-            return fail("Allow the microphone for Codync in Settings to talk to your bots.")
+            return fail("Allow the microphone for Sidekicks in Settings to talk to your sidekicks.")
         }
         guard await Self.speechAuthorized() else {
-            return fail("Allow Speech Recognition for Codync in Settings to talk to your bots.")
+            return fail("Allow Speech Recognition for Sidekicks in Settings to talk to your sidekicks.")
         }
         guard let recognizer, recognizer.isAvailable else {
             return fail("Speech recognition isn't available for this language right now.")

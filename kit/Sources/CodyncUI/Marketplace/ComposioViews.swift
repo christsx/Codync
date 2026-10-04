@@ -1,9 +1,7 @@
 import CodyncKit
 import SwiftUI
 
-// Apps through Composio (host/src/market/composio.rs): set up a key once, connect
-// apps with Composio's hosted sign-in, then turn them on per bot like any
-// other connector.
+// Hosted account connections use the Sidekicks backend; no project key is entered here.
 
 /// The Marketplace's "Apps" section.
 struct ComposioSection: View {
@@ -16,28 +14,21 @@ struct ComposioSection: View {
     @State private var loadRequest = UUID()
     @State private var loading = true
     @State private var error: String?
-    @State private var settingUp = false
-    @State private var connecting: ComposioApp?
+        @State private var connecting: ComposioApp?
 
     var body: some View {
         MarketSection(title: "Apps") {
             VStack(alignment: .leading, spacing: 10) {
-                if status?.configured != true {
-                    ItemGrid {
-                        MarketRow(
-                            title: "Composio",
-                            subtitle: "Gmail, Slack, GitHub, Notion and 1,000 more apps",
-                            added: false,
-                            busy: status == nil && loading,
-                            addLabel: "Set up"
-                        ) {
-                            TileIcon(systemName: "square.grid.3x3")
-                        } add: {
-                            withAnimation(Motion.layout) { settingUp = true }
-                        }
-                    }
-                } else if loading {
+                if loading {
                     SkeletonGrid()
+                } else if status?.configured != true {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Connect your apps").font(.headline)
+                        Text("Sign in to Sidekicks and connect your computer. Then choose an app and sign in to its account.")
+                            .foregroundStyle(Palette.secondary)
+                        Button("Try again") { Task { await load() } }
+                            .buttonStyle(SecondaryButtonStyle())
+                    }
                 } else if apps.isEmpty {
                     Text(query.isEmpty ? "Couldn't load apps." : "No apps match “\(query)”.")
                         .foregroundStyle(Palette.secondary)
@@ -67,21 +58,11 @@ struct ComposioSection: View {
                 if let error {
                     Text(error).font(.footnote).foregroundStyle(Palette.danger)
                 }
-                if status?.configured == true {
-                    Button("Composio settings", systemImage: "key") { withAnimation(Motion.layout) { settingUp = true } }
-                        .labelStyle(.titleAndIcon)
-                        .buttonStyle(.plain)
-                        .font(.footnote)
-                        .foregroundStyle(Palette.tertiary)
-                }
             }
         }
         .task(id: searchToken) { await load() }
-        .codyncSheet(isPresented: $settingUp) {
-            ComposioKeySheet(status: status) { new in
-                status = new
-                Task { await load() }
-            }
+        .onChange(of: model.connection) { _, connection in
+            if connection == .online { Task { await load() } }
         }
         .codyncSheet(item: $connecting) { app in
             ComposioConnectSheet(app: app) { Task { await load(); await model.refreshPlugins() } }
@@ -111,87 +92,20 @@ struct ComposioSection: View {
 }
 
 /// An app's logo from Composio, a letter tile until it loads.
-struct AppLogo: View {
+public struct AppLogo: View {
     let url: String?
     let name: String
     var size: CGFloat = 46
 
-    var body: some View {
-        AsyncImage(url: url.flatMap(URL.init(string:))) { image in
-            image.resizable().scaledToFit().padding(size * 0.18)
-        } placeholder: {
-            Text(name.prefix(1).uppercased())
-                .font(.system(size: size * 0.4, weight: .semibold))
-                .foregroundStyle(Palette.secondary)
-        }
-        .frame(width: size, height: size)
-        .background(Palette.bubbleAgent, in: RoundedRectangle(cornerRadius: size * 0.28, style: .continuous))
-        .accessibilityHidden(true)
-    }
-}
-
-/// Paste (or remove) the Composio API key; the host checks it with Composio first.
-struct ComposioKeySheet: View {
-    let status: ComposioStatus?
-    let done: (ComposioStatus) -> Void
-    @Environment(BotStore.self) private var model
-    @Environment(\.dismissModal) private var dismiss
-    @State private var key = ""
-    @State private var saving = false
-    @State private var error: String?
-
-    var body: some View {
-        VStack(spacing: 0) {
-            ModalHeader("Composio") {
-                if saving {
-                    Spinner()
-                } else {
-                    IconButton("Save", systemImage: "checkmark") { save(key) }.disabled(key.trimmingCharacters(in: .whitespaces).isEmpty)
-                }
-            }
-            form
-        }
-        .background(Palette.background)
+    public init(url: String?, name: String, size: CGFloat = 46) {
+        self.url = url
+        self.name = name
+        self.size = size
     }
 
-    private var form: some View {
-        CardForm {
-            CardSection(
-                "Composio API key",
-                footer: "Composio signs you in to apps like Gmail and Slack and runs their tools for your bots. The key stays on \(model.hostName)."
-            ) {
-                SecureField("API key", text: $key, prompt: Text(status?.configured == true ? "Saved (paste to replace)" : "ak_…"))
-                    .plainTextInput()
-                if let url = URL(string: status?.keyUrl ?? "https://platform.composio.dev") {
-                    WebLink("Get a key from Composio", url: url).font(.footnote)
-                }
-            }
-            if status?.configured == true {
-                CardSection(footer: "Bots lose the apps you connected until you add a key again.") {
-                    Button("Remove key", role: .destructive) { save("") }
-                        .buttonStyle(.plain)
-                        .foregroundStyle(Palette.danger)
-                }
-            }
-            if let error {
-                CardSection { Text(error).foregroundStyle(Palette.danger) }
-            }
-        }
-        .textFieldStyle(.plain)
-    }
-
-    private func save(_ key: String) {
-        guard let client = model.client else { return }
-        saving = true
-        Task {
-            defer { saving = false }
-            do {
-                done(try await client.setComposioKey(key))
-                dismiss()
-            } catch {
-                self.error = error.localizedDescription
-            }
-        }
+    public var body: some View {
+        BrandLogo(name: name, size: size)
+            .accessibilityHidden(true)
     }
 }
 
@@ -245,7 +159,7 @@ struct ComposioConnectSheet: View {
                 .padding(.vertical, 4)
             }
             if connected {
-                CardSection(footer: "Turn \(app.name) on for a bot in the bot's settings, under Connectors.") {
+                CardSection(footer: "Turn \(app.name) on for a sidekick in the sidekick's settings, under Connectors.") {
                     Label("Connected", systemImage: "checkmark.circle.fill").foregroundStyle(Palette.added)
                 }
             } else if let plan, plan.status == "needsFields" {

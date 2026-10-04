@@ -79,7 +79,7 @@ struct BotListView: View {
             .padding(.horizontal, 16)
         }
         .background(Palette.background)
-        .navigationTitle("Bots")
+        .navigationTitle("Sidekicks")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.visible, for: .navigationBar)
         .toolbar {
@@ -93,7 +93,7 @@ struct BotListView: View {
                 // A native menu: the bar hosts toolbar buttons outside SwiftUI's layout,
                 // so an anchored Codync menu can't find where the button is.
                 Menu("New", systemImage: "plus") {
-                    Button("New bot", systemImage: "plus", action: newBot)
+                    Button("New sidekick", systemImage: "plus", action: newBot)
                     Button("New group chat", systemImage: "person.2", action: newGroup)
                         .disabled(onlineStores.isEmpty)
                 }
@@ -137,9 +137,9 @@ struct BotListView: View {
         }
         .codyncDialog("Delete \(confirmDelete?.bot.name ?? "bot")?",
                       isPresented: Binding(get: { confirmDelete != nil }, set: { if !$0 { confirmDelete = nil } }),
-                      message: confirmDelete?.bot.isGroup == true ? "Its bots and their own chats stay." : "Files it changed on your computer stay as they are.") {
+                      message: confirmDelete?.bot.isGroup == true ? "Its sidekicks and their own chats stay." : "Files it changed on your computer stay as they are.") {
             let item = confirmDelete
-            return [DialogAction(item?.bot.isGroup == true ? "Delete group chat" : "Delete bot and its conversation", destructive: true) {
+            return [DialogAction(item?.bot.isGroup == true ? "Delete group chat" : "Delete sidekick and its conversation", destructive: true) {
                 if let item { accounts.store(for: item.ref.computerId)?.delete(item.bot) }
             }]
         }
@@ -228,7 +228,7 @@ private struct ComputerSection: View {
                 .background(Palette.bubbleAgent, in: Capsule())
             }
             if empty {
-                Text("No bots yet")
+                Text("No sidekicks yet")
                     .font(.footnote)
                     .foregroundStyle(Palette.tertiary)
                     .padding(.horizontal, 8)
@@ -269,15 +269,15 @@ private struct EmptyRoster: View {
     var body: some View {
         VStack(spacing: 14) {
             CharacterAvatar(shape: "cloud", color: "green", size: 72)
-            Text("No bots yet").font(.title3.weight(.semibold)).foregroundStyle(Palette.text)
+            Text("No sidekicks yet").font(.title3.weight(.semibold)).foregroundStyle(Palette.text)
             Text(hasComputer
-                 ? "Create a bot for each kind of work — a reviewer, a fixer, a docs writer — and point it at a project."
+                 ? "Create a sidekick for each kind of work — a reviewer, a fixer, a docs writer — and point it at a project."
                  : "Ask one of your account's computers for access, or pair one with its code.")
                 .font(.subheadline)
                 .foregroundStyle(Palette.secondary)
                 .multilineTextAlignment(.center)
             if canCreate {
-                Button("Create your first bot", action: create)
+                Button("Create your first sidekick", action: create)
                     .buttonStyle(.primary)
             } else if !hasComputer {
                 Button("Computers", action: showComputers)

@@ -190,7 +190,7 @@ pub struct CloudError {
 
 impl std::fmt::Display for CloudError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "the Codync cloud refused ({} {}): {}", self.status, self.code, self.message)
+        write!(f, "the Sidekicks cloud refused ({} {}): {}", self.status, self.code, self.message)
     }
 }
 
@@ -224,7 +224,7 @@ pub fn authority(base: &str) -> Result<String> {
 }
 
 fn base(hub: &Hub) -> Result<String> {
-    url(&hub.store).ok_or_else(|| anyhow!("The Codync cloud is off on this computer."))
+    url(&hub.store).ok_or_else(|| anyhow!("The Sidekicks cloud is off on this computer."))
 }
 
 /// One signed `/v1/host/*` call.
@@ -235,7 +235,7 @@ async fn call(hub: &Hub, base: &str, method: Method, path: &str, body: Option<&V
     if body.is_some() {
         req = req.header("content-type", "application/json").body(bytes);
     }
-    let res = req.send().await.context("the Codync cloud is unreachable")?;
+    let res = req.send().await.context("the Sidekicks cloud is unreachable")?;
     let status = res.status();
     let v: Value = res.json().await.unwrap_or(Value::Null);
     if !status.is_success() {
@@ -263,7 +263,7 @@ pub async fn register(hub: &Hub, base: &str) -> Result<()> {
     if v["computerId"].as_str() != Some(hub.identity.computer_id().as_str()) {
         bail!("the cloud registered a different computer id");
     }
-    tracing::info!(computer_id = hub.identity.computer_id(), "registered with the Codync cloud");
+    tracing::info!(computer_id = hub.identity.computer_id(), "registered with the Sidekicks cloud");
     update_status(hub, |s| s.registered = true);
     Ok(())
 }

@@ -102,7 +102,7 @@ const STATUSLINE_MARK: &str = " statusline --";
 
 /// The user's home. Codync can't do anything useful without one, so its absence is fatal.
 fn home() -> PathBuf {
-    dirs::home_dir().expect("HOME must be set: Codync keeps its data and agent settings there")
+    dirs::home_dir().expect("HOME must be set: Sidekicks keeps its data and agent settings there")
 }
 
 pub fn data_dir() -> PathBuf {
@@ -179,7 +179,7 @@ pub fn install(port: u16) -> Result<()> {
         run("launchctl", &["bootstrap", &format!("gui/{uid}"), &file.to_string_lossy()])?;
     } else {
         let unit = format!(
-            "[Unit]\nDescription=Codync host\nAfter=network-online.target\n\n[Service]\nExecStart={exe} serve --port {port}\nEnvironment=PATH={path}\nRestart=always\nRestartSec=3\n\n[Install]\nWantedBy=default.target\n"
+            "[Unit]\nDescription=Sidekicks host\nAfter=network-online.target\n\n[Service]\nExecStart={exe} serve --port {port}\nEnvironment=PATH={path}\nRestart=always\nRestartSec=3\n\n[Install]\nWantedBy=default.target\n"
         );
         let file = systemd_unit();
         create_parent(&file)?;
@@ -244,7 +244,7 @@ impl KeepAwake {
                     Command::new("systemd-inhibit")
                         .args([
                             "--what=sleep:idle",
-                            "--who=Codync",
+                            "--who=Sidekicks",
                             "--why=A bot is working or a routine is scheduled",
                             "--mode=block",
                             "sleep",

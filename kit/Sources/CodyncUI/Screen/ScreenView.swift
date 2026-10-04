@@ -140,7 +140,7 @@ public struct ScreenView: View {
                         }
                     } label: { IconLabel("Displays", "display.2") }
                 }
-                OverlayButton(interactive ? "Hand back to bots" : "Take over", interactive ? "hand.raised.slash" : "hand.raised") {
+                OverlayButton(interactive ? "Hand back to sidekicks" : "Take over", interactive ? "hand.raised.slash" : "hand.raised") {
                     animate { setInteractive(!interactive) }
                 }
             }
@@ -200,10 +200,10 @@ public struct ScreenView: View {
         let s = screen
         let (icon, text): (String, String) =
             if model.connection != .online { ("wifi.slash", "This computer is offline.") }
-            else if s == nil { ("arrow.down.circle", "Update Codync on your computer to use its screen from here.") }
-            else if s?.enabled != true { ("lock.display", "Remote screen is off. Turn it on in Codync's menu on the computer.") }
-            else if s?.connected != true { ("display.trianglebadge.exclamationmark", "Codync Screen isn't running on the computer. Turn Remote screen off and on again in Codync's menu there.") }
-            else { ("record.circle", "Allow Codync Screen to record the screen: System Settings → Privacy & Security → Screen & System Audio Recording, on the computer.") }
+            else if s == nil { ("arrow.down.circle", "Update Sidekicks on your computer to use its screen from here.") }
+            else if s?.enabled != true { ("lock.display", "Remote screen is off. Turn it on in Sidekicks's menu on the computer.") }
+            else if s?.connected != true { ("display.trianglebadge.exclamationmark", "Sidekicks Screen isn't running on the computer. Turn Remote screen off and on again in Sidekicks's menu there.") }
+            else { ("record.circle", "Allow Sidekicks Screen to record the screen: System Settings → Privacy & Security → Screen & System Audio Recording, on the computer.") }
         Overlay(icon: icon, text: text)
     }
 }

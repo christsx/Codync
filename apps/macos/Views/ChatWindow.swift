@@ -10,12 +10,28 @@ struct ChatWindow: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @AppStorage("macAccountOnboardingCompleted") private var accountOnboardingCompleted = false
 
+    @AppStorage("sidekicksDesktopSetupAccounts") private var setupAccounts = ""
+    @State private var completedSetupAccount: String?
+    private var needsSetup: Bool {
+        guard let id = account.userID else { return false }
+        return completedSetupAccount != id && !setupAccounts.split(separator: "|").contains(Substring(id))
+    }
+
     private var showsChat: Bool { host.state == .running || !host.accounts.computers.isEmpty }
 
     var body: some View {
         ZStack {
             if account.isSignedIn || accountOnboardingCompleted {
-                if showsChat {
+                if needsSetup {
+                    DesktopSetupView {
+                        if let id = account.userID {
+                            completedSetupAccount = id
+                            if !setupAccounts.split(separator: "|").contains(Substring(id)) { setupAccounts += "|" + id }
+                        }
+                    }
+                    .id(account.userID)
+                    .transition(.opacity)
+                } else if showsChat {
                     ChatSplitView().id(host.contextID)
                         .transition(.opacity)
                 } else {
@@ -42,7 +58,7 @@ struct ChatWindow: View {
         .animation(Motion.reduced(Motion.layout, reduceMotion), value: host.state)
         .animation(Motion.reduced(Motion.fade, reduceMotion), value: accountOnboardingCompleted)
         .onChange(of: account.isSignedIn) { _, signedIn in
-            if signedIn { accountOnboardingCompleted = true }
+            accountOnboardingCompleted = signedIn
         }
         .task {
             if account.isSignedIn { accountOnboardingCompleted = true }
@@ -53,7 +69,7 @@ struct ChatWindow: View {
         .tint(Palette.accent)
         .ignoresSafeArea(.container, edges: .top)
         .codyncDialog("Reset all data?", isPresented: Bindable(host).confirmsReset,
-                      message: "Signs out every account and deletes this Mac's bots, conversations, keys and settings. Codync then starts over from the welcome screen.") {
+                      message: "Signs out every account and deletes this Mac's sidekicks, conversations, keys and settings. Sidekicks then starts over from the welcome screen.") {
             [DialogAction("Reset everything", destructive: true) { Task { await host.resetAllData() } }]
         }
         // Approving a device: the code the device shows must match (spec §4.2 B).
@@ -117,75 +133,49 @@ private struct AccountWelcomeView: View {
     }
 
     private var content: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(spacing: 0) {
             Spacer(minLength: 24)
 
             WelcomeCrew(shown: beat >= 1)
                 .frame(maxWidth: .infinity)
 
-            Spacer(minLength: 24)
+            Color.clear.frame(height: 24)
 
-            WelcomeChatGlimpse(shown: beat >= 2)
-                .padding(.bottom, 24)
-
-            VStack(alignment: .leading, spacing: 10) {
-                Text("Your coding agents,\nas teammates.")
-                    .font(.system(size: 34, weight: .semibold))
+            VStack(spacing: 18) {
+                Text("Sidekicks")
+                    .font(.system(size: 56, weight: .semibold))
+                    .foregroundStyle(Palette.text)
+                Text("A little crew.\nA lot done.")
+                    .font(.system(size: 23, weight: .regular))
                     .tracking(-0.6)
                     .foregroundStyle(Palette.text)
                     .fixedSize(horizontal: false, vertical: true)
-                Text("Give each one a name and a project. They work on your computer while you're away.")
-                    .font(.body)
-                    .foregroundStyle(Palette.secondary)
             }
             .opacity(beat >= 3 ? 1 : 0)
             .offset(y: beat >= 3 ? 0 : 14)
 
-            Spacer(minLength: 32)
+            Color.clear.frame(height: 32)
 
             VStack(spacing: 10) {
-                Button(action: onContinue) {
-                    Text("Continue on this Mac")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, minHeight: 50)
-                }
-                .buttonStyle(.primary)
-
-                Button { onSignIn(.apple) } label: {
-                    ZStack {
-                        HStack(spacing: 10) {
-                            Image(systemName: "apple.logo").font(.system(size: 20))
-                            Text("Continue with Apple")
-                        }
-                        .opacity(isBusy ? 0 : 1)
-                        if isBusy { Spinner(size: 18) }
-                    }
-                    .font(.headline)
-                    .frame(maxWidth: .infinity, minHeight: 50)
-                }
-                .buttonStyle(.primary)
-                .disabled(!isConfigured || isBusy)
-
-                Button { onSignIn(.google) } label: {
-                    ZStack {
+                    Button {
+                        onSignIn(.google)
+                    } label: {
                         HStack(spacing: 10) {
                             Image("google")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 20, height: 20)
-                            Text("Continue with Google")
+                                .frame(width: 18, height: 18)
+                            Text(isBusy ? "Signing in…" : "Continue with Google")
                         }
-                        .opacity(isBusy ? 0 : 1)
-                        if isBusy { Spinner(size: 18) }
+                        .font(.system(size: 18))
+                        .frame(maxWidth: 360, minHeight: 44)
+                        .foregroundStyle(Palette.text)
+                        .background(Palette.bubbleUser, in: Capsule())
                     }
-                    .font(.headline)
-                    .frame(maxWidth: .infinity, minHeight: 50)
-                }
-                .buttonStyle(.secondary)
-                .disabled(!isConfigured || isBusy)
-
+                    .buttonStyle(.plain)
+                    .disabled(!isConfigured || isBusy)
                 if !isConfigured {
-                    Text("Sign-in isn't configured in this build. You can still use Codync on this Mac.")
+                    Text("Sign-in setup is unavailable. Please try again later.")
                         .font(.footnote)
                         .foregroundStyle(Palette.tertiary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -199,7 +189,9 @@ private struct AccountWelcomeView: View {
             }
             .opacity(beat >= 4 ? 1 : 0)
             .offset(y: beat >= 4 ? 0 : 14)
+            Spacer(minLength: 24)
         }
+        .multilineTextAlignment(.center)
         .padding(.horizontal, 24)
         .padding(.bottom, 12)
     }
@@ -216,6 +208,10 @@ private struct WelcomeCrew: View {
         ("teardrop", "violet", 58, 100, -46, .working),
         ("hex", "green", 48, -76, 64, .idle),
         ("cloud", "magenta", 52, 84, 58, .needsInput),
+        ("star", "orange", 44, -150, 40, .idle),
+        ("cat", "violet", 46, 148, 0, .idle),
+        ("flower", "green", 38, 38, -85, .idle),
+        ("ghost", "blue", 36, -40, -84, .idle),
     ]
 
     var body: some View {
@@ -225,14 +221,15 @@ private struct WelcomeCrew: View {
                 ForEach(members.indices, id: \.self) { index in
                     let member = members[index]
                     CharacterAvatar(shape: member.shape, color: member.color, size: member.size, mood: member.mood)
-                        .offset(x: member.x, y: member.y + (reduceMotion ? 0 : sin(time * 1.3 + Double(index) * 1.7) * 5))
+                        .rotationEffect(.degrees(reduceMotion ? 0 : sin(time * (0.7 + Double(index) * 0.08) + Double(index)) * 6))
+                        .offset(x: member.x + (reduceMotion ? 0 : cos(time * 0.65 + Double(index)) * 3), y: member.y + (reduceMotion ? 0 : sin(time * (0.9 + Double(index) * 0.09) + Double(index) * 1.7) * 5))
                         .scaleEffect(shown ? 1 : 0.3)
                         .opacity(shown ? 1 : 0)
                         .animation(.spring(duration: 0.7, bounce: 0.4).delay(Double(index) * 0.07), value: shown)
                 }
             }
         }
-        .frame(height: 170)
+        .frame(height: 220)
         .accessibilityHidden(true)
     }
 }
@@ -294,14 +291,14 @@ private extension ChatWindow {
             EmptyState(
                 icon: "desktopcomputer",
                 title: "Set up this Mac",
-                message: "Codync runs your coding agents through the host, a small background service on this Mac.",
+                message: "Sidekicks runs your coding agents through the host, a small background service on this Mac.",
                 action: ("Install host", host.install)
             )
         case .missingBinary:
             EmptyState(
                 icon: "desktopcomputer.trianglebadge.exclamationmark",
                 title: "The host is missing",
-                message: "This copy of Codync doesn't include codync-host. Download Codync again from codync.dev or GitHub."
+                message: "This copy of Sidekicks doesn't include codync-host. Download Sidekicks again from codync.dev or GitHub."
             )
         case .starting, .running:
             EmptyState(icon: "desktopcomputer", title: "Starting the host…", message: "This takes a few seconds.")
@@ -487,7 +484,7 @@ private struct ChatSplitView: View {
                 .overlay {
                     if visibleRoster.isEmpty && !compact {
                         VStack(spacing: 8) {
-                            Text(search.isEmpty ? "No bots yet" : "No matching bots")
+                            Text(search.isEmpty ? "No sidekicks yet" : "No matching sidekicks")
                                 .font(.system(size: 13, weight: .medium))
                             Text(search.isEmpty ? "Use + to start a new chat." : "Try another name or message.")
                                 .font(.system(size: 12)).foregroundStyle(Palette.secondary)
@@ -541,12 +538,12 @@ private struct ChatSplitView: View {
                             CharacterAvatar(shape: "squircle", color: "orange", size: 60)
                             CharacterAvatar(shape: "teardrop", color: "violet", size: 60, mood: .working)
                         }
-                        Text("Your coding agents, as teammates.").font(.title2.weight(.semibold))
-                        Text("Pick a bot, or create one for each kind of work and point it at a project.")
+                        Text("Your sidekicks, ready to build with you.").font(.title2.weight(.semibold))
+                        Text("Pick a sidekick, or create one for each kind of work and point it at a project.")
                             .foregroundStyle(Palette.secondary)
                             .multilineTextAlignment(.center)
                             .frame(maxWidth: 420)
-                        Button("New Bot") { compose() }
+                        Button("New Sidekick") { compose() }
                             .buttonStyle(.primary)
                             .disabled(onlineStores.isEmpty)
                     }
@@ -660,7 +657,7 @@ private struct ChatSplitView: View {
                 .keyboardShortcut("n")
                 .disabled(onlineStores.isEmpty)
                 .hidden()
-            Button("Search bots") {
+            Button("Search sidekicks") {
                 compact = false
                 searchFocused = true
             }
@@ -686,7 +683,7 @@ private struct ChatSplitView: View {
             set: { if !$0 { confirmDelete = nil } }
         ), message: "Files it changed on your computer stay as they are.") {
             guard let target = confirmDelete else { return [] }
-            return [DialogAction("Delete bot and its conversation", destructive: true) { target.store.delete(target.bot) }]
+            return [DialogAction("Delete sidekick and its conversation", destructive: true) { target.store.delete(target.bot) }]
         }
         .codyncDialog("Something went wrong", isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { clearErrors() } }),
                       message: errorMessage, cancel: "OK") { [] }
@@ -761,7 +758,7 @@ extension ChatSplitView {
             TextField("Search", text: $search)
                 .textFieldStyle(.plain)
                 .focused($searchFocused)
-                .accessibilityLabel("Search bots")
+                .accessibilityLabel("Search sidekicks")
                 .onKeyPress(.escape) {
                     search = ""
                     searchFocused = false
@@ -1081,14 +1078,13 @@ private struct SidebarAccountPanel: View {
             return [
                 Item(title: "Settings", icon: "chevron.left", action: { navigate("main") }),
                 Item(title: compact ? "Expand sidebar" : "Collapse sidebar", icon: "sidebar.left", action: onToggleSidebar),
-                Item(title: "Search bots", icon: "magnifyingglass", detail: "⌘F", action: onSearch)
+                Item(title: "Search sidekicks", icon: "magnifyingglass", detail: "⌘F", action: onSearch)
             ]
         default:
             return [
                 Item(title: "Usage", icon: "gauge.with.dots.needle.33percent", chevron: true, action: onUsage),
                 Item(title: "Computers & devices", icon: "desktopcomputer",
                      detail: approvals > 0 ? "\(approvals)" : nil, chevron: true, action: onComputers),
-                Item(title: "Get Codync for mobile", icon: "iphone", action: { open("https://apps.apple.com/app/id6760984418") }),
                 Item(title: "Support", icon: "book.closed", chevron: true, action: { navigate("support") }),
                 Item(title: "Settings", icon: "gearshape", action: { navigate("settings") }),
                 Item(title: updateVersion.map { "Update to \($0)" } ?? "Check for updates", icon: "arrow.down.circle",
@@ -1283,5 +1279,211 @@ private struct DesktopActionMenu: View {
         guard items.indices.contains(index) else { return }
         onDismiss()
         items[index].action()
+    }
+}
+
+
+/// First account setup; uses the same connection and authentication screens as settings.
+private struct DesktopSetupView: View {
+    @Environment(HostController.self) private var host
+    let finish: () -> Void
+    @State private var step = 0
+    @State private var checking = false
+    @State private var agentReady = false
+    @State private var selectedAgent = ""
+    @State private var error: String?
+    @State private var connections = false
+    @State private var computers = false
+    @State private var creating = false
+    @State private var connectedApps: [ComposioApp] = []
+
+    private var progressKey: String { "sidekicksDesktopSetupStep." + (host.accounts.accountId ?? "local") }
+    private var agentKey: String { progressKey + ".agent" }
+    private var agents: [Backend] {
+        (host.store?.hello?.backends ?? []).filter { $0.featured }
+    }
+    private var agentName: String { agents.first { $0.id == selectedAgent }?.name ?? "your agent" }
+    private var online: Bool { host.store?.connection == .online }
+    private let titles = ["Connect your computer", "Connect your coding agent", "Connect your apps", "Meet your first Sidekick"]
+    private let details = [
+        "Your Sidekicks run on your computer. Keep this Mac connected while they work.",
+        "Choose the coding agent you want to use, then connect its account. This is separate from your Sidekicks login.",
+        "Add GitHub, Slack, or other tools your Sidekicks can use. You can do this later in Connections.",
+        "Create a coding companion, then head to your dashboard."
+    ]
+
+    var body: some View {
+        VStack(spacing: 28) {
+            Image("SidekicksLogo")
+                .resizable().scaledToFit()
+                .frame(width: 88, height: 88)
+                .accessibilityHidden(true)
+            VStack(spacing: 12) {
+                HStack(spacing: 6) {
+                    ForEach(0..<4) { index in
+                        Capsule().fill(index <= step ? Palette.text : Palette.bubbleAgent)
+                            .frame(width: 28, height: 3)
+                    }
+                }.accessibilityLabel("Step \(step + 1) of 4")
+                Text(titles[step]).font(.system(size: 28, weight: .semibold))
+                Text(details[step])
+                    .font(.body).foregroundStyle(Palette.secondary)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: 380)
+            }
+            VStack(spacing: 16) {
+                if step == 0 {
+                    Label(online ? "This Mac is connected" : "Waiting for this Mac…", systemImage: online ? "checkmark.circle.fill" : "desktopcomputer")
+                        .foregroundStyle(Palette.secondary)
+                    if !online {
+                        Button("Manage computers") { computers = true }
+                            .buttonStyle(.plain).foregroundStyle(Palette.secondary)
+                    }
+                } else if step == 1 {
+                    HStack(spacing: 12) {
+                        AgentIcon(registry: agents.first { $0.id == selectedAgent }?.registry, size: 28)
+                        Picker("Coding agent", selection: $selectedAgent) {
+                            Text("Choose your agent").tag("")
+                            ForEach(agents) { agent in Text(agent.name).tag(agent.id) }
+                        }
+                        .pickerStyle(.menu).labelsHidden()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .disabled(checking)
+                    }
+                    .padding(16)
+                    .background(Palette.bubbleAgent, in: RoundedRectangle(cornerRadius: 14))
+                    Label(checking ? "Checking your account…" : (agentReady ? "\(agentName) is connected" : "Sign in with your coding-agent account"), systemImage: agentReady ? "checkmark.circle.fill" : "person.crop.circle")
+                        .font(.subheadline).foregroundStyle(Palette.secondary)
+                } else if step == 2 {
+                    if connectedApps.isEmpty {
+                        HStack(spacing: 18) {
+                            AppLogo(url: nil, name: "Slack", size: 36)
+                            AppLogo(url: nil, name: "GitHub", size: 36)
+                            AppLogo(url: nil, name: "HubSpot", size: 36)
+                        }.accessibilityLabel("Connect Slack, GitHub, HubSpot and more")
+                    } else {
+                        HStack(spacing: 18) {
+                            ForEach(connectedApps.prefix(6)) { app in
+                                VStack(spacing: 8) {
+                                    AppLogo(url: app.logo, name: app.name, size: 36)
+                                    Text(app.name).font(.caption).foregroundStyle(Palette.secondary)
+                                }
+                            }
+                        }
+                        Label("\(connectedApps.count) apps connected to your account", systemImage: "checkmark.circle.fill")
+                            .font(.subheadline).foregroundStyle(Palette.secondary)
+                    }
+                }
+                if let error {
+                    Text(error).font(.subheadline).foregroundStyle(Palette.danger)
+                        .multilineTextAlignment(.center)
+                }
+            }
+            VStack(spacing: 14) {
+                Button(primaryTitle) { primaryAction() }
+                    .buttonStyle(.primary)
+                    .disabled(!online || checking || creating || (step == 1 && selectedAgent.isEmpty))
+                HStack {
+                    if step > 0 {
+                        Button("Back") { error = nil; step -= 1 }
+                            .buttonStyle(.plain)
+                    }
+                    Spacer()
+                    if step == 2 {
+                        Button(connectedApps.isEmpty ? "Skip for now" : "Manage apps") {
+                            if connectedApps.isEmpty { step = 3 } else { connections = true }
+                        }.buttonStyle(.plain)
+                    } else if step == 3 {
+                        Button("Go to dashboard") { finish() }.buttonStyle(.plain)
+                    }
+                }
+                .font(.subheadline).foregroundStyle(Palette.secondary)
+            }
+        }
+        .padding(40)
+        .frame(maxWidth: 480)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .codyncSheet(isPresented: $computers) { ComputersView() }
+        .codyncSheet(isPresented: $connections) {
+            if let store = host.store { MarketplaceView(initialAgent: step == 1 ? agents.first { $0.id == selectedAgent } : nil).environment(store) }
+        }
+        .onChange(of: connections) { _, shown in
+            if !shown && step == 1 { Task { await checkAgent() } }
+            if !shown && step == 2 { Task { await loadConnectedApps() } }
+        }
+        .onChange(of: selectedAgent) { _, value in
+            agentReady = false
+            error = nil
+            UserDefaults.standard.set(value, forKey: agentKey)
+            Task { await checkAgent() }
+        }
+        .task {
+            selectedAgent = UserDefaults.standard.string(forKey: agentKey) ?? ""
+            step = min(3, max(0, UserDefaults.standard.integer(forKey: progressKey)))
+            if step > 1 && selectedAgent.isEmpty { step = 1 }
+            if step == 2 { await loadConnectedApps() }
+        }
+        .onChange(of: step) { _, value in
+            UserDefaults.standard.set(value, forKey: progressKey)
+            error = nil
+            if value == 1 { Task { await checkAgent() } }
+            if value == 2 { Task { await loadConnectedApps() } }
+        }
+    }
+
+    private var primaryTitle: String {
+        switch step {
+        case 0: "Continue"
+        case 1: checking ? "Checking…" : (agentReady ? "Continue" : "Connect \(agentName)")
+        case 2: connectedApps.isEmpty ? "Connect apps" : "Continue"
+        default: creating ? "Creating…" : "Create my Sidekick"
+        }
+    }
+
+    private func primaryAction() {
+        switch step {
+        case 0: step = 1
+        case 1:
+            if agentReady { step = 2 } else { connections = true }
+        case 2:
+            if connectedApps.isEmpty { connections = true } else { step = 3 }
+        default: Task { await createSidekick() }
+        }
+    }
+
+    private func loadConnectedApps() async {
+        connectedApps = []
+        guard let client = host.store?.client else { return }
+        do {
+            connectedApps = try await client.composioApps(search: "").filter { $0.connected }
+        } catch {
+            self.error = "Couldn’t load your connected apps. Try opening Connect apps again."
+        }
+    }
+
+    private func checkAgent() async {
+        guard !selectedAgent.isEmpty, !checking, let store = host.store, let client = store.client else { return }
+        checking = true
+        error = nil
+        defer { checking = false }
+        do {
+            let auth = try await client.agentAuth(selectedAgent)
+            agentReady = auth.signedIn == true
+
+        } catch {
+            agentReady = false
+            self.error = error.localizedDescription
+        }
+    }
+
+    private func createSidekick() async {
+        guard let store = host.store else { return }
+        creating = true
+        defer { creating = false }
+        do {
+            let bot = try await store.save(BotDraft(backend: selectedAgent))
+            host.accounts.selection = BotReference(accountId: host.accounts.accountId, computerId: store.computer.id, botId: bot.id)
+            finish()
+        } catch { self.error = error.localizedDescription }
     }
 }

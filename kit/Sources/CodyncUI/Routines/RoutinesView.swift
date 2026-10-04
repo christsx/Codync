@@ -66,7 +66,7 @@ struct RoutinesView: View {
     private var listing: some View {
         VStack(alignment: .leading, spacing: 0) {
             if routines.isEmpty {
-                Text(loaded ? "No routines yet. Ask the bot for one, or set it up yourself with +." : "Loading routines…")
+                Text(loaded ? "No routines yet. Ask the sidekick for one, or set it up yourself with +." : "Loading routines…")
                     .font(.caption)
                     .foregroundStyle(Palette.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -116,7 +116,7 @@ struct RoutinesView: View {
     }
 
     private var askInChat: some View {
-        IconButton("Ask the bot for a routine", systemImage: "text.bubble") {
+        IconButton("Ask the sidekick for a routine", systemImage: "text.bubble") {
             edit("I want a routine that ")
         }
         .disabled(model.isOffline)

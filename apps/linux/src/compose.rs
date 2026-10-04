@@ -215,12 +215,12 @@ pub fn render(ui: &App) {
             .insert_child_after(&chip, p.to.prev_sibling().as_ref());
     }
     p.to.set_placeholder_text(Some(if picked.is_empty() {
-        "Search or create bots"
+        "Search or create sidekicks"
     } else {
-        "Add another bot"
+        "Add another sidekick"
     }));
     p.draft.set_placeholder_text(Some(&match picked.len() {
-        0 => "Message Bot".to_owned(),
+        0 => "Message Sidekick".to_owned(),
         _ => format!(
             "Message {}",
             picked
@@ -248,7 +248,7 @@ pub fn render(ui: &App) {
     let create_row = pick_row(
         &plus_box,
         &if q.is_empty() {
-            "Create new Bot".to_owned()
+            "Create new Sidekick".to_owned()
         } else {
             format!("Create “{q}”")
         },

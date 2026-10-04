@@ -92,7 +92,7 @@ struct AccountSwitcherView: View {
         .navigationDestination(isPresented: $showSettings) { SettingsView(pushed: true) }
         .codyncSheet(isPresented: $pairing) { PairingView(inModal: true) }
         .codyncDialog("Sign out of \(account.email ?? "this account")?", isPresented: $confirmSignOut,
-                      message: "This iPhone forgets the account's computers. Your bots stay on them.") {
+                      message: "This iPhone forgets the account's computers. Your sidekicks stay on them.") {
             [DialogAction("Sign out", destructive: true) { Task { await app.signOut() } }]
         }
     }
@@ -181,7 +181,7 @@ struct GoogleSignInButton: View {
                 if account.isBusy { Spinner(size: 18) }
             }
             .font(.headline)
-            .frame(maxWidth: .infinity, minHeight: 50)
+            .frame(maxWidth: .infinity, minHeight: 22)
         }
         .buttonStyle(.secondary)
         .disabled(account.isBusy)

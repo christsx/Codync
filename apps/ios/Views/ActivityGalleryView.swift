@@ -36,7 +36,7 @@ struct ActivityGalleryView: View {
                         .font(.subheadline.weight(.medium))
                     Text(island
                          ? "The Dynamic Island shows the same Live Activity as the Lock Screen, so this switch turns off both."
-                         : "Starts when you send a task from this iPhone. Follow its progress, then open the conversation when your bot needs you.")
+                         : "Starts when you send a task from this iPhone. Follow its progress, then open the conversation when your sidekick needs you.")
                         .font(.footnote).foregroundStyle(Palette.secondary)
                     if !allowed {
                         Text("Live Activities are turned off in iOS Settings.")
@@ -72,7 +72,7 @@ struct ActivityGalleryView: View {
                 VStack(alignment: .leading, spacing: 14) {
                     ForEach(forms, id: \.self) { explanation($0) }
                 }
-                Text("iOS chooses the presentation based on your device and other active tasks. These previews don't start a Live Activity. Approvals are handled inside Codync.")
+                Text("iOS chooses the presentation based on your device and other active tasks. These previews don't start a Live Activity. Approvals are handled inside Sidekicks.")
                     .font(.footnote).foregroundStyle(Palette.secondary)
             }
             .padding(18).frame(maxWidth: 560).frame(maxWidth: .infinity)
@@ -88,8 +88,8 @@ struct ActivityGalleryView: View {
 
     private func explanation(_ form: BotActivityPreview.Form) -> some View {
         let detail = switch form {
-        case .lockScreen: "The bot, its current step and a thinking orb. Tap it to return to the conversation."
-        case .compact: "The bot and a thinking orb beside the camera. The orb becomes a check or warning when the task ends."
+        case .lockScreen: "The sidekick, its current step and a thinking orb. Tap it to return to the conversation."
+        case .compact: "The sidekick and a thinking orb beside the camera. The orb becomes a check or warning when the task ends."
         case .minimal: "Just the orb when iOS displays multiple Live Activities."
         case .expanded: "Touch and hold the Dynamic Island for the current step. Tap to open the conversation."
         }
@@ -106,7 +106,7 @@ struct LockWidgetGalleryView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
-                ChoicePicker(selection: $kind, options: [("bots", "Bots"), ("usage", "Usage limits")])
+                ChoicePicker(selection: $kind, options: [("bots", "Sidekicks"), ("usage", "Usage limits")])
                 Text("Sample data").font(.caption).foregroundStyle(Palette.secondary)
                 ForEach(AccessoryWidgetCard.Family.allCases, id: \.self) { family in
                     VStack(alignment: .leading, spacing: 10) {
@@ -120,9 +120,9 @@ struct LockWidgetGalleryView: View {
                             .environment(\.colorScheme, .dark)
                     }
                 }
-                Text("Touch and hold your Lock Screen → Customize → Lock Screen. Tap the widget area and choose Codync. Inline widgets go in the date row above the clock.")
+                Text("Touch and hold your Lock Screen → Customize → Lock Screen. Tap the widget area and choose Sidekicks. Inline widgets go in the date row above the clock.")
                     .font(.footnote).foregroundStyle(Palette.secondary)
-                Text("Choose Bots for task status or Usage limits for the highest reported limit. iOS applies your Lock Screen's color and style.")
+                Text("Choose Sidekicks for task status or Usage limits for the highest reported limit. iOS applies your Lock Screen's color and style.")
                     .font(.footnote).foregroundStyle(Palette.secondary)
             }
             .padding(18).frame(maxWidth: 560).frame(maxWidth: .infinity)

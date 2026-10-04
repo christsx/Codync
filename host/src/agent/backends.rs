@@ -538,7 +538,7 @@ pub fn list() -> Vec<Value> {
             "available": registry::launch_kind(a).is_some(),
             "path": null,
             "description": a["description"],
-            "installHint": format!("Codync installs it automatically. Sign in to {} on this computer first if it needs an account.", a["name"].as_str().unwrap_or(id)),
+            "installHint": format!("Sidekicks installs it automatically. Sign in to {} on this computer first if it needs an account.", a["name"].as_str().unwrap_or(id)),
             "signedIn": signed_in(id),
             "command": "",
             "registry": id,

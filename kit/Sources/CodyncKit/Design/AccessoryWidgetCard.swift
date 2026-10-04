@@ -25,7 +25,7 @@ public struct AccessoryWidgetCard: View {
     }
     private var headline: String {
         guard paired else { return "Connect a computer" }
-        if kind == .bots { return bots.isEmpty ? "No bots yet" : "\(count) \(botLabel)" }
+        if kind == .bots { return bots.isEmpty ? "No sidekicks yet" : "\(count) \(botLabel)" }
         return top.map { "\($0.name) \(Int($0.window.percent.rounded()))%" } ?? "No usage yet"
     }
 

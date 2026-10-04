@@ -15,11 +15,9 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use std::time::Duration;
 
-const API: &str = "https://backend.composio.dev/api/v3.1";
 const TIMEOUT: Duration = Duration::from_secs(30);
 /// Connector ids for Composio apps: `composio-<toolkit slug>`.
 pub const PREFIX: &str = "composio-";
-const SLOT: &str = "composio";
 pub const KEY_URL: &str = "https://platform.composio.dev";
 
 pub const INSTRUCTIONS: &str = "Act in the user's connected apps through Composio. Find a tool with \
@@ -56,20 +54,41 @@ impl Connection {
     }
 }
 
+const MANAGED_SLOT: &str = "composio.managed";
+const CLOUD_PREFIX: &str = "sidekicks-cloud:";
+
+/// Non-secret connection cache. The project credential lives only on the cloud.
+pub fn configure_managed(hub: &crate::hub::Hub) -> Result<()> {
+    let state = hub.cloud.status();
+    let Some(owner) = state.owner.filter(|_| state.connected) else {
+        hub.store.kv_set(MANAGED_SLOT, "")?;
+        return Ok(());
+    };
+    let Some(base) = crate::remote::cloud::url(&hub.store) else {
+        return Ok(());
+    };
+    let key = format!("{CLOUD_PREFIX}{base}");
+    let user_id = format!("sidekicks-{}-{}", owner.user_id, hub.identity.computer_id());
+    let existing = load(&hub.store)?;
+    if existing.as_ref().is_none_or(|c| c.key != key || c.user_id != user_id) {
+        save(&hub.store, &Config { key, user_id, connections: vec![] })?;
+    }
+    Ok(())
+}
+
 fn load(store: &Store) -> Result<Option<Config>> {
-    let Some(raw) = super::vault::read(store, SLOT)?.filter(|s| !s.is_empty()) else {
+    let Some(raw) = store.kv_read(MANAGED_SLOT)?.filter(|s| !s.is_empty()) else {
         return Ok(None);
     };
-    let c: Config = serde_json::from_str(&raw)?;
-    Ok((!c.key.is_empty()).then_some(c))
+    Ok(Some(serde_json::from_str(&raw)?))
 }
 
 fn save(store: &Store, c: &Config) -> Result<()> {
-    super::vault::write(store, SLOT, &serde_json::to_string(c)?)
+    store.kv_set(MANAGED_SLOT, &serde_json::to_string(c)?)
 }
 
 fn config(store: &Store) -> Result<Config> {
-    load(store)?.ok_or_else(|| anyhow!("Set up Composio in Marketplace first."))
+    load(store)?.ok_or_else(|| anyhow!("Sign in to Sidekicks and connect this computer to use apps."))
 }
 
 /// Cached connected apps (possibly stale; `refresh` updates them).
@@ -84,18 +103,28 @@ async fn request(
     query: &[(&str, &str)],
     body: Option<&Value>,
 ) -> Result<Value> {
-    let url = reqwest::Url::parse_with_params(&format!("{API}{path}"), query)?;
-    let mut req = crate::http().request(method.clone(), url).header("x-api-key", key).timeout(TIMEOUT);
-    if let Some(body) = body {
-        req = req.json(body);
-    }
+    let base = key.strip_prefix(CLOUD_PREFIX).context("Apps require the Sidekicks connection service")?;
+    let identity = crate::remote::identity::Identity::load(&crate::service::data_dir())?
+        .context("Connect this computer to Sidekicks first")?;
+    let query: Vec<Value> = query.iter().map(|(k, v)| json!([k, v])).collect();
+    let payload = json!({"method": method.as_str(), "path": path, "query": query, "body": body});
+    let bytes = serde_json::to_vec(&payload)?;
+    let route = "/v1/host/apps/request";
+    let authority = crate::remote::cloud::authority(base)?;
+    let signature = identity.sign_request("POST", &authority, route, &bytes);
+    let req = crate::http()
+        .post(format!("{base}{route}"))
+        .header("Codync-Sig", signature)
+        .header("content-type", "application/json")
+        .body(bytes)
+        .timeout(TIMEOUT);
     let res = req.send().await.with_context(|| format!("can't reach Composio ({method} {path})"))?;
     let status = res.status();
     let text = res.text().await.unwrap_or_default();
     let v: Value = serde_json::from_str(&text).unwrap_or(Value::Null);
     if !status.is_success() {
         if status.as_u16() == 401 {
-            bail!("Composio did not accept the API key. Reconnect in Marketplace.");
+            bail!("Sign in to Sidekicks again to reconnect your apps.");
         }
         bail!("Composio request failed ({status}). Check the connection and try again.");
     }
@@ -138,26 +167,9 @@ pub fn status(store: &Store) -> Result<Value> {
     Ok(json!({"configured": load(store)?.is_some(), "keyUrl": KEY_URL}))
 }
 
-/// Checks the key with Composio, then keeps it. An empty key forgets Composio.
-pub async fn set_key(store: &Store, key: &str) -> Result<Value> {
-    let key = key.trim();
-    if key.is_empty() {
-        let _guard = store.connector_lock.lock().map_err(|_| anyhow!("connector storage is busy"))?;
-        super::vault::write(store, SLOT, "")?;
-        return status(store);
-    }
-    get(key, "/toolkits", &[("limit", "1")]).await?;
-    {
-        let _guard = store.connector_lock.lock().map_err(|_| anyhow!("connector storage is busy"))?;
-        let mut c = load(store)?.unwrap_or_default();
-        key.clone_into(&mut c.key);
-        if c.user_id.is_empty() {
-            c.user_id = format!("codync-{}", uuid::Uuid::new_v4());
-        }
-        save(store, &c)?;
-    }
-    refresh(store).await?;
-    status(store)
+/// Developer keys are never accepted by a client. Kept for old-client compatibility.
+pub fn set_key(_store: &Store, _key: &str) -> Result<Value> {
+    bail!("Apps are managed by Sidekicks. Sign in, then choose Connect for an app.")
 }
 
 /// Re-reads this computer's connected accounts from Composio.
@@ -310,7 +322,7 @@ async fn managed_auth_config(key: &str, slug: &str) -> Result<String> {
     let v = post(
         key,
         "/auth_configs",
-        &json!({"toolkit": {"slug": slug}, "auth_config": {"type": "use_composio_managed_auth", "name": format!("Codync {slug}")}}),
+        &json!({"toolkit": {"slug": slug}, "auth_config": {"type": "use_composio_managed_auth", "name": format!("Sidekicks {slug}")}}),
     )
     .await?;
     text(&v["auth_config"]["id"])
@@ -339,7 +351,7 @@ pub async fn connect_with_fields(
     let config = post(
         &c.key,
         "/auth_configs",
-        &json!({"toolkit": {"slug": slug}, "auth_config": {"type": "use_custom_auth", "authScheme": mode, "name": format!("Codync {slug}")}}),
+        &json!({"toolkit": {"slug": slug}, "auth_config": {"type": "use_custom_auth", "authScheme": mode, "name": format!("Sidekicks {slug}")}}),
     )
     .await?;
     let config = text(&config["auth_config"]["id"])
@@ -518,7 +530,7 @@ mod tests {
         let store = Store::open(std::path::Path::new(":memory:")).unwrap();
         let old = Config { key: "old-key".into(), user_id: "user".into(), connections: vec![] };
         save(&store, &old).unwrap();
-        super::super::vault::write(&store, SLOT, "").unwrap();
+        store.kv_set(MANAGED_SLOT, "").unwrap();
         assert!(save_refresh(&store, &old).is_err());
         assert!(load(&store).unwrap().is_none());
         let new = Config { key: "new-key".into(), ..old.clone() };

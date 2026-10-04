@@ -9,6 +9,8 @@ import type { ComputerRelay } from "./relay";
 export { ComputerRelay } from "./relay";
 
 export interface Env {
+  COMPOSIO_API_KEY?: string;
+  APPS_LIMITER?: RateLimit;
   DB: D1Database;
   RELAY: DurableObjectNamespace<ComputerRelay>;
   /** Workers Rate Limiting binding for new computer registrations. */
@@ -51,6 +53,7 @@ const routes: [string, RegExp, Handler][] = [
   ["GET", new RegExp(`^/v1/access-requests/${ID}$`), api.getAccessRequest],
   ["POST", new RegExp(`^/v1/access-requests/${ID}/reveal$`), api.revealAccessRequest],
   ["DELETE", new RegExp(`^/v1/access-requests/${ID}$`), api.cancelAccessRequest],
+  ["POST", /^\/v1\/host\/apps\/request$/, api.hostAppsRequest],
   ["POST", /^\/v1\/host\/register$/, api.hostRegister],
   ["GET", /^\/v1\/host\/state$/, api.hostState],
   ["POST", /^\/v1\/host\/screen-ice$/, api.hostScreenIce],

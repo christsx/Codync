@@ -40,15 +40,22 @@ pub fn editor(ui: &App, bot: Option<Value>) {
             "name": "", "description": "", "permission": "ask", "model": null, "command": null, "cwd": "",
             "avatarShape": avatar::SHAPES[n % avatar::SHAPES.len()],
             "avatarColor": avatar::COLORS[n % avatar::COLORS.len()].0,
-            "backend": backends.iter().find(|b| b["available"] == true).and_then(|b| b["id"].as_str()).unwrap_or("claude"),
+            "backend": backends.iter().find(|b| b["id"] == "codex" && b["available"] == true).or_else(|| backends.iter().find(|b| b["available"] == true)).and_then(|b| b["id"].as_str()).unwrap_or("codex"),
         })
     })));
 
     if d.borrow()["managedWorkspace"] == true {
         d.borrow_mut()["cwd"] = "".into();
     }
-    let (dialog, view, header) =
-        header_dialog(if is_new { "New Bot" } else { "Edit Bot" }, 560, 720);
+    let (dialog, view, header) = header_dialog(
+        if is_new {
+            "New Sidekick"
+        } else {
+            "Edit Sidekick"
+        },
+        560,
+        720,
+    );
     let save = gtk::Button::builder()
         .icon_name("object-select-symbolic")
         .tooltip_text(if is_new { "Create" } else { "Save" })
@@ -321,7 +328,7 @@ pub fn editor(ui: &App, bot: Option<Value>) {
     perms.add(&notify);
     let computer = adw::SwitchRow::builder()
         .title("Use the computer")
-        .subtitle("Let this bot see the screen and use the mouse and keyboard (needs Remote screen in Settings).")
+        .subtitle("Let this sidekick see the screen and use the mouse and keyboard (needs Remote screen in Settings).")
         .active(d.borrow()["computer"].as_bool().unwrap_or(false))
         .build();
     perms.add(&computer);
@@ -424,7 +431,7 @@ pub fn group_editor(ui: &App, group: Option<Value>) {
     let preview = gtk::Box::builder().halign(gtk::Align::Center).build();
     body.append(&preview);
 
-    let bots_label = field_label("Bots");
+    let bots_label = field_label("Sidekicks");
     let chips = gtk::Box::builder().spacing(6).build();
     let chips_scroll = gtk::ScrolledWindow::builder()
         .child(&chips)
@@ -445,7 +452,7 @@ pub fn group_editor(ui: &App, group: Option<Value>) {
     bots_field.append(&search);
     bots_field.append(&candidates);
     let help = label(
-        "Everyone answers in turn unless you @mention someone. Each bot works in its own folder with its own tools.",
+        "Everyone answers in turn unless you @mention someone. Each sidekick works in its own folder with its own tools.",
         &["footnote", "tertiary"],
     );
     help.set_wrap(true);
@@ -559,7 +566,7 @@ pub fn group_editor(ui: &App, group: Option<Value>) {
                     false,
                 ));
             }
-            bots_label.set_label(&format!("Bots · {}", m.len()));
+            bots_label.set_label(&format!("Sidekicks · {}", m.len()));
             ui::clear(&chips);
             chips_scroll.set_visible(!m.is_empty());
             for id in &m {
@@ -569,9 +576,9 @@ pub fn group_editor(ui: &App, group: Option<Value>) {
                 }
             }
             search.set_placeholder_text(Some(if m.is_empty() {
-                "Search bots"
+                "Search sidekicks"
             } else {
-                "Add another bot"
+                "Add another sidekick"
             }));
             let q = search.text().trim().to_lowercase();
             ui::clear(&candidates);
@@ -815,14 +822,14 @@ fn confirm_delete(ui: &App, id: &str, name: &str, group: bool) {
         ui,
         &format!("Delete {name}?"),
         if group {
-            "The group chat is removed. Its bots stay."
+            "The group chat is removed. Its sidekicks stay."
         } else {
             "Files it changed on your computer stay as they are."
         },
         if group {
             "Delete group chat"
         } else {
-            "Delete bot and its conversation"
+            "Delete sidekick and its conversation"
         },
         true,
         move || client::call("deleteBot", json!({"botId": id}), |_| {}),
@@ -1206,7 +1213,7 @@ pub fn account_menu(ui: &App, anchor: &gtk::Button) {
         .chevron(),
         MenuItem::new(
             "phone-symbolic",
-            "Get Codync for mobile",
+            "Get Sidekicks for mobile",
             open("https://apps.apple.com/app/id6760984418"),
         ),
         MenuItem::new(
@@ -1275,7 +1282,7 @@ fn usage_sheet(ui: &App) {
 fn remote_screen_group() -> adw::PreferencesGroup {
     let group = adw::PreferencesGroup::builder()
         .title("Remote screen")
-        .description("See and control this computer from your iPhone, and let bots use it. The first time, your desktop asks you to allow screen sharing.")
+        .description("See and control this computer from your iPhone, and let sidekicks use it. The first time, your desktop asks you to allow screen sharing.")
         .build();
     let row = adw::SwitchRow::builder()
         .title("Allow remote screen")
@@ -1331,7 +1338,7 @@ fn remote_screen_group() -> adw::PreferencesGroup {
 fn host_updates_group(ui: &App) -> adw::PreferencesGroup {
     let group = adw::PreferencesGroup::builder()
         .title("Host updates")
-        .description("Automatic updates wait until this computer's bots are idle.")
+        .description("Automatic updates wait until this computer's sidekicks are idle.")
         .build();
     let status = adw::ActionRow::builder()
         .title("Checking update settings…")
@@ -1371,7 +1378,7 @@ fn host_updates_group(ui: &App) -> adw::PreferencesGroup {
                 match value["method"].as_str() {
                     Some("homebrew") => "Update with brew upgrade leepokai/codync/codync-host",
                     Some("development") => "Rebuild this development installation to update it.",
-                    Some("appBundle") => "Update the Codync Mac app to update its bundled host.",
+                    Some("appBundle") => "Update the Sidekicks Mac app to update its bundled host.",
                     _ => value["state"]["error"].as_str().unwrap_or_else(|| {
                         match value["state"]["phase"].as_str() {
                             Some("complete") => "Update installed and host restarted.",
@@ -1503,7 +1510,7 @@ pub fn settings(ui: &App) {
     page.add(&credentials);
     let pair = adw::PreferencesGroup::builder()
         .title("Pair your iPhone")
-        .description("Scan with the Codync app or the iPhone Camera.")
+        .description("Scan with the Sidekicks app or the iPhone Camera.")
         .build();
     let qr_area = gtk::DrawingArea::builder()
         .content_width(220)
@@ -1617,9 +1624,9 @@ pub fn settings(ui: &App) {
 /// Shown when the host isn't running: offer to install/start it.
 pub fn host_missing(ui: &App) {
     let status = adw::StatusPage::builder()
-        .title("Start the Codync host")
+        .title("Start the Sidekicks host")
         .description(
-            "Codync runs your coding agents through a small background service on this computer.",
+            "Sidekicks runs your coding agents through a small background service on this computer.",
         )
         .icon_name("computer-symbolic")
         .build();
@@ -1629,7 +1636,7 @@ pub fn host_missing(ui: &App) {
         .halign(gtk::Align::Center)
         .build();
     status.set_child(Some(&btn));
-    let (dialog, view, _) = header_dialog("Codync", 460, 420);
+    let (dialog, view, _) = header_dialog("Sidekicks", 460, 420);
     view.set_content(Some(&status));
     let (ui2, dialog2) = (ui.clone(), dialog.clone());
     btn.connect_clicked(move |b| {

@@ -194,9 +194,9 @@ pub async fn start(store: &Store, port: u16, id: &str, callback: Callback) -> Re
     let app = app_uri(store);
     let redirect_uri = match callback {
         Callback::Host => loopback_uri(port),
-        Callback::App => app
-            .clone()
-            .ok_or_else(|| anyhow!("The Codync cloud is off on this computer, so sign in from the computer itself."))?,
+        Callback::App => app.clone().ok_or_else(|| {
+            anyhow!("The Sidekicks cloud is off on this computer, so sign in from the computer itself.")
+        })?,
     };
 
     let resource = resource_metadata(&url).await;
@@ -220,7 +220,7 @@ pub async fn start(store: &Store, port: u16, id: &str, callback: Callback) -> Re
         let res = crate::http()
             .post(&register)
             .json(&json!({
-                "client_name": "Codync",
+                "client_name": "Sidekicks",
                 "redirect_uris": wanted,
                 "grant_types": ["authorization_code", "refresh_token"],
                 "response_types": ["code"],
