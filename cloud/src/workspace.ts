@@ -38,7 +38,7 @@ export async function workspace(c: Ctx, userId: string) {
       sandbox = await provider<Sandbox>("/sandbox", "POST", {
         name, snapshot: c.env.DAYTONA_SNAPSHOT, public: false,
         autoStopInterval: 30, autoArchiveInterval: 10080, autoDeleteInterval: -1,
-        envVars: {
+        env: {
           CODYNC_CLOUD_URL: c.url.origin, CODYNC_HOME: "/home/daytona/.codync",
           NPM_CONFIG_PREFIX: "/home/daytona/.local",
           PATH: "/home/daytona/.local/bin:/usr/local/bin:/usr/bin:/bin",

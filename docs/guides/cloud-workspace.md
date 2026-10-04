@@ -21,9 +21,9 @@ must be installed and authenticated in the new workspace before it can run tasks
 
 ## Activation and remaining verification
 
-This is implemented locally, not activated in TestFlight build 25. Snapshot
+The backend is deployed; TestFlight build 25 does not include this setup. Snapshot
 `sidekicks-host-2-3-1-v4` was built in the Personal Daytona organization.
-Before release:
+Release checklist:
 
 1. Build a Daytona snapshot from `packaging/workspace/Dockerfile`, with only `host`
    and `packaging/workspace` plus `packaging/updates/host-public-key.txt` in a
@@ -62,5 +62,18 @@ Shared Swift clients gain cloud provisioning without changing existing routing.
 - The smoke sandbox has a 10-minute TTL and automatic deletion on stop. No user
   credentials were copied in, and its pairing offer was not printed or shared.
 
-Server activation, full mobile pairing, coding-agent authentication, an actual
-agent task with the laptop offline, and a new TestFlight upload remain pending.
+The server key was created with Sandboxes permissions and saved only as a Worker
+secret. The existing three active pilot accounts are enabled through the
+`WORKSPACE_USERS` secret; additional pilot accounts must be enrolled explicitly.
+Migration `0002_workspaces.sql` was applied to the remote D1 database. Worker
+deployment `6c0c459a-da3a-4317-98c4-437cb1d78caa` passed a health check and rejects
+anonymous workspace creation with HTTP 401.
+
+The new server key passed a real REST creation/start/toolbox/pairing test. This
+test found that Daytona's raw REST payload uses `env`, while its SDK uses
+`envVars`. The backend now sends `env`; the corrected live pairing offer points
+to the Sidekicks backend. Regression coverage checks that payload explicitly.
+
+Build 26 was archived successfully. Full mobile pairing, coding-agent
+authentication, an actual agent task with the laptop offline, and visual review
+still need verification in TestFlight.

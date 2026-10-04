@@ -37,7 +37,8 @@ describe("Cloud Workspace access", () => {
         const input = JSON.parse(init.body as string);
         expect(input.public).toBe(false);
         expect(input.autoDeleteInterval).toBe(-1);
-        expect(input.envVars).not.toHaveProperty("DAYTONA_API_KEY");
+        expect(input.env).not.toHaveProperty("DAYTONA_API_KEY");
+        expect(input.env.CODYNC_CLOUD_URL).toBe("https://cloud.test");
         saved = true;
       } else if (!saved) return new Response(null, { status: 404 });
       return Response.json({ id: "sandbox_one", state: "pending_build" });
