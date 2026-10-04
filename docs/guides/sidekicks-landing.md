@@ -27,3 +27,7 @@ The landing page now uses the x.ai/bot page as a layout reference: compact
 centered title, pill actions, a prominent app preview, and simple feature panels.
 The characters retain orange, purple, and blue colors. The website change does
 not alter native app onboarding or TestFlight build 28.
+
+### Dashboard preview and motion
+
+The landing preview reproduces the desktop welcome dashboard: connected-computer header, search sidebar, Marketplace and Account footer, three-character welcome roster, and New Sidekick action. The action populates example sidebar entries without creating real sidekicks. All canvas avatars animate at a consistent pace while visible, pause in hidden tabs or offscreen, and respect reduced-motion preferences. This website-only preview does not change native clients.

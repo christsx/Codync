@@ -6,11 +6,13 @@ import { BotAvatar, type BotAvatarType } from "bot-avatars";
 import {
   ArrowDown,
   ArrowRight,
-  Check,
   Cloud,
   Desktop,
   GithubLogo,
-  PaperPlaneTilt,
+  MagnifyingGlass,
+  SquaresFour,
+  CaretDown,
+  UserCircle,
   Plus,
   ShieldCheck,
 } from "@phosphor-icons/react";
@@ -92,18 +94,18 @@ function Avatar({
         color={color}
         size={size}
         shading="fabric"
-        saturation={(type === "clover" || type === "flower") ? 1.6 : 1.15}
-        brightness={(type === "clover" || type === "flower") ? 1.05 : 1}
-        shadow={(type === "clover" || type === "flower") ? 0.6 : 1.15}
-        lightFront={(type === "clover" || type === "flower") ? 45 : 32}
-        highlight={(type === "clover" || type === "flower") ? 1.7 : 1.45}
-        shine={(type === "clover" || type === "flower") ? 0.3 : 0}
+        saturation={type === "clover" || type === "flower" ? 1.6 : 1.15}
+        brightness={type === "clover" || type === "flower" ? 1.05 : 1}
+        shadow={type === "clover" || type === "flower" ? 0.6 : 1.15}
+        lightFront={type === "clover" || type === "flower" ? 45 : 32}
+        highlight={type === "clover" || type === "flower" ? 1.7 : 1.45}
+        shine={type === "clover" || type === "flower" ? 0.3 : 0}
         furDensity={0.65}
         paused={!active}
-        speed={expressive || size >= 80 ? 0.85 : 0.35}
-        seed={expressive ? 0.4 : 0}
-        turn={expressive || size >= 80 ? 1 : 0.3}
-        jumpEvery={expressive || size >= 80 ? 8 : 0}
+        speed={0.85}
+        seed={expressive ? 0.4 : Math.min(size / 120, 0.9)}
+        turn={1}
+        jumpEvery={8}
         interactive={size >= 80}
         theme="dark"
         whirl={0}
@@ -113,8 +115,7 @@ function Avatar({
 }
 
 export default function SidekicksLanding() {
-  const [selected, setSelected] = useState(0);
-  const pal = crew[selected];
+  const [dashboardStarted, setDashboardStarted] = useState(false);
   return (
     <>
       <header className="site-header">
@@ -162,87 +163,72 @@ export default function SidekicksLanding() {
           aria-label="Interactive product preview"
         >
           <Reveal>
-            <div className="app-window">
-              <div className="window-top">
-                <div className="traffic">
-                  <i />
-                  <i />
-                  <i />
+            <div className="desktop-dashboard">
+              <aside className="desktop-sidebar">
+                <div className="desktop-sidebar-top">
+                  <div className="traffic">
+                    <i />
+                    <i />
+                    <i />
+                  </div>
+                  <span>
+                    1 connected <CaretDown size={12} />
+                  </span>
+                  <button
+                    aria-label="New Sidekick"
+                    onClick={() => setDashboardStarted(true)}
+                  >
+                    <Plus size={20} />
+                  </button>
                 </div>
-                <span>Sidekicks</span>
-                <span className="preview-label">PRODUCT PREVIEW</span>
-              </div>
-              <div className="app-body">
-                <aside className="app-sidebar">
-                  <div className="workspace-label">
-                    <Avatar type="clover" color="#f58632" size={28} />
-                    Your workspace
-                  </div>
-                  <div className="sidebar-heading">
-                    SIDEKICKS <Plus size={13} />
-                  </div>
-                  <div role="tablist" aria-label="Choose a Sidekick">
-                    {crew.map((member, i) => (
-                      <button
-                        key={member.name}
-                        role="tab"
-                        id={`pal-tab-${i}`}
-                        aria-controls="pal-panel"
-                        aria-selected={selected === i}
-                        onClick={() => setSelected(i)}
-                        className={`pal-row ${selected === i ? "selected" : ""}`}
-                      >
-                        <Avatar {...member} size={43} />
+                <div className="desktop-search">
+                  <MagnifyingGlass size={17} />
+                  <span>Search</span>
+                </div>
+                <div className="desktop-sidekicks">
+                  {dashboardStarted ? (
+                    crew.map((member) => (
+                      <div className="desktop-member" key={member.name}>
+                        <Avatar {...member} size={40} />
                         <span>
-                          <strong>{member.name}</strong>
+                          {member.name}
                           <small>{member.role}</small>
                         </span>
-                        <span className="online-dot" />
-                      </button>
-                    ))}
-                  </div>
-                  <div className="sidebar-bottom">
-                    <Cloud size={15} /> Cloud Workspace{" "}
-                    <span className="online-dot" />
-                  </div>
-                </aside>
-                <div
-                  className="chat-demo"
-                  role="tabpanel"
-                  id="pal-panel"
-                  aria-labelledby={`pal-tab-${selected}`}
-                >
-                  <div className="chat-heading">
-                    <span>{pal.name}</span>
-                    <span className="ready">
-                      <span className="status-dot" /> Ready
-                    </span>
-                  </div>
-                  <div className="chat-content" key={selected}>
-                    <div className="chat-date">TODAY</div>
-                    <div className="user-message">{pal.task}</div>
-                    <div className="agent-message">
-                      <Avatar {...pal} size={46} />
-                      <div>
-                        <strong>{pal.name}</strong>
-                        <p>{pal.reply}</p>
-                        <div className="review-pill">
-                          <Check size={13} /> Changes ready to review
-                        </div>
                       </div>
+                    ))
+                  ) : (
+                    <div className="desktop-empty">
+                      <strong>No sidekicks yet</strong>
+                      <p>Use + to start a new chat.</p>
                     </div>
-                  </div>
-                  <div className="demo-composer">
-                    <Plus size={17} />
-                    <span>Message {pal.name}…</span>
-                    <span className="send-icon">
-                      <PaperPlaneTilt size={16} weight="fill" />
-                    </span>
-                  </div>
-                  <p className="demo-note">
-                    A glimpse of your crew. Click a Sidekick to explore.
-                  </p>
+                  )}
                 </div>
+                <div className="desktop-sidebar-footer">
+                  <span>
+                    <SquaresFour size={20} /> Marketplace
+                  </span>
+                  <span>
+                    <UserCircle size={24} /> Account
+                  </span>
+                </div>
+              </aside>
+              <div className="desktop-welcome">
+                <div className="desktop-roster">
+                  <Avatar type="blob" color="#70bce3" size={70} />
+                  <Avatar type="square" color="#f58632" size={70} />
+                  <Avatar type="drop" color="#a78be8" size={70} />
+                </div>
+                <h2>Your sidekicks, ready to build with you.</h2>
+                <p>
+                  Pick a sidekick, or create one for each kind of work and point
+                  it at a project.
+                </p>
+                <button
+                  className="button primary"
+                  onClick={() => setDashboardStarted(!dashboardStarted)}
+                >
+                  {dashboardStarted ? "Reset preview" : "New Sidekick"}
+                </button>
               </div>
             </div>
           </Reveal>
