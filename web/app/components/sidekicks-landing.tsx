@@ -52,11 +52,13 @@ function Avatar({
   color,
   size = 64,
   animated = true,
+  expressive = false,
 }: {
   type: BotAvatarType;
   color: string;
   size?: number;
   animated?: boolean;
+  expressive?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
@@ -98,9 +100,10 @@ function Avatar({
         shine={(type === "clover" || type === "flower") ? 0.3 : 0}
         furDensity={0.65}
         paused={!active}
-        speed={size >= 80 ? 0.7 : 0.35}
-        turn={size >= 80 ? 1 : 0.3}
-        jumpEvery={size >= 80 ? 8 : 0}
+        speed={expressive || size >= 80 ? 0.85 : 0.35}
+        seed={expressive ? 0.4 : 0}
+        turn={expressive || size >= 80 ? 1 : 0.3}
+        jumpEvery={expressive || size >= 80 ? 8 : 0}
         interactive={size >= 80}
         theme="dark"
         whirl={0}
@@ -117,7 +120,7 @@ export default function SidekicksLanding() {
       <header className="site-header">
         <nav className="site-nav" aria-label="Main navigation">
           <a href="#" className="wordmark">
-            <Avatar type="clover" color="#f58632" size={36} />
+            <Avatar type="clover" color="#f58632" size={36} expressive />
             Sidekicks<span className="beta">BETA</span>
           </a>
           <div className="nav-links">
