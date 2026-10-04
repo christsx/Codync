@@ -1,6 +1,6 @@
 # Sidekicks private mobile pilot QA — 2026-10-03
 
-Status: not ready for TestFlight upload. Local fixes have not been merged or deployed.
+Status: build 2.3.1 (24) uploaded and processed in TestFlight; internal pilot group configured with the account holder. Build 25 is being prepared with the corrected Sidekicks iOS icon. Changes are pushed on the pilot branch, not merged. External testing and live functional QA remain incomplete.
 
 ## Verified
 
@@ -36,3 +36,11 @@ Unsigned simulator sign-in reproduced Keychain -34018 and Clerk fallback-endpoin
 Christian Garcia team 9S7MDN3QVL is signed into Xcode. Replaced upstream-only iOS bundle IDs with com.christsx.Sidekicks.ios and its two extension IDs, and replaced the App Group with group.com.christsx.Sidekicks in every participating target and SharedStore. Shared Swift tests passed (73). Signed Release archive succeeded at /tmp/sidekicks-testflight.xcarchive; App Store Connect distribution export succeeded at /tmp/sidekicks-testflight-ipa/Sidekicks.ipa. Version 2.3.1, build 24. These temporary local artifacts should be preserved outside /tmp if retained long term.
 
 The earlier missing-account blocker is resolved. Upload and tester distribution are still pending App Store Connect browser login and creation/verification of the Sidekicks app record. No build uploaded. Native Apple sign-in and the own-team APNs relay remain unverified. Signing configuration changes are pushed on codex/sidekicks-testflight.
+
+## Follow-up: TestFlight upload and pilot setup
+
+Created App Store Connect app 6818920368, named Sidekicks - AI Employees (the plain Sidekicks store name was unavailable). iOS home-screen name remains Sidekicks. Upload of 2.3.1 (24) succeeded and Apple processing completed. Created Sidekicks Internal Pilot with manual build distribution, added the account holder, assigned build 24, and saved beta description, feedback contact and What to Test instructions. External beta review/contact details and tester emails remain pending.
+
+Deployed the tested cloud relay-presence fix to sidekicks-cloud-dev; Worker version e0e33ab3-af75-4ad0-9459-af9d1a7daaa1. Live /v1/health returned ok. Uploaded build has a non-blocking missing WebRTC dSYM warning, limiting symbols for that framework.
+
+User spotted the upstream iOS icon in build 24. Replaced it with the existing desktop furry-orange mascot, packaged as an opaque 1024x1024 iOS icon using scripts/design/package-ios-icon.swift; raised build number to 25. Icon-only iOS packaging change: desktop, Linux and TUI rendering are unaffected.
