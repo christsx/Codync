@@ -391,9 +391,7 @@ export default function SidekicksLanding() {
             {[
               ["slack", "Slack"],
               ["github", "GitHub"],
-              ["notion", "Notion"],
               ["linear", "Linear"],
-              ["hubspot", "HubSpot"],
             ].map(([logo, name]) => (
               <div key={name}>
                 <Image
