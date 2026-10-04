@@ -21,8 +21,8 @@ const crew = [
   {
     name: "Codex",
     role: "Coding agent",
-    type: "clover" as BotAvatarType,
-    color: "#ff52ad",
+    type: "flower" as BotAvatarType,
+    color: "#f65baa",
     task: "Polish the onboarding flow",
     reply:
       "The onboarding is simpler now. I tightened the spacing, cleaned up the buttons, and kept the dark theme. Ready for your review.",
@@ -31,7 +31,7 @@ const crew = [
     name: "Claude Code",
     role: "Coding agent",
     type: "star" as BotAvatarType,
-    color: "#a48cda",
+    color: "#a78be8",
     task: "Give the homepage a little personality",
     reply:
       "A quieter layout, a warmer palette, and a little movement. I put together a fresh direction for the homepage. Take a look.",
@@ -40,7 +40,7 @@ const crew = [
     name: "Cursor",
     role: "Coding agent",
     type: "blob" as BotAvatarType,
-    color: "#72b1d5",
+    color: "#70bce3",
     task: "Help me plan the next release",
     reply:
       "I drafted a release checklist with the remaining fixes and review steps. You can choose what to tackle first.",
@@ -90,12 +90,12 @@ function Avatar({
         color={color}
         size={size}
         shading="fabric"
-        saturation={type === "clover" ? 1.6 : 1.15}
-        brightness={type === "clover" ? 1.05 : 1}
-        shadow={type === "clover" ? 0.6 : 1.15}
-        lightFront={type === "clover" ? 45 : 32}
-        highlight={type === "clover" ? 1.7 : 1.45}
-        shine={type === "clover" ? 0.3 : 0}
+        saturation={(type === "clover" || type === "flower") ? 1.6 : 1.15}
+        brightness={(type === "clover" || type === "flower") ? 1.05 : 1}
+        shadow={(type === "clover" || type === "flower") ? 0.6 : 1.15}
+        lightFront={(type === "clover" || type === "flower") ? 45 : 32}
+        highlight={(type === "clover" || type === "flower") ? 1.7 : 1.45}
+        shine={(type === "clover" || type === "flower") ? 0.3 : 0}
         furDensity={0.65}
         paused={!active}
         speed={0.35}
