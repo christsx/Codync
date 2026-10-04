@@ -12,6 +12,14 @@ export const metadata: Metadata = {
     description: "A little crew. A lot done.",
     url: "https://usesidekicks.com",
     siteName: "Sidekicks",
+    type: "website",
+    images: [{ url: "/sidekicks/share-preview.png", width: 1200, height: 630, alt: "Sidekicks — Your work companions" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sidekicks — Your work companions",
+    description: "Your coding agents, together in one native app.",
+    images: ["/sidekicks/share-preview.png"],
   },
   icons: { icon: "/sidekicks/pink-icon.png", apple: "/sidekicks/pink-icon.png" },
 };
