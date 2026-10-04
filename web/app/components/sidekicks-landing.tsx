@@ -90,9 +90,12 @@ function Avatar({
         color={color}
         size={size}
         shading="fabric"
-        saturation={type === "clover" ? 1.5 : 1.15}
-        brightness={type === "clover" ? 1.08 : 1}
-        shadow={type === "clover" ? 0.65 : 1.15}
+        saturation={type === "clover" ? 1.85 : 1.15}
+        brightness={type === "clover" ? 1.15 : 1}
+        shadow={type === "clover" ? 0.3 : 1.15}
+        lightFront={type === "clover" ? 60 : 32}
+        highlight={type === "clover" ? 1.7 : 1.45}
+        shine={type === "clover" ? 0.3 : 0}
         furDensity={0.65}
         paused={!active}
         speed={0.55}
