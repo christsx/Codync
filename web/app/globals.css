@@ -1476,3 +1476,153 @@ summary {
     gap: 4px;
   }
 }
+
+.workflow-lines {
+  margin-top: 45px;
+}
+.workflow-lines article {
+  display: flex;
+  gap: 38px;
+  padding: 30px 0;
+  border-top: 1px solid #ffffff12;
+}
+.workflow-lines article > span {
+  color: #777;
+  font-size: 12px;
+  padding-top: 5px;
+}
+.workflow-lines h3 {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0 0 9px;
+  letter-spacing: -0.5px;
+}
+.workflow-lines p {
+  color: #999;
+  font-size: 15px;
+  max-width: 620px;
+  line-height: 1.6;
+  margin: 0;
+}
+.product-conversation {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 30px 16px;
+}
+.product-chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.product-chat-header > span {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+}
+.product-chat-header small {
+  color: #777;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+.product-chat-body {
+  flex: 1;
+  padding: 38px 0 20px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.product-request {
+  background: #222;
+  border-radius: 16px 16px 4px 16px;
+  padding: 15px 18px;
+  max-width: 85%;
+  margin-left: auto;
+}
+.product-response {
+  display: flex;
+  gap: 12px;
+  margin-top: 30px;
+}
+.product-response > div {
+  flex: 1;
+}
+.product-response strong {
+  font-weight: 500;
+}
+.product-response p {
+  color: #aaa;
+  margin: 8px 0 16px;
+}
+.product-change {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  background: #151515;
+  padding: 10px 12px;
+  margin-top: 5px;
+  border-radius: 7px;
+  font-size: 11px;
+}
+.product-change small {
+  color: #91b69a;
+  white-space: nowrap;
+}
+.product-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #777;
+  background: #1c1c1c;
+  padding: 14px;
+  border-radius: 14px;
+  font-size: 12px;
+}
+.product-input span {
+  flex: 1;
+}
+.preview-reset {
+  background: none;
+  border: 0;
+  color: #777;
+  font-size: 10px;
+  margin-top: 12px;
+  cursor: pointer;
+  align-self: center;
+}
+.everywhere-card {
+  background: transparent;
+}
+.tools-section h2 {
+  font-size: 38px;
+}
+@media (max-width: 650px) {
+  .product-conversation {
+    padding: 16px 12px;
+  }
+  .product-chat-header small {
+    display: none;
+  }
+  .product-chat-body {
+    font-size: 11px;
+    padding-top: 22px;
+  }
+  .product-request {
+    max-width: 100%;
+    padding: 12px;
+  }
+  .product-response {
+    gap: 5px;
+  }
+  .product-change {
+    font-size: 9px;
+    padding: 8px 5px;
+  }
+  .workflow-lines article {
+    gap: 20px;
+  }
+}
+
+.product-response > .avatar { flex: none; }

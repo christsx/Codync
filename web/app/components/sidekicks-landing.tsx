@@ -14,7 +14,6 @@ import {
   CaretDown,
   UserCircle,
   Plus,
-  ShieldCheck,
 } from "@phosphor-icons/react";
 import Reveal from "./reveal";
 import { GITHUB } from "../links";
@@ -53,7 +52,7 @@ function Avatar({
   type,
   color,
   size = 64,
-  animated = true,
+  animated = false,
   expressive = false,
 }: {
   type: BotAvatarType;
@@ -115,13 +114,13 @@ function Avatar({
 }
 
 export default function SidekicksLanding() {
-  const [dashboardStarted, setDashboardStarted] = useState(false);
+  const [dashboardStarted, setDashboardStarted] = useState(true);
   return (
     <>
       <header className="site-header">
         <nav className="site-nav" aria-label="Main navigation">
           <a href="#" className="wordmark">
-            <Avatar type="clover" color="#f58632" size={36} expressive />
+            <Avatar type="clover" color="#f58632" size={36} />
             Sidekicks<span className="beta">BETA</span>
           </a>
           <div className="nav-links">
@@ -212,24 +211,71 @@ export default function SidekicksLanding() {
                   </span>
                 </div>
               </aside>
-              <div className="desktop-welcome">
-                <div className="desktop-roster">
-                  <Avatar type="blob" color="#70bce3" size={70} />
-                  <Avatar type="square" color="#f58632" size={70} />
-                  <Avatar type="drop" color="#a78be8" size={70} />
+              {dashboardStarted ? (
+                <div className="product-conversation">
+                  <div className="product-chat-header">
+                    <span>
+                      <Avatar {...crew[0]} size={30} /> Codex
+                    </span>
+                    <small>EXAMPLE CONVERSATION</small>
+                  </div>
+                  <div className="product-chat-body">
+                    <div className="product-request">
+                      Simplify onboarding. Keep account connections optional and
+                      take people straight to their workspace.
+                    </div>
+                    <div className="product-response">
+                      <Avatar {...crew[0]} size={35} />
+                      <div>
+                        <strong>Codex</strong>
+                        <p>
+                          I’ve shortened the flow to two steps and added a skip
+                          option for connections.
+                        </p>
+                        <div className="product-change">
+                          <span>OnboardingView.swift</span>
+                          <small>+24 −61</small>
+                        </div>
+                        <div className="product-change">
+                          <span>AccountConnections.swift</span>
+                          <small>+12 −8</small>
+                        </div>
+                        <p className="product-result">Ready for your review.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="product-input">
+                    <Plus size={16} />
+                    <span>Message Codex…</span>
+                    <ArrowRight size={16} />
+                  </div>
+                  <button
+                    className="preview-reset"
+                    onClick={() => setDashboardStarted(false)}
+                  >
+                    View welcome screen
+                  </button>
                 </div>
-                <h2>Your sidekicks, ready to build with you.</h2>
-                <p>
-                  Pick a sidekick, or create one for each kind of work and point
-                  it at a project.
-                </p>
-                <button
-                  className="button primary"
-                  onClick={() => setDashboardStarted(!dashboardStarted)}
-                >
-                  {dashboardStarted ? "Reset preview" : "New Sidekick"}
-                </button>
-              </div>
+              ) : (
+                <div className="desktop-welcome">
+                  <div className="desktop-roster">
+                    <Avatar type="blob" color="#70bce3" size={70} />
+                    <Avatar type="square" color="#f58632" size={70} />
+                    <Avatar type="drop" color="#a78be8" size={70} />
+                  </div>
+                  <h2>Your sidekicks, ready to build with you.</h2>
+                  <p>
+                    Pick a sidekick, or create one for each kind of work and
+                    point it at a project.
+                  </p>
+                  <button
+                    className="button primary"
+                    onClick={() => setDashboardStarted(true)}
+                  >
+                    Explore a conversation
+                  </button>
+                </div>
+              )}
             </div>
           </Reveal>
         </section>
@@ -237,7 +283,7 @@ export default function SidekicksLanding() {
           className="agent-strip container"
           aria-label="Choose your coding agent"
         >
-          <p>Your favorite agents. A little more personal.</p>
+          <p>Works with the coding agents you already use.</p>
           <div>
             {[
               ["openai", "Codex"],
@@ -260,81 +306,54 @@ export default function SidekicksLanding() {
         <section className="workflow-section container" id="workflow">
           <Reveal>
             <div className="section-heading">
-              <h2>Give your agents a place to work.</h2>
+              <h2>Less switching. More building.</h2>
               <p>
-                One conversation for each Sidekick. A clear view of what’s
-                happening.
-                <br />
-                Your favorite agents, with a little more personality.
+                Your agents, conversations, and account connections in one app.
               </p>
             </div>
           </Reveal>
-          <div className="feature-grid">
-            <Reveal>
-              <article className="feature-panel">
-                <div className="feature-visual">
-                  <Avatar {...crew[0]} size={104} />
-                </div>
-                <h3>Start with a conversation</h3>
+          <div className="workflow-lines">
+            <article>
+              <span>01</span>
+              <div>
+                <h3>Give each task its own space.</h3>
                 <p>
-                  Ask for a feature, hand off a fix, or work through an idea.
-                  Keep the task and its updates in the same chat.
+                  Keep a feature, a fix, and a review in separate conversations.
+                  Pick the coding agent for each one.
                 </p>
-                <div className="mini-message">
-                  Can you clean up the onboarding?
-                  <ArrowRight size={15} />
-                </div>
-              </article>
-            </Reveal>
-            <Reveal delay={0.06}>
-              <article className="feature-panel">
-                <div className="feature-visual feature-pair">
-                  <Avatar {...crew[1]} size={98} />
-                  <Avatar {...crew[2]} size={98} />
-                </div>
-                <h3>Make room for more work</h3>
+              </div>
+            </article>
+            <article>
+              <span>02</span>
+              <div>
+                <h3>See the work. Decide what’s next.</h3>
                 <p>
-                  Create separate Sidekicks for different tasks. Choose the
-                  agents you want and keep their conversations organized.
+                  Follow progress and review permission requests in the same
+                  conversation.
                 </p>
-                <div className="mini-status">
-                  <span className="status-dot" /> Coding{" "}
-                  <span className="status-dot" /> Reviewing{" "}
-                  <span className="status-dot" /> Planning
-                </div>
-              </article>
-            </Reveal>
-            <Reveal>
-              <article className="feature-panel compact">
-                <ShieldCheck size={29} />
-                <h3>Stay in control</h3>
+              </div>
+            </article>
+            <article>
+              <span>03</span>
+              <div>
+                <h3>Choose where it runs.</h3>
                 <p>
-                  Review requests and approve actions when your agent needs
-                  permission. See the work before deciding what comes next.
+                  Work on your computer, or use a Cloud Workspace in the private
+                  beta.
                 </p>
-              </article>
-            </Reveal>
-            <Reveal delay={0.06}>
-              <article className="feature-panel compact">
-                <Cloud size={29} />
-                <h3>Choose where work runs</h3>
-                <p>
-                  Use your own computer, or a separate Cloud Workspace in the
-                  private beta. Your workspace belongs to your account.
-                </p>
-              </article>
-            </Reveal>
+              </div>
+            </article>
           </div>
         </section>
         <section className="everywhere-section container">
           <Reveal>
             <div className="everywhere-card">
               <div>
-                <span className="eyebrow">YOUR CREW, WITH YOU</span>
+                <span className="eyebrow">MAC + IPHONE</span>
                 <h2>
-                  Big ideas.
+                  Step away.
                   <br />
-                  Small screen.
+                  Stay in the loop.
                 </h2>
                 <p>
                   Start on your Mac. Check in from your iPhone.
@@ -375,11 +394,7 @@ export default function SidekicksLanding() {
         <section className="tools-section container">
           <div>
             <span className="eyebrow">AT HOME IN YOUR WORKFLOW</span>
-            <h2>
-              Your tools.
-              <br />
-              Meet your crew.
-            </h2>
+            <h2>Bring your tools.</h2>
             <p>
               Connect the apps you already work in.
               <br />
@@ -443,12 +458,8 @@ export default function SidekicksLanding() {
         <section className="download-section container" id="download">
           <Avatar type="clover" color="#f58632" size={106} />
           <span className="eyebrow">LET’S MAKE SOMETHING</span>
-          <h2>
-            Your next idea
-            <br />
-            deserves a Sidekick.
-          </h2>
-          <p>Same tools. A friendlier way to work.</p>
+          <h2>Make room for your next project.</h2>
+          <p>Sidekicks for Mac. iPhone access in the private beta.</p>
           <a href={`${GITHUB}/releases`} className="button primary">
             <Desktop size={19} /> View Mac releases <ArrowRight size={16} />
           </a>
