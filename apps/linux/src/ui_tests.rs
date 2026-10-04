@@ -200,7 +200,7 @@ fn native_ui_flows() {
     crate::manage::routines(&ui, "bot");
     let routines = ui.window.visible_dialog().unwrap();
     wait(|| text(&routines, "No routines yet"));
-    click(&routines, "Ask the bot for a routine");
+    click(&routines, "Ask the sidekick for a routine");
     wait(|| ui.window.visible_dialog().is_none());
     let buf = ui.compose.view.buffer();
     assert!(

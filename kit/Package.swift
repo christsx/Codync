@@ -9,6 +9,7 @@ let package = Package(
         .library(name: "CodyncUI", targets: ["CodyncUI"]),
     ],
     dependencies: [
+        .package(path: "../packages/bot-avatars/ports/ios/BotAvatarsKit"),
         // libwebrtc for the remote screen viewer (hardware H.264 over WebRTC).
         .package(url: "https://github.com/stasel/WebRTC.git", exact: "153.0.0"),
         // Terminal emulator for agent install and sign-in. 1.19+ adds a build-tool
@@ -16,7 +17,7 @@ let package = Package(
         .package(url: "https://github.com/migueldeicaza/SwiftTerm.git", exact: "1.18.0"),
     ],
     targets: [
-        .target(name: "CodyncKit", resources: [.copy("Resources/ThirdPartyNotices"), .process("Resources/ProviderIcons.xcassets")]),
+        .target(name: "CodyncKit", dependencies: [.product(name: "BotAvatarsKit", package: "BotAvatarsKit")], resources: [.copy("Resources/ThirdPartyNotices"), .process("Resources/ProviderIcons.xcassets")]),
         .target(
             name: "CodyncUI",
             dependencies: [

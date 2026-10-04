@@ -216,6 +216,7 @@ public struct ThreadView: View {
                 .background(Palette.background)
             }
         #endif
+        .clipShape(RoundedRectangle(cornerRadius: 16))
         .readingConversation(botId)
         .codyncSheet(isPresented: $showTrace) {
             TraceView(botId: botId)
@@ -450,7 +451,7 @@ public struct ThreadView: View {
             openRoutine(nil)
         })
         items.append(MenuItem("New session", icon: "arrow.counterclockwise") { confirmNewSession = true })
-        items.append(MenuItem("Delete bot", icon: "trash", destructive: true, divider: true) { confirmDelete = bot })
+        items.append(MenuItem("Delete sidekick", icon: "trash", destructive: true, divider: true) { confirmDelete = bot })
         return items
     }
 }
@@ -519,7 +520,7 @@ private struct GroupIntroCard: View {
                     .foregroundStyle(Palette.secondary)
                     .multilineTextAlignment(.center)
             }
-            Text("Everyone answers in turn. @mention a bot to ask just that one. Each bot works in its own folder.")
+            Text("Everyone answers in turn. @mention a sidekick to ask just that one. Each sidekick works in its own folder.")
                 .font(.footnote)
                 .foregroundStyle(Palette.tertiary)
                 .multilineTextAlignment(.center)
@@ -539,7 +540,7 @@ private struct GroupMembersList: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 2) {
-                Text("\(group.members.count) bots").font(.system(size: 13, weight: .semibold)).padding(.bottom, 6)
+                Text("\(group.members.count) sidekicks").font(.system(size: 13, weight: .semibold)).padding(.bottom, 6)
                 ForEach(model.members(of: group)) { bot in
                     Button { model.selection = bot.id } label: {
                         HStack(spacing: 10) {
@@ -620,7 +621,7 @@ private struct DetailsPanel: View {
                 } else {
                     panelTitle("Details")
                     Spacer()
-                    IconButton("Bot settings", systemImage: "gearshape") { setEditing(true) }
+                    IconButton("Sidekick settings", systemImage: "gearshape") { setEditing(true) }
                 }
                 IconButton("Close details", systemImage: "chevron.right.2", action: close)
                     .keyboardShortcut("i", modifiers: [.command, .option])
@@ -717,7 +718,7 @@ private struct DetailsPanel: View {
                 Label(bot.managedWorkspace ? "Workspace" : "Project folder", systemImage: "folder")
                     .font(.system(size: 11))
                     .foregroundStyle(Palette.secondary)
-                Text(bot.managedWorkspace ? "Personal · managed by Codync" : bot.cwd)
+                Text(bot.managedWorkspace ? "Personal · managed by Sidekicks" : bot.cwd)
                     .font(.system(size: 11))
                     .foregroundStyle(Palette.text)
                     .fixedSize(horizontal: false, vertical: true)
@@ -748,7 +749,7 @@ private struct DetailsPanel: View {
         guard let screen = model.screen, screen.enabled else { return "Remote screen is off" }
         guard screen.connected else { return "Connecting to computer…" }
         guard screen.capture else { return "Screen recording permission needed" }
-        return screen.agentBot == botId ? "This bot is using your Mac" : "Ready to connect"
+        return screen.agentBot == botId ? "This sidekick is using your Mac" : "Ready to connect"
     }
 }
 #endif

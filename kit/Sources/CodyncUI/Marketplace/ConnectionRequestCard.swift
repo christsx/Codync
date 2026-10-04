@@ -26,7 +26,7 @@ struct ConnectionRequestCard: View {
                         .plainTextInput()
                     SecureField("Password or op:// reference", text: $value)
                         .plainTextInput()
-                    Text("Saved securely on this computer. The bot types it into the sign-in page but never sees it.")
+                    Text("Saved securely on this computer. The sidekick types it into the sign-in page but never sees it.")
                         .font(.caption).foregroundStyle(Palette.secondary)
                 } else if request.kind == "secret" {
                     Text("\(request.field ?? "Credential") · \(request.location ?? "")")
@@ -135,7 +135,7 @@ struct CredentialsView: View {
                     if status?.onePasswordConnected == true {
                         Button("Disconnect") { save("") }.buttonStyle(SecondaryButtonStyle()).disabled(busy)
                     }
-                    Text("Use op://vault/item/field in a connector's credential field. Codync retrieves the value when the connector runs.")
+                    Text("Use op://vault/item/field in a connector's credential field. Sidekicks retrieves the value when the connector runs.")
                         .font(.footnote).foregroundStyle(Palette.secondary)
                 }
                 if busy { Spinner() }

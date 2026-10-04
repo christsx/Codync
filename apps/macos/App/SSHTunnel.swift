@@ -39,7 +39,7 @@ enum SSH {
         }
         if let user = p.user, !matches(user, #"^[A-Za-z_][A-Za-z0-9._-]*$"#) { return "That user name isn't valid." }
         if let port = p.port, !(1...65535).contains(port) { return "The SSH port must be between 1 and 65535." }
-        if !(1...65535).contains(p.remotePort) { return "The Codync port must be between 1 and 65535." }
+        if !(1...65535).contains(p.remotePort) { return "The Sidekicks port must be between 1 and 65535." }
         if let file = p.identityFile {
             var isDir: ObjCBool = false
             guard file.hasPrefix("/"), FileManager.default.fileExists(atPath: file, isDirectory: &isDir), !isDir.boolValue else {
@@ -484,7 +484,7 @@ final class SSHComputers {
                 // Only plain host keys can be compared: a `@cert-authority` key is never what keyscan returns.
                 let pinned = await recordedKeys(resolved.knownHostsName, certAuthorities: false)
                 if !current.isEmpty, !pinned.isEmpty, current.isDisjoint(with: pinned) {
-                    return .stop(.failed("The host key of \(profile.host) changed. This can mean someone is intercepting the connection. Codync won't connect until the old key is removed from known_hosts."))
+                    return .stop(.failed("The host key of \(profile.host) changed. This can mean someone is intercepting the connection. Sidekicks won't connect until the old key is removed from known_hosts."))
                 }
             }
             return .retry("SSH couldn't connect to \(profile.host). \(result.detail)")
@@ -569,7 +569,7 @@ final class SSHComputers {
     }
 
     private static func signInRefused(_ profile: SSHProfile) -> String {
-        "\(profile.host) refused the key. Codync signs in with an SSH key (ssh-agent or the key file) and can't type a password or passphrase; make `ssh \(profile.host)` work in Terminal without prompting, then connect again."
+        "\(profile.host) refused the key. Sidekicks signs in with an SSH key (ssh-agent or the key file) and can't type a password or passphrase; make `ssh \(profile.host)` work in Terminal without prompting, then connect again."
     }
 
     private func recordedKeys(_ name: String, certAuthorities: Bool = true) async -> Set<String> {

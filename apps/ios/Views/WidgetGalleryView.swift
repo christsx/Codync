@@ -40,9 +40,9 @@ struct WidgetGalleryView: View {
                         .frame(width: 58, height: 58)
                         .background(Palette.bubbleUser, in: RoundedRectangle(cornerRadius: 16))
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Codync, at a glance.")
+                        Text("Sidekicks, at a glance.")
                             .font(.title3.weight(.semibold)).tracking(-0.4)
-                        Text("Your bots and usage, on every surface.")
+                        Text("Your sidekicks and usage, on every surface.")
                             .font(.footnote).foregroundStyle(Palette.secondary)
                     }
                 }
@@ -55,7 +55,7 @@ struct WidgetGalleryView: View {
                     VStack(spacing: 0) {
                         setupRow("Connect a computer", complete: !accounts.computers.isEmpty)
                         Rectangle().fill(Palette.border).frame(height: 0.5).padding(.leading, 42)
-                        setupRow("Add a Codync widget", complete: hasWidget == true,
+                        setupRow("Add a Sidekicks widget", complete: hasWidget == true,
                                  status: hasWidget == nil ? (widgetCheckFailed ? "Unable to check" : "Checking") : nil)
                     }
                     .background(Palette.surface, in: RoundedRectangle(cornerRadius: 18))
@@ -125,7 +125,7 @@ struct WidgetGalleryView: View {
                     sectionLabel("Add a widget")
                     WidgetSetupDemo()
                 }
-                Text("Widgets show the latest report. Open Codync for live updates and approvals.")
+                Text("Widgets show the latest report. Open Sidekicks for live updates and approvals.")
                     .font(.caption2).foregroundStyle(Palette.tertiary)
             }
             .padding(18)
@@ -145,12 +145,12 @@ struct WidgetGalleryView: View {
 
     private enum Page: Hashable { case lockScreen }
 
-    private static let kinds: [(id: String, label: String)] = [("usage", "Provider usage"), ("bots", "Bots")]
+    private static let kinds: [(id: String, label: String)] = [("usage", "Provider usage"), ("bots", "Sidekicks")]
 
     private var previewDescription: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text("\(size.capitalized) widget").font(.subheadline.weight(.medium))
-            Text(kind == "usage" ? "Small shows the tightest limit. Medium shows two windows. Large adds a summary and up to four limits." : "See who needs you and who's still working. Large shows up to six bots.")
+            Text(kind == "usage" ? "Small shows the tightest limit. Medium shows two windows. Large adds a summary and up to four limits." : "See who needs you and who's still working. Large shows up to six sidekicks.")
                 .font(.caption).foregroundStyle(Palette.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -193,7 +193,7 @@ struct WidgetGalleryView: View {
         let animation = Motion.reduced(Motion.layout, reduceMotion)
         withAnimation(animation) { widgetCheckFailed = false }
         WidgetCenter.shared.getCurrentConfigurations { result in
-            let installed = (try? result.get())?.contains { $0.kind.hasPrefix("Codync") }
+            let installed = (try? result.get())?.contains { $0.kind.hasPrefix("Sidekicks") }
             Task { @MainActor in
                 withAnimation(animation) {
                     hasWidget = installed

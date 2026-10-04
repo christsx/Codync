@@ -61,7 +61,7 @@ fn load_memory(ui: &App, bot: &str, list: &gtk::Box) {
         let facts = v["facts"].as_array().cloned().unwrap_or_default();
         if facts.is_empty() {
             list.append(&label(
-                "Nothing yet. The bot remembers as you chat.",
+                "Nothing yet. The sidekick remembers as you chat.",
                 &["secondary"],
             ));
         }
@@ -117,7 +117,10 @@ pub fn routines(ui: &App, bot: &str) {
     let (window, body) = dialog(ui, "Routines");
     let actions = gtk::Box::new(gtk::Orientation::Horizontal, 8);
     let add = icon_button("list-add-symbolic", "Set up a routine");
-    let ask = icon_button("chat-message-new-symbolic", "Ask the bot for a routine");
+    let ask = icon_button(
+        "chat-message-new-symbolic",
+        "Ask the sidekick for a routine",
+    );
     let refresh = icon_button("view-refresh-symbolic", "Refresh routines");
     actions.append(&add);
     actions.append(&ask);
@@ -154,7 +157,7 @@ fn load_routines(ui: &App, bot: &str, list: &gtk::Box) {
         let items = v["routines"].as_array().cloned().unwrap_or_default();
         if items.is_empty() {
             let empty = label(
-                "No routines yet. Ask the bot for one, or set it up yourself with +.",
+                "No routines yet. Ask the sidekick for one, or set it up yourself with +.",
                 &["secondary"],
             );
             empty.set_wrap(true);
@@ -368,7 +371,7 @@ fn routine_editor(ui: &App, bot: &str, routine: Value, list: &gtk::Box) {
             .unwrap_or(&local_zone),
     );
     let existing = label(
-        "Set up by the bot. Pick Schedule or Webhook to replace it.",
+        "Set up by the sidekick. Pick Schedule or Webhook to replace it.",
         &["secondary"],
     );
     existing.set_wrap(true);
@@ -566,9 +569,9 @@ fn webhook_panel(ui: &App, bot: &str, id: &str) -> gtk::Widget {
             });
             show.set_tooltip_text(Some(if shown.get() { "Hide key" } else { "Show key" }));
             note.set_label(if public.is_some() {
-                "POST with Authorization: Bearer <key>. For GitHub, use content type application/json and the key as the secret. Deliveries wait up to 72 hours while this computer is off. They pass through the Codync cloud, which can read them."
+                "POST with Authorization: Bearer <key>. For GitHub, use content type application/json and the key as the secret. Deliveries wait up to 72 hours while this computer is off. They pass through the Sidekicks cloud, which can read them."
             } else {
-                "The Codync cloud is off, so only this computer can send to it."
+                "The Sidekicks cloud is off, so only this computer can send to it."
             });
         }
     };

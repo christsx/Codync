@@ -1,0 +1,77 @@
+{
+  "name": "sidekicks-cloud-dev",
+  "account_id": "379e5046aaf4e573c46879c91e989f2c",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": true,
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "ComputerRelay"
+      ]
+    }
+  ],
+  "vars": {
+    "CLERK_ISSUER": "https://ultimate-chow-8201.clerk.accounts.dev",
+    "CLERK_JWT_KEY": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtD1I8+zMIksZAq1X7J8H\njqJAcddJtA+9ZTrU+VWiD5ajV8M5tm0tmL5UN36BqB257DAMtRhzCZyxse8M+jfT\n+/RrAI7Xf9CMa0TT4h/aG0Ji/9e6vEOmFhqnDOBqgSBOv4+aY2pSZhb+acfdD33d\nBLwAHOoBQ3gup+zpWjdKhBdkvEDzhzUoM9xqVWJl1Hhb5l2fBhJboAFR0lCBDEfk\nOgzb/8W2fqb/Ciwn+Y5razt/rXQYzKcEO4pwwiz5dJsXgiBXEQtUGAdJRSFoSINW\nC4F1bHR8Lk/8MeTT9jrJe1eQqFoRubgcRcAW1XKWvVcwafb9VQSpIaXb739+rcX/\nPQIDAQAB\n-----END PUBLIC KEY-----\n"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "sidekicks-dev",
+      "database_id": "4b7f3961-2ff1-4422-abf5-42695f12755e",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "RELAY",
+        "class_name": "ComputerRelay"
+      }
+    ]
+  },
+  "ratelimits": [
+    {
+      "name": "REGISTER_LIMITER",
+      "namespace_id": "2002",
+      "simple": {
+        "limit": 10,
+        "period": 60
+      }
+    },
+    {
+      "name": "TURN_LIMITER",
+      "namespace_id": "2012",
+      "simple": {
+        "limit": 12,
+        "period": 60
+      }
+    },
+    {
+      "name": "HOOK_LIMITER",
+      "namespace_id": "2022",
+      "simple": {
+        "limit": 60,
+        "period": 60
+      }
+    },
+    {
+      "name": "APPS_LIMITER",
+      "namespace_id": "2032",
+      "simple": {
+        "limit": 120,
+        "period": 60
+      }
+    }
+  ],
+  "triggers": {
+    "crons": [
+      "*/15 * * * *"
+    ]
+  }
+}

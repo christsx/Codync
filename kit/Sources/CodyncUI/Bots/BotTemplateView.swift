@@ -24,7 +24,7 @@ struct BotTemplateView: View {
         ModalHeader("Create template")
         VStack(alignment: .leading, spacing: 20) {
             Text(template.name).font(.subheadline).foregroundStyle(Palette.secondary)
-            Text("Copy this bot’s settings to reuse as a template. Conversation history and conversation ID are excluded.")
+            Text("Copy this sidekick’s settings to reuse as a template. Conversation history and conversation ID are excluded.")
                 .font(.callout)
                 .foregroundStyle(Palette.secondary)
             ScrollView {

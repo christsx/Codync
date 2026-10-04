@@ -53,7 +53,7 @@ fn http() -> &'static reqwest::Client {
 const PATIENCE: Duration = Duration::from_secs(20);
 
 async fn call_async(method: String, body: Value) -> Result<Value, String> {
-    let token = token().ok_or("The Codync host isn't set up on this computer.")?;
+    let token = token().ok_or("The Sidekicks host isn't set up on this computer.")?;
     let started = std::time::Instant::now();
     let res = loop {
         let sent = http()
@@ -83,7 +83,7 @@ async fn call_async(method: String, body: Value) -> Result<Value, String> {
             Err(e) if e.is_connect() && method != "hello" && started.elapsed() < PATIENCE => {
                 tokio::time::sleep(Duration::from_millis(500)).await;
             }
-            Err(_) => return Err("Can't reach the Codync host.".to_owned()),
+            Err(_) => return Err("Can't reach the Sidekicks host.".to_owned()),
         }
     };
     let ok = res.status().is_success();

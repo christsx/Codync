@@ -612,7 +612,7 @@ pub fn author_label(st: &State, id: Option<&str>) -> gtk::Widget {
     let bot = id.and_then(|id| st.bots.get(id));
     let name = bot
         .and_then(|b| b["name"].as_str())
-        .unwrap_or("A deleted bot");
+        .unwrap_or("A deleted sidekick");
     let row = gtk::Box::builder().spacing(8).build();
     if let Some(b) = bot {
         row.append(&avatar::of(&st.bots, b, 26, false));

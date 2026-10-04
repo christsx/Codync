@@ -29,7 +29,7 @@ final class AccountSession {
             guard session.status == .active, session.expireAt > .now,
                   let user = session.user, seen.insert(user.id).inserted else { return nil }
             return Account(id: user.id, sessionID: session.id,
-                           email: user.primaryEmailAddress?.emailAddress ?? "Codync account",
+                           email: user.primaryEmailAddress?.emailAddress ?? "Sidekicks account",
                            avatarURL: URL(string: user.imageUrl).flatMap { $0.scheme == "https" ? $0 : nil })
         }
     }
@@ -62,8 +62,16 @@ final class AccountSession {
             return
         }
         let scheme = Bundle.main.bundleIdentifier ?? "com.pokai.Codync"
+        #if DEBUG
+        // Keep ad hoc development builds away from the installed app's Keychain ACL.
+        // A stable, instance-specific service still securely persists development sessions.
+        let keychainService = "\(scheme).development.signed.\(key)"
+        #else
+        let keychainService = scheme
+        #endif
         clerk = Clerk.configure(publishableKey: key, options: .init(
             telemetryEnabled: false,
+            keychainConfig: .init(service: keychainService),
             redirectConfig: .init(redirectUrl: "\(scheme)://callback", callbackUrlScheme: scheme)
         ))
     }

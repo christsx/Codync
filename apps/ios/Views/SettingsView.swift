@@ -25,7 +25,7 @@ struct SettingsView: View {
         CardForm {
             CardSection("Computers", footer: app.account.isSignedIn
                         ? "Computers in your account need your OK on the computer before this iPhone can use them."
-                        : "Each bot runs on its own computer. Sign in to see the computers in your account.") {
+                        : "Each sidekick runs on its own computer. Sign in to see the computers in your account.") {
                 ForEach(accounts.computers) { computer in
                     if let store = accounts.store(for: computer.id) {
                         ComputerRow(store: store, inAccount: cloudComputer(computer.id),
@@ -63,7 +63,7 @@ struct SettingsView: View {
             }
 
             if !hiddenBots.isEmpty {
-                CardSection("Hidden bots") {
+                CardSection("Hidden sidekicks") {
                     ForEach(hiddenBots) { item in
                         let store = item.store, bot = item.bot
                         HStack {
@@ -105,7 +105,7 @@ struct SettingsView: View {
             return [DialogAction("Remove", destructive: true) { Task { await accounts.removeFromAccount(copy.computerId) } }]
         }
         .codyncDialog("Start over?", isPresented: $confirmStartOver,
-                      message: "Signs out of every account and forgets every computer on this iPhone, then shows the welcome again. Your computers keep their bots and chats; pair again to use them.") {
+                      message: "Signs out of every account and forgets every computer on this iPhone, then shows the welcome again. Your computers keep their sidekicks and chats; pair again to use them.") {
             [DialogAction("Start over", destructive: true) { Task { await app.startOver() } }]
         }
         .refreshable { await accounts.refreshCloud() }
@@ -119,7 +119,7 @@ struct SettingsView: View {
         }
         .codyncDialog("Remove \(confirmForget?.name ?? "computer")?",
                       isPresented: Binding(get: { confirmForget != nil }, set: { if !$0 { confirmForget = nil } }),
-                      message: "Its bots and conversations stay on that computer. You can pair again any time.") {
+                      message: "Its sidekicks and conversations stay on that computer. You can pair again any time.") {
             [DialogAction("Remove", destructive: true) {
                 if let c = confirmForget { accounts.forget(c.id) }
             }]
@@ -299,7 +299,7 @@ private struct ComputerRow: View {
         case .relay: " · Cloudflare"
         default: ""
         }
-        return "\(count) bot\(count == 1 ? "" : "s")\(route)"
+        return "\(count) sidekick\(count == 1 ? "" : "s")\(route)"
     }
 }
 
@@ -334,7 +334,7 @@ private struct AccountComputerRow: View {
         let online = computer.isOnline ? "Online" : "Offline"
         if let ticket { return "Waiting for your OK on the computer · \(ticket.code)" }
         return switch computer.access {
-        case "granted": "Approved for an earlier install of Codync. Revoke it, then ask again."
+        case "granted": "Approved for an earlier install of Sidekicks. Revoke it, then ask again."
         case "pending": "\(online) · A request is waiting"
         default: "\(online) · In your account"
         }

@@ -997,3 +997,19 @@ export async function sweep(env: Env, now: number): Promise<void> {
     env.DB.prepare("DELETE FROM audit_events WHERE created_at <= ?").bind(now - 30 * 86_400_000),
   ]);
 }
+
+/** Hosted app requests never disclose the project API key to a client. */
+export async function hostAppsRequest(c: Ctx) {
+  const comp = await host(c);
+  if (!comp.owner_user_id) throw new ApiError("forbidden", "Sign in to Sidekicks to connect apps.");
+  const owner = await c.env.DB.prepare("SELECT user_id FROM accounts WHERE user_id = ? AND status = 'active'")
+    .bind(comp.owner_user_id).first();
+  if (!owner) throw new ApiError("forbidden");
+  if (c.env.APPS_LIMITER) {
+    const limit = await c.env.APPS_LIMITER.limit({ key: `apps:${comp.owner_user_id}` });
+    if (!limit.success) throw new ApiError("rateLimited");
+  }
+  const { appRequest } = await import("./apps");
+  const value = await appRequest(c.env, `sidekicks-${comp.owner_user_id}-${comp.id}`, body(c));
+  return Response.json(value, { headers: { "Cache-Control": "no-store" } });
+}

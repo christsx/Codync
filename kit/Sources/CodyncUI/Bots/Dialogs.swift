@@ -2,7 +2,7 @@ import CodyncKit
 import SwiftUI
 
 public extension View {
-    /// The one "Delete <bot>?" confirmation, used wherever a bot can be deleted.
+    /// The one "Delete <sidekick>?" confirmation, used wherever a bot can be deleted.
     /// Setting `bot` presents it; `onDeleted` runs after the store deletes it.
     func deleteBotConfirmation(_ bot: Binding<Bot?>, onDeleted: @escaping () -> Void = {}) -> some View {
         modifier(DeleteBotConfirmation(bot: bot, onDeleted: onDeleted))
@@ -25,11 +25,11 @@ private struct DeleteBotConfirmation: ViewModifier {
         content.codyncDialog(
             "Delete \(bot?.name ?? "bot")?",
             isPresented: Binding(get: { bot != nil }, set: { if !$0 { bot = nil } }),
-            message: bot?.isGroup == true ? "Its bots and their own chats stay." : "Files it changed on your computer stay as they are."
+            message: bot?.isGroup == true ? "Its sidekicks and their own chats stay." : "Files it changed on your computer stay as they are."
         ) {
             // Captured now: the dialog clears `bot` before running the action.
             let target = bot
-            return [DialogAction("Delete bot and its conversation", destructive: true) {
+            return [DialogAction("Delete sidekick and its conversation", destructive: true) {
                 if let target { model.delete(target) }
                 onDeleted()
             }]

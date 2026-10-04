@@ -18,7 +18,7 @@ struct SignInButtons: View {
                     if account.isBusy { Spinner(size: 18) }
                 }
                 .font(.headline)
-                .frame(maxWidth: .infinity, minHeight: 50)
+                .frame(maxWidth: .infinity, minHeight: 22)
             }
             .buttonStyle(.primary)
             .disabled(account.isBusy)

@@ -3,8 +3,8 @@
 <plist version="1.0">
 <dict>
 	<key>clerkPublishableKey</key>
-	<string>pk_test_c3VubnktbW9sbHVzay04NjUxLmNsZXJrLmFjY291bnRzLmRldiQ</string>
+	<string>pk_test_dWx0aW1hdGUtY2hvdy04MjAxLmNsZXJrLmFjY291bnRzLmRldiQ</string>
 	<key>cloudURL</key>
-	<string>https://dev-api.codync.dev</string>
+	<string>https://sidekicks-cloud-dev.christiangarci6.workers.dev</string>
 </dict>
 </plist>

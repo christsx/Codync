@@ -11,6 +11,7 @@ struct RootView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     /// First launch only: past the welcome, on to setup.
     @State private var welcomed = false
+    @State private var showsSignIn = false
 
     /// The open bot, as a NavigationStack path.
     private var path: Binding<[BotReference]> {
@@ -19,7 +20,10 @@ struct RootView: View {
 
     var body: some View {
         Group {
-            if !onboardingCompleted && accounts.computers.isEmpty && accounts.cloudComputers.isEmpty {
+            if showsSignIn && !account.isSignedIn {
+                WelcomeView { showsSignIn = false }
+                    .transition(.opacity)
+            } else if !onboardingCompleted && accounts.computers.isEmpty && accounts.cloudComputers.isEmpty {
                 if !welcomed && !account.isSignedIn {
                     WelcomeView { withAnimation(Motion.reduced(Motion.layout, reduceMotion)) { welcomed = true } }
                         .transition(.move(edge: .leading).combined(with: .opacity))
@@ -38,6 +42,10 @@ struct RootView: View {
             }
         }
         .background(Palette.background)
+        .onChange(of: account.isSignedIn) { wasSignedIn, signedIn in
+            if wasSignedIn && !signedIn { showsSignIn = true }
+            if signedIn { showsSignIn = false }
+        }
         .onChange(of: accounts.computers.isEmpty, initial: true) { _, empty in
             // Pairing or explicitly skipping completes setup. Keep this
             // device-level milestone across account changes and unpairing.
@@ -86,7 +94,7 @@ struct RootView: View {
                 VStack(spacing: 8) {
                     AccessBanners()
                     TabBar(selection: Bindable(app).tab, tabs: [
-                        (id: AppTab.bots, title: "Bots", icon: "bubble.left.and.bubble.right.fill"),
+                        (id: AppTab.bots, title: "Sidekicks", icon: "bubble.left.and.bubble.right.fill"),
                         (id: AppTab.state, title: "State", icon: "rectangle.stack.fill"),
                     ])
                     .padding(.bottom, 4)

@@ -254,6 +254,10 @@ public struct UsageWindow: Codable, Hashable, Sendable, Identifiable {
 }
 
 public struct Backend: Codable, Hashable, Sendable, Identifiable {
+    public var featured: Bool {
+        ["codex-acp", "claude-acp", "cursor", "gemini", "opencode", "glm-acp-agent", "kimi", "factory-droid"].contains(registry ?? id)
+    }
+
     public var id: String
     public var name: String
     public var available: Bool
@@ -455,7 +459,7 @@ public struct BotDraft: Codable, Hashable, Sendable {
     public var computer: Bool?
 
     public init(name: String = "", description: String = "", avatarColor: String = AvatarPalette.colors.randomElement()!.id,
-                avatarShape: String = AvatarPalette.shapes.randomElement()!, backend: String = "claude", cwd: String = "",
+                avatarShape: String = AvatarPalette.shapes.randomElement()!, backend: String = "codex", cwd: String = "",
                 permission: String = "ask") {
         self.name = name
         self.description = description
@@ -497,7 +501,7 @@ extension Bot {
         id = try c.decode(String.self, forKey: .id)
         kind = try c.decodeIfPresent(String.self, forKey: .kind) ?? "agent"
         members = try c.decodeIfPresent([String].self, forKey: .members) ?? []
-        name = try c.decodeIfPresent(String.self, forKey: .name) ?? "Bot"
+        name = try c.decodeIfPresent(String.self, forKey: .name) ?? "Sidekick"
         description = try c.decodeIfPresent(String.self, forKey: .description) ?? ""
         avatarColor = try c.decodeIfPresent(String.self, forKey: .avatarColor) ?? "blue"
         avatarShape = try c.decodeIfPresent(String.self, forKey: .avatarShape) ?? "blob"
@@ -514,6 +518,8 @@ extension Bot {
         skills = try c.decodeIfPresent([String].self, forKey: .skills) ?? []
         computer = try c.decodeIfPresent(Bool.self, forKey: .computer) ?? false
         autoName = try c.decodeIfPresent(Bool.self, forKey: .autoName) ?? false
+        // Older bundled hosts still return the legacy unnamed-sidekick placeholder.
+        if autoName && name == "New Bot" { name = "New Sidekick" }
         createdAt = try c.decodeIfPresent(Int64.self, forKey: .createdAt) ?? 0
         rev = try c.decodeIfPresent(Int64.self, forKey: .rev) ?? 0
         status = try c.decodeIfPresent(String.self, forKey: .status) ?? "idle"

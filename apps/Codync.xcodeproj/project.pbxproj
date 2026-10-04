@@ -146,7 +146,7 @@
 		64888B10E98F19723500FBCA /* NotificationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NotificationService.entitlements; sourceTree = "<group>"; };
 		6D734BEE7CD3F84677B0218B /* Widgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = Widgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		741B706007BA1B91CB853699 /* Screen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Screen.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		7549E88A01FD7650C5746C54 /* AppIcon.icon */ = {isa = PBXFileReference; path = AppIcon.icon; sourceTree = "<group>"; };
+		7549E88A01FD7650C5746C54 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		772D2E6B5C5157077E504B35 /* ComputerStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerStatus.swift; sourceTree = "<group>"; };
 		7A2F5A7F5A648909D8CC5C19 /* kit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = kit; path = ../kit; sourceTree = SOURCE_ROOT; };
 		7AB018B7D7F8E8137E0A1012 /* CodyncMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodyncMacApp.swift; sourceTree = "<group>"; };
@@ -573,7 +573,6 @@
 				};
 			};
 			buildConfigurationList = F977CF173B7D60769B393751 /* Build configuration list for PBXProject "Codync" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -589,14 +588,15 @@
 				4821371032224740E592D19C /* XCLocalSwiftPackageReference "../kit" */,
 			);
 			preferredProjectObjectVersion = 77;
+			productRefGroup = 3EC1FDCCFFFB4BA1A23FDDB0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C42E5E078332C6C2B35AF5FA /* NotificationService */,
-				907F1F4A709111FC7178EAE9 /* Screen */,
-				A27E4E88D6A5B9850734B594 /* Widgets */,
-				913BDA9F79CE8C35A9E35830 /* iOS */,
 				72F29E7EBE9A88B16B4E608A /* macOS */,
+				907F1F4A709111FC7178EAE9 /* Screen */,
+				913BDA9F79CE8C35A9E35830 /* iOS */,
+				A27E4E88D6A5B9850734B594 /* Widgets */,
+				C42E5E078332C6C2B35AF5FA /* NotificationService */,
 			);
 		};
 /* End PBXProject section */
@@ -648,7 +648,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Debug builds use dev (dev-api.codync.dev), Release builds use main (api.codync.dev).\ncp \"$SRCROOT/shared/Config/$CODYNC_ENV.plist\" \"$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/AccountConfig.plist\"\n";
+			shellScript = "# Sidekicks pilot builds use our own dev account and backend.\ncp \"$SRCROOT/shared/Config/$CODYNC_ENV.plist\" \"$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/AccountConfig.plist\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9900BE8858E71975C4052787 /* Codync environment */ = {
@@ -668,7 +668,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Debug builds use dev (dev-api.codync.dev), Release builds use main (api.codync.dev).\ncp \"$SRCROOT/shared/Config/$CODYNC_ENV.plist\" \"$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/AccountConfig.plist\"\n";
+			shellScript = "# Sidekicks pilot builds use our own dev account and backend.\ncp \"$SRCROOT/shared/Config/$CODYNC_ENV.plist\" \"$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/AccountConfig.plist\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C0A14ED49FC6A533FEABD5B2 /* Embed codync-host */ = {
@@ -818,7 +818,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CODYNC_ENV = main;
+				CODYNC_ENV = dev;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 24;
 				DEAD_CODE_STRIPPING = YES;
@@ -837,7 +837,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.3.0;
+				MARKETING_VERSION = 2.3.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -859,7 +859,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = macos/Resources/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Codync;
+				INFOPLIST_KEY_CFBundleDisplayName = Sidekicks;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -867,7 +867,7 @@
 					"@executable_path/../Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pokai.Codync;
-				PRODUCT_NAME = Codync;
+				PRODUCT_NAME = Sidekicks;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -900,7 +900,7 @@
 				CODE_SIGN_ENTITLEMENTS = ios/Widgets/Resources/Widgets.entitlements;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ios/Widgets/Resources/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Codync;
+				INFOPLIST_KEY_CFBundleDisplayName = Sidekicks;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -920,7 +920,7 @@
 				CODE_SIGN_ENTITLEMENTS = ios/NotificationService/NotificationService.entitlements;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ios/NotificationService/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Codync;
+				INFOPLIST_KEY_CFBundleDisplayName = Sidekicks;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1015,7 +1015,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.3.0;
+				MARKETING_VERSION = 2.3.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1035,11 +1035,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ios/Resources/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Codync;
+				INFOPLIST_KEY_CFBundleDisplayName = Sidekicks;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan the pairing code shown on your computer.";
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Codync connects to the computer running your bots on your local network.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Sidekicks connects to the computer running your bots on your local network.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Talk to your bots in a voice call.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Your words are transcribed on this iPhone and sent to your bot as a message.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
@@ -1053,7 +1053,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pokai.Codync.ios;
-				PRODUCT_NAME = Codync;
+				PRODUCT_NAME = Sidekicks;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1065,7 +1065,7 @@
 				CODE_SIGN_ENTITLEMENTS = ios/NotificationService/NotificationService.entitlements;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ios/NotificationService/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Codync;
+				INFOPLIST_KEY_CFBundleDisplayName = Sidekicks;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1087,11 +1087,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ios/Resources/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Codync;
+				INFOPLIST_KEY_CFBundleDisplayName = Sidekicks;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan the pairing code shown on your computer.";
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Codync connects to the computer running your bots on your local network.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Sidekicks connects to the computer running your bots on your local network.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Talk to your bots in a voice call.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Your words are transcribed on this iPhone and sent to your bot as a message.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
@@ -1105,7 +1105,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pokai.Codync.ios;
-				PRODUCT_NAME = Codync;
+				PRODUCT_NAME = Sidekicks;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1117,7 +1117,7 @@
 				CODE_SIGN_ENTITLEMENTS = ios/Widgets/Resources/Widgets.entitlements;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ios/Widgets/Resources/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Codync;
+				INFOPLIST_KEY_CFBundleDisplayName = Sidekicks;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1142,7 +1142,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = macos/Resources/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Codync;
+				INFOPLIST_KEY_CFBundleDisplayName = Sidekicks;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1150,7 +1150,7 @@
 					"@executable_path/../Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pokai.Codync;
-				PRODUCT_NAME = Codync;
+				PRODUCT_NAME = Sidekicks;
 				SDKROOT = macosx;
 			};
 			name = Release;

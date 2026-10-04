@@ -346,7 +346,7 @@ final class HostController {
             return
         }
         if stale, screenAgent.status == .enabled {
-            log.info("Codync Screen changed; registering it again")
+            log.info("Sidekicks Screen changed; registering it again")
             // Stops the old helper along with its job.
             try? await screenAgent.unregister()
         }
@@ -374,7 +374,7 @@ final class HostController {
     func prepareForUpdate() async throws {
         guard Self.devPort == nil else { return }
         guard !installingHost else {
-            throw NSError(domain: "Codync.Update", code: 1,
+            throw NSError(domain: "Sidekicks.Update", code: 1,
                           userInfo: [NSLocalizedDescriptionKey: "The host is being installed. Try again when it finishes."])
         }
         preparingForUpdate = true
@@ -388,12 +388,12 @@ final class HostController {
             UserDefaults.standard.removeObject(forKey: Self.helperStampKey)
         }
         guard let bin = binaryURL else {
-            throw NSError(domain: "Codync.Update", code: 2,
+            throw NSError(domain: "Sidekicks.Update", code: 2,
                           userInfo: [NSLocalizedDescriptionKey: "The bundled host is missing."])
         }
         let result = await Self.run(bin, ["stop"])
         guard result.status == 0 else {
-            throw NSError(domain: "Codync.Update", code: 3,
+            throw NSError(domain: "Sidekicks.Update", code: 3,
                           userInfo: [NSLocalizedDescriptionKey: result.output.isEmpty ? "The old host could not be stopped." : result.output])
         }
     }
@@ -544,7 +544,7 @@ final class HostController {
     private func enableCloud(_ client: HostClient, store: BotStore) async throws -> CloudStatus {
         let url = store.cloud?.url == nil ? account.cloudURL : nil
         guard store.cloud?.url != nil || url != nil else {
-            throw CloudError(status: 400, code: "badRequest", message: "This build of Codync has no cloud to connect to.")
+            throw CloudError(status: 400, code: "badRequest", message: "This build of Sidekicks has no cloud to connect to.")
         }
         return try await client.setCloud(enabled: true, url: url)
     }

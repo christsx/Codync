@@ -1,0 +1,143 @@
+[
+  {
+    "asset": "brand-ampcode",
+    "source": "https://brandfetch.com/ampcode.com",
+    "downloadMember": "Amp/Amp_id2_GKiZhR_1.png"
+  },
+  {
+    "asset": "brand-augmentcode",
+    "source": "https://brandfetch.com/augmentcode.com",
+    "downloadMember": "Augment_Code/Augment_Code_idmreFUtWy_0.png"
+  },
+  {
+    "asset": "brand-codebuddy",
+    "source": "https://brandfetch.com/codebuddy.cn",
+    "downloadMember": "CodeBuddy/CodeBuddy_idiGM8_R3J_0.png"
+  },
+  {
+    "asset": "brand-langchain",
+    "source": "https://brandfetch.com/langchain.com",
+    "downloadMember": "LangChain/LangChain_idqP6WQff2_0.jpeg"
+  },
+  {
+    "asset": "brand-devin",
+    "source": "https://brandfetch.com/devin.ai",
+    "downloadMember": "Devin-ai/Devin-ai_Symbol_6.png",
+    "darkDownloadMember": "Devin-ai/Devin-ai_Symbol_7.png"
+  },
+  {
+    "asset": "brand-factory",
+    "source": "https://brandfetch.com/factory.ai",
+    "downloadMember": "Factory/Factory_idpPhsF6CI_0.png"
+  },
+  {
+    "asset": "brand-x",
+    "source": "https://brandfetch.com/x.ai",
+    "downloadMember": "XAI/XAI_Icon_4.jpeg",
+    "darkDownloadMember": "XAI/XAI_Logo_0.svg"
+  },
+  {
+    "asset": "brand-jetbrains",
+    "source": "https://brandfetch.com/jetbrains.com",
+    "downloadMember": "JetBrains/JetBrains_idZXqo4MR9_0.png"
+  },
+  {
+    "asset": "brand-kilo",
+    "source": "https://brandfetch.com/kilo.ai",
+    "downloadMember": "Kilo/Kilo_idTdUYCfrf_0.png"
+  },
+  {
+    "asset": "brand-minimax",
+    "source": "https://brandfetch.com/minimax.io",
+    "downloadMember": "MiniMax/MiniMax_Icon_1.jpeg"
+  },
+  {
+    "asset": "brand-mistral",
+    "source": "https://brandfetch.com/mistral.ai",
+    "downloadMember": "Mistral_AI/Mistral_AI_idhvVOryFF_0.png"
+  },
+  {
+    "asset": "brand-opencode",
+    "source": "https://brandfetch.com/opencode.ai",
+    "downloadMember": "OpenCode/OpenCode_idG6-Bbm0Y_0.png"
+  },
+  {
+    "asset": "brand-poolside",
+    "source": "https://brandfetch.com/poolside.ai",
+    "downloadMember": "id_o3wxk-W_logos.png"
+  },
+  {
+    "asset": "brand-qwen",
+    "source": "https://brandfetch.com/qwen.ai",
+    "downloadMember": "Qwen/Qwen_Symbol_1.png"
+  },
+  {
+    "asset": "brand-slack",
+    "source": "https://brandfetch.com/slack.com",
+    "downloadMember": "Slack/Slack_Symbol_5.png"
+  },
+  {
+    "asset": "brand-google",
+    "source": "https://brandfetch.com/google.com",
+    "downloadMember": "Google/Google_Symbol_4.png"
+  },
+  {
+    "asset": "brand-gmail",
+    "source": "https://brandfetch.com/google.com",
+    "downloadMember": "Google/Google_Google_Mail_19.png"
+  },
+  {
+    "asset": "brand-googledrive",
+    "source": "https://brandfetch.com/google.com",
+    "downloadMember": "Google/Google_Google_Drive_13.png"
+  },
+  {
+    "asset": "brand-googlecalendar",
+    "source": "https://brandfetch.com/google.com",
+    "downloadMember": "Google/Google_google_calendar_11.png"
+  },
+  {
+    "asset": "brand-gemini",
+    "source": "https://brandfetch.com/google.com",
+    "downloadMember": "Google/Google_Google_Gemini_71.png"
+  },
+  {
+    "asset": "brand-github",
+    "source": "https://brandfetch.com/github.com",
+    "downloadMember": "GitHub/GitHub_Symbol_15.png",
+    "darkDownloadMember": "GitHub/GitHub_Symbol_17.png"
+  },
+  {
+    "asset": "brand-notion",
+    "source": "https://brandfetch.com/notion.com",
+    "downloadMember": "Notion/Notion_Symbol_7.png"
+  },
+  {
+    "asset": "brand-linear",
+    "source": "https://brandfetch.com/linear.app",
+    "downloadMember": "Linear/Linear_Symbol_7.png",
+    "darkDownloadMember": "Linear/Linear_Symbol_10.png"
+  },
+  {
+    "asset": "brand-openai",
+    "source": "https://brandfetch.com/openai.com",
+    "downloadMember": "OpenAI/OpenAI_Symbol_7.png",
+    "darkDownloadMember": "OpenAI/OpenAI_Symbol_10.png"
+  },
+  {
+    "asset": "brand-cursor",
+    "source": "https://brandfetch.com/cursor.com",
+    "downloadMember": "Cursor/Cursor_Symbol_7.png",
+    "darkDownloadMember": "Cursor/Cursor_Symbol_9.png"
+  },
+  {
+    "asset": "brand-claude",
+    "source": "https://brandfetch.com/claude.ai",
+    "downloadMember": "Claude/Claude_Symbol_9.png"
+  },
+  {
+    "asset": "brand-hubspot",
+    "source": "https://brandfetch.com/hubspot.com",
+    "downloadMember": "HubSpot/HubSpot_Symbol_9.png"
+  }
+]

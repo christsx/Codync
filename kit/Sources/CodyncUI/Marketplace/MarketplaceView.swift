@@ -37,17 +37,18 @@ public struct MarketplaceView: View {
 
     /// Each computer has its own marketplace; with `computer` set and more than one computer,
     /// the header switches between them (the caller swaps the `BotStore`).
-    public init(computers: [(id: ComputerID, label: String)] = [], computer: Binding<ComputerID>? = nil) {
+    public init(computers: [(id: ComputerID, label: String)] = [], computer: Binding<ComputerID>? = nil, initialAgent: Backend? = nil) {
         self.computers = computers
         self.computer = computer
+        _agent = State(initialValue: initialAgent)
     }
 
     private var query: String { search.trimmingCharacters(in: .whitespaces) }
 
     private var agents: [Backend] {
-        let all = (model.hello?.backends ?? []).filter { $0.available || $0.installed == true || $0.curated == true }
+        let all = (model.hello?.backends ?? []).filter { $0.featured }
         let hits = query.isEmpty ? all : all.filter { $0.name.localizedCaseInsensitiveContains(query) }
-        return Array(hits.prefix(query.isEmpty ? 8 : 12))
+        return hits
     }
 
     private var shownSkills: [MarketSkill] {
@@ -71,7 +72,6 @@ public struct MarketplaceView: View {
         }
         // Picks up CLIs installed or signed in outside Codync.
         .task { await model.refreshBackends() }
-        .task { await loadConnectors() }
         .task {
             do { skills = try await model.marketSkills() } catch { self.error = error.localizedDescription }
             loadingSkills = false
@@ -108,75 +108,7 @@ public struct MarketplaceView: View {
                         #endif
                     }
                 }
-                MarketSection(title: query.isEmpty ? "Connectors" : "Connectors") {
-                    if loadingConnectors {
-                        SkeletonGrid()
-                    } else if connectors.isEmpty {
-                        Text(query.isEmpty ? "Couldn't load connectors." : "No connectors match “\(query)”.")
-                            .foregroundStyle(Palette.secondary)
-                    } else {
-                        ItemGrid {
-                            ForEach(connectors.visible) { c in
-                                MarketRow(title: c.title, subtitle: c.description ?? c.name, added: c.installed) {
-                                    ServiceLogo(website: c.website, name: c.title, registryName: c.name)
-                                } add: {
-                                    installing = c
-                                }
-                            }
-                        }
-                        if connectors.hasHiddenItems || connectorCursor != nil {
-                            Button(loadingMore ? "Loading…" : "Load more connectors") { Task { await loadMoreConnectors() } }
-                                .buttonStyle(SecondaryButtonStyle())
-                                .disabled(loadingMore)
-                                .frame(maxWidth: .infinity)
-                        }
-                    }
-                }
                 ComposioSection(query: query, searchToken: searchToken)
-                MarketSection(title: "Skills") {
-                    if loadingSkills {
-                        SkeletonGrid()
-                    } else {
-                        ItemGrid {
-                            ForEach(shownSkills) { s in
-                                let added = s.installed || model.installedSkills.contains { $0.id == s.source.lowercased() }
-                                MarketRow(title: s.name, subtitle: s.description, added: added, busy: busySkill == s.source) {
-                                    SkillGlyph()
-                                } add: {
-                                    busySkill = s.source
-                                    Task {
-                                        do { try await model.installSkill(source: s.source) } catch { self.error = error.localizedDescription }
-                                        busySkill = nil
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                Button { withAnimation(Motion.layout) { showCredentials = true } } label: {
-                    Label("Credentials", systemImage: "lock.shield")
-                }
-                .buttonStyle(SecondaryButtonStyle())
-                MarketSection(title: "Make your own") {
-                    ItemGrid {
-                        MarketRow(title: "Custom connector", subtitle: "Any MCP server: a command or a URL", added: false, addLabel: "New") {
-                            TileIcon(systemName: "point.3.connected.trianglepath.dotted")
-                        } add: {
-                            addingConnector = true
-                        }
-                        MarketRow(title: "Your own skill", subtitle: "Write instructions a bot can follow", added: false, addLabel: "New") {
-                            TileIcon(systemName: "square.and.pencil")
-                        } add: {
-                            writingSkill = true
-                        }
-                    }
-                }
-                if let error {
-                    Text(error).font(.footnote).foregroundStyle(Palette.danger)
-                }
-                Text("Connectors come from the official MCP Registry, apps through Composio, skills from Anthropic, agents from the ACP registry. Everything installs on \(model.hostName).")
-                    .font(.footnote)
-                    .foregroundStyle(Palette.tertiary)
             }
             .padding(.horizontal, 44)
             .padding(.vertical, 20)
@@ -357,7 +289,7 @@ private struct InstalledView: View {
             if !model.installedConnectors.isEmpty {
                 CardSection("Connectors") {
                     ForEach(model.installedConnectors) { c in
-                        InstalledRow(title: c.name, subtitle: c.needsSignIn ? "Sign in so bots can use it" : c.command ?? c.url ?? c.description) {
+                        InstalledRow(title: c.name, subtitle: c.needsSignIn ? "Sign in so sidekicks can use it" : c.command ?? c.url ?? c.description) {
                             if c.kind == "composio" {
                                 AppLogo(url: c.logo, name: c.name, size: 32)
                             } else {
@@ -394,7 +326,7 @@ private struct InstalledView: View {
         .codyncDialog(
             "Remove \(removing?.name ?? "")?",
             isPresented: Binding(get: { removing != nil }, set: { if !$0 { removing = nil } }),
-            message: removing.map { $0.isSkill ? "Bots stop using this skill." : "Bots lose this connector, and the keys saved for it are deleted." }
+            message: removing.map { $0.isSkill ? "Sidekicks stop using this skill." : "Sidekicks lose this connector, and the keys saved for it are deleted." }
         ) {
             guard let r = removing else { return [] }
             return [DialogAction("Remove", destructive: true) {
@@ -560,6 +492,7 @@ private struct AgentSheet: View {
     @State private var checking = false
     @State private var authenticating: String?
     @State private var error: String?
+    @State private var advanced = false
 
     /// Live: an install or sign-in updates the host's list.
     private var backend: Backend { model.hello?.backends.first { $0.id == initial.id } ?? initial }
@@ -663,7 +596,12 @@ private struct AgentSheet: View {
                         go(.terminal(nil))
                     }
                 }
-                ForEach(auth?.methods ?? []) { m in
+                if auth?.methods.contains(where: { $0.kind == .envVar }) == true {
+                    Button(advanced ? "Hide advanced options" : "Advanced: API keys") {
+                        withAnimation(Motion.layout) { advanced.toggle() }
+                    }.buttonStyle(.plain).foregroundStyle(Palette.secondary)
+                }
+                ForEach((auth?.methods ?? []).filter { $0.kind != .envVar || advanced }) { m in
                     switch m.kind {
                     case .terminal?:
                         optionRow(m.name, detail: m.description ?? "In a terminal on \(model.hostName).", icon: "terminal") {
@@ -966,49 +904,15 @@ struct SkeletonGrid: View {
     }
 }
 
-/// A service's logo from its website favicon, on a white tile; its initial otherwise.
+/// Bundled company marks load immediately, including when offline.
 private struct ServiceLogo: View {
     let website: String?
     let name: String
-    /// MCP Registry names are reverse-DNS ("com.notion/mcp"): the owner's domain.
     var registryName: String?
     var size: CGFloat = 46
 
-    private var domain: String? {
-        if let website, let host = URL(string: website)?.host(), host != "github.com" { return host }
-        guard let owner = registryName?.split(separator: "/").first else { return nil }
-        let labels = owner.split(separator: ".")
-        // io.github.<user> is a GitHub account, not the service's own site.
-        guard labels.count >= 2, !(labels[0] == "io" && labels[1] == "github") else {
-            return name.localizedCaseInsensitiveContains("github") ? "github.com" : nil
-        }
-        return "\(labels[1]).\(labels[0])"
-    }
-
-    private var faviconURL: URL? {
-        domain.flatMap { URL(string: "https://www.google.com/s2/favicons?domain=\($0)&sz=128") }
-    }
-
     var body: some View {
-        let shape = RoundedRectangle(cornerRadius: size * 0.26, style: .continuous)
-        ZStack {
-            shape.fill(Palette.bubbleAgent)
-            Text(name.first.map { String($0).uppercased() } ?? "?")
-                .font(.system(size: size * 0.4, weight: .semibold, design: .rounded))
-                .foregroundStyle(Palette.text)
-            if let faviconURL {
-                AsyncImage(url: faviconURL) { phase in
-                    if let image = phase.image {
-                        ZStack {
-                            shape.fill(.white)
-                            image.resizable().interpolation(.high).scaledToFit().padding(size * 0.2)
-                        }
-                    }
-                }
-            }
-        }
-        .frame(width: size, height: size)
-        .clipShape(shape)
+        BrandLogo(name: name, size: size)
     }
 }
 
@@ -1189,7 +1093,7 @@ private struct CustomConnectorSheet: View {
 
     private var footer: String {
         switch mode {
-        case .command: "Runs on \(model.hostName) in the bot's project folder. Quotes work like in a shell."
+        case .command: "Runs on \(model.hostName) in the sidekick's project folder. Quotes work like in a shell."
         case .url: "A remote MCP server, streamable HTTP or SSE."
         case .config: "Paste the MCP config from a README or another app (Claude, Cursor, VS Code). Every server in it is added. Saved on \(model.hostName) only."
         }
@@ -1301,7 +1205,7 @@ private struct NewSkillSheet: View {
 
     private var form: some View {
         CardForm {
-            CardSection(footer: "The bot sees the name and when to use it, and reads the instructions only when a task fits.") {
+            CardSection(footer: "The sidekick sees the name and when to use it, and reads the instructions only when a task fits.") {
                 TextField("Name", text: $name)
                 TextField("When to use it", text: $summary, axis: .vertical).lineLimit(2...4)
             }
@@ -1327,6 +1231,7 @@ private struct SkillGlyph: View {
 
 /// A coding agent's logo from the ACP registry, tinted like text; a terminal glyph otherwise.
 public struct AgentIcon: View {
+    @Environment(\.colorScheme) private var colorScheme
     let registry: String?
     let size: CGFloat
 
@@ -1337,7 +1242,13 @@ public struct AgentIcon: View {
 
     public var body: some View {
         Group {
-            if let name = registry.map({ "agent-\($0)" }), Self.exists(name) {
+            if let brand = registry.flatMap(BrandLogo.agentAsset) {
+                Image(brand, bundle: .module)
+                    .renderingMode(colorScheme == .dark && ["brand-ampcode", "brand-factory", "brand-kilo"].contains(brand) ? .template : .original)
+                    .resizable().scaledToFit()
+                    .padding(size * 0.12)
+                    .background(colorScheme == .dark ? Palette.bubbleAgent : .white, in: RoundedRectangle(cornerRadius: size * 0.2))
+            } else if let name = registry.map({ "agent-\($0)" }), Self.exists(name) {
                 Image(name, bundle: .module).resizable().scaledToFit()
             } else {
                 Image(systemName: "terminal").resizable().scaledToFit().padding(size * 0.1)

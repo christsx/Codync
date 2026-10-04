@@ -108,6 +108,7 @@ pub enum Row<'a> {
 }
 
 pub struct AgentSetup {
+    pub advanced: bool,
     pub backend: String,
     pub auth: Option<Value>,
     /// A check or a browser sign-in is running.
@@ -120,6 +121,7 @@ pub enum SetupRow {
     Install,
     Login,
     Method(Value),
+    Advanced,
     Check,
 }
 
@@ -241,7 +243,7 @@ impl App {
 
     pub fn open_routines(&mut self) {
         let Some(b) = self.bot().filter(|b| !b.group) else {
-            self.flash("Routines belong to a bot, not a group");
+            self.flash("Routines belong to a sidekick, not a group");
             return;
         };
         let bot = b.id.clone();
@@ -452,7 +454,19 @@ impl App {
             Tab::Agents => self
                 .backends
                 .iter()
-                .filter(|b| b["available"] == true || b["installed"] == true || b["curated"] == true)
+                .filter(|b| {
+                    [
+                        "codex-acp",
+                        "claude-acp",
+                        "cursor",
+                        "gemini",
+                        "opencode",
+                        "glm-acp-agent",
+                        "kimi",
+                        "factory-droid",
+                    ]
+                    .contains(&b["registry"].as_str().or(b["id"].as_str()).unwrap_or_default())
+                })
                 .filter(|b| hit(b, &["name", "id"]))
                 .map(Row::Agent)
                 .collect(),
@@ -532,9 +546,9 @@ impl App {
                 let c = Confirm {
                     title: format!("Remove {name}?"),
                     detail: if skill {
-                        "Bots stop using this skill.".into()
+                        "Sidekicks stop using this skill.".into()
                     } else {
-                        "Bots lose it, and the keys saved for it are deleted.".into()
+                        "Sidekicks lose it, and the keys saved for it are deleted.".into()
                     },
                     note: String::new(),
                     button: "Remove",
@@ -666,7 +680,14 @@ impl App {
 
     pub fn open_agent(&mut self, backend: &str) {
         let known = self.backends.iter().find(|b| b["id"] == backend).is_some_and(|b| b["signedIn"] == true);
-        let mut a = AgentSetup { backend: backend.to_owned(), auth: None, busy: false, cursor: 0, error: None };
+        let mut a = AgentSetup {
+            advanced: false,
+            backend: backend.to_owned(),
+            auth: None,
+            busy: false,
+            cursor: 0,
+            error: None,
+        };
         if !known {
             a.busy = true;
             self.sheet("agentAuth", json!({"backend": backend}), Reply::Auth(backend.to_owned()));
@@ -687,8 +708,17 @@ impl App {
                 rows.push(SetupRow::Login);
             }
             for m in a.auth.as_ref().and_then(|v| v["methods"].as_array()).into_iter().flatten() {
-                rows.push(SetupRow::Method(m.clone()));
+                if m["kind"] != "envVar" || a.advanced {
+                    rows.push(SetupRow::Method(m.clone()));
+                }
             }
+        }
+        if a.auth
+            .as_ref()
+            .and_then(|v| v["methods"].as_array())
+            .is_some_and(|ms| ms.iter().any(|m| m["kind"] == "envVar"))
+        {
+            rows.push(SetupRow::Advanced);
         }
         rows.push(SetupRow::Check);
         rows
@@ -734,6 +764,10 @@ impl App {
                             );
                         }
                     },
+                    Some(SetupRow::Advanced) => {
+                        a.advanced = !a.advanced;
+                        a.cursor = 0;
+                    }
                     Some(SetupRow::Check) | None => {
                         a.busy = true;
                         a.error = None;
@@ -802,7 +836,7 @@ impl App {
                 sh.exited = Some(code);
                 let how = if code == 0 { "Done" } else { "Stopped" };
                 sh.out.extend_from_slice(
-                    format!("\r\n\x1b[2m{how}. Press any key to go back to Codync.\x1b[0m\r\n").as_bytes(),
+                    format!("\r\n\x1b[2m{how}. Press any key to go back to Sidekicks.\x1b[0m\r\n").as_bytes(),
                 );
             }
             _ => {}

@@ -22,7 +22,7 @@ const SLOW: [&str; 7] = [
     "importConnectors",
 ];
 
-pub const NOT_INSTALLED: &str = "The Codync host isn't set up on this computer yet.";
+pub const NOT_INSTALLED: &str = "The Sidekicks host isn't set up on this computer yet.";
 
 /// How long a command keeps trying while the host can't be reached (it is restarting, say).
 const PATIENCE: Duration = Duration::from_secs(20);

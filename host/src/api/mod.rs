@@ -173,7 +173,7 @@ async fn oauth_callback(
         market::oauth::finish(&hub.store, q.state.as_deref().unwrap_or_default(), q.code.as_deref(), error.as_deref())
             .await;
     let (title, detail) = match &result {
-        Ok(c) => (format!("{} is connected", c.name), "You can close this tab and go back to Codync.".to_owned()),
+        Ok(c) => (format!("{} is connected", c.name), "You can close this tab and go back to Sidekicks.".to_owned()),
         Err(e) => ("Sign-in didn't finish".to_owned(), format!("{e:#}")),
     };
     let escape = |s: &str| s.replace('&', "&amp;").replace('<', "&lt;").replace('>', "&gt;");
@@ -244,9 +244,10 @@ fn enable_new_connectors(hub: &Hub, before: &[String]) -> Result<()> {
 /// Runs one API method for `caller` (permissions per spec §6.6).
 pub async fn dispatch(hub: &Arc<Hub>, caller: &Caller, method: &str, b: Value) -> Result<Value> {
     devices::permit(caller, method)?;
+    if method.starts_with("composio") || method.contains("onnector") {
+        market::composio::configure_managed(hub)?;
+    }
     if method.contains("onnector")
-        || method.starts_with("composio")
-        || method == "setComposioKey"
         || method.starts_with("credential")
         || method == "computerCall"
         || matches!(method, "agentAuth" | "agentAuthenticate" | "setAgentEnv")
@@ -333,7 +334,7 @@ pub async fn dispatch(hub: &Arc<Hub>, caller: &Caller, method: &str, b: Value) -
             json!({"result": market::composio::call(&hub.store, str_arg(&b, "botId")?, str_arg(&b, "name")?, &b["arguments"]).await?})
         }
         "composioStatus" => market::composio::status(&hub.store)?,
-        "setComposioKey" => market::composio::set_key(&hub.store, b["key"].as_str().unwrap_or_default()).await?,
+        "setComposioKey" => market::composio::set_key(&hub.store, b["key"].as_str().unwrap_or_default())?,
         "composioToolkits" => {
             market::composio::toolkits(
                 &hub.store,

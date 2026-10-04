@@ -94,7 +94,7 @@ struct RoutineEditorView: View {
                         TextField("Name", text: $name, prompt: Text("e.g. Morning summary").foregroundStyle(Palette.secondary)).routineInput()
                     }
                     Field("Instruction") {
-                        TextField("Instruction", text: $instruction, prompt: Text("Describe what this bot should do each time it runs.").foregroundStyle(Palette.secondary), axis: .vertical)
+                        TextField("Instruction", text: $instruction, prompt: Text("Describe what this sidekick should do each time it runs.").foregroundStyle(Palette.secondary), axis: .vertical)
                             .lineLimit(3...8).routineInput()
                     }
                 }
@@ -179,7 +179,7 @@ struct RoutineEditorView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
         default:
-            Text("Set up by the bot. Pick Schedule or Webhook to replace it.")
+            Text("Set up by the sidekick. Pick Schedule or Webhook to replace it.")
                 .font(.caption).foregroundStyle(Palette.secondary).padding(.leading, 4)
         }
     }

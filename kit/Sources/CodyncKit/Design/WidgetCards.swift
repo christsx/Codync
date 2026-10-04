@@ -167,13 +167,13 @@ public struct BotsWidgetCard: View {
     private var needs: Int { bots.filter(\.needsInput).count }
     private var working: Int { bots.filter { $0.isWorking && !$0.needsInput }.count }
     private var count: Int { needs > 0 ? needs : working > 0 ? working : bots.count }
-    private var label: String { needs > 0 ? (needs == 1 ? "Needs you" : "Need you") : working > 0 ? "Working" : bots.isEmpty ? "No bots yet" : "All quiet" }
+    private var label: String { needs > 0 ? (needs == 1 ? "Needs you" : "Need you") : working > 0 ? "Working" : bots.isEmpty ? "No sidekicks yet" : "All quiet" }
     private var attention: Color { Color(light: 0x936000, dark: 0xECAF52) }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text("Bots").font(.system(size: 13, weight: .semibold))
+                Text("Sidekicks").font(.system(size: 13, weight: .semibold))
                 Spacer()
                 Image(systemName: "bubble.left.and.bubble.right")
                     .font(.system(size: 12)).foregroundStyle(Palette.secondary)
@@ -220,7 +220,7 @@ public struct BotsWidgetCard: View {
                 } else { row(bot) }
             }
             if bots.isEmpty {
-                Text("Create your first bot in Codync.")
+                Text("Create your first sidekick in Sidekicks.")
                     .font(.system(size: 12)).foregroundStyle(Palette.secondary)
             }
         }

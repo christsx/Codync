@@ -47,7 +47,7 @@ public struct GroupEditorView: View {
                     GroupAvatar(members: picked, size: 72)
                         .frame(maxWidth: .infinity)
                         .animation(Motion.layout, value: members)
-                    Field("Bots · \(members.count)") {
+                    Field("Sidekicks · \(members.count)") {
                         VStack(alignment: .leading, spacing: 8) {
                             if !picked.isEmpty {
                                 ScrollView(.horizontal, showsIndicators: false) {
@@ -59,7 +59,7 @@ public struct GroupEditorView: View {
                                     }
                                 }
                             }
-                            TextField(picked.isEmpty ? "Search bots" : "Add another bot", text: $query)
+                            TextField(picked.isEmpty ? "Search sidekicks" : "Add another sidekick", text: $query)
                                 .fieldBox()
                                 .onSubmit { if let first = candidates.first { toggle(first.id) } }
                             VStack(spacing: 2) {
@@ -67,7 +67,7 @@ public struct GroupEditorView: View {
                             }
                         }
                         .animation(Motion.layout, value: members)
-                        Text("Everyone answers in turn unless you @mention someone. Each bot works in its own folder with its own tools.")
+                        Text("Everyone answers in turn unless you @mention someone. Each sidekick works in its own folder with its own tools.")
                             .font(.caption)
                             .foregroundStyle(Palette.tertiary)
                     }

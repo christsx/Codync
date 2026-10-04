@@ -231,7 +231,7 @@ async fn start(store: &Store, backend: &str) -> Result<Started> {
                     "auth": {"terminal": true},
                     "_meta": {"terminal-auth": true},
                 },
-                "clientInfo": {"name": "codync", "title": "Codync", "version": env!("CARGO_PKG_VERSION")},
+                "clientInfo": {"name": "codync", "title": "Sidekicks", "version": env!("CARGO_PKG_VERSION")},
             }),
         );
         match tokio::time::timeout(budget, init).await {

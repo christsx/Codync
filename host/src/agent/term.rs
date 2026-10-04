@@ -103,7 +103,7 @@ impl Terms {
         let name = h.map_or(backend, |h| h.name);
         let command = match step {
             Step::Install => {
-                let h = h.ok_or_else(|| anyhow!("Codync downloads {name} by itself"))?;
+                let h = h.ok_or_else(|| anyhow!("Sidekicks downloads {name} by itself"))?;
                 h.install.ok_or_else(|| anyhow!("{}", h.setup))?.command()
             }
             // Some CLIs (codex) delete the current credentials the moment a new sign-in starts.

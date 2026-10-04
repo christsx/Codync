@@ -44,7 +44,7 @@ const LIGHT: Palette = Palette {
     accent_fill: "#000000",
     on_accent: "#FFFFFF",
     accent_dim: "#D9D9D9",
-    danger: "#C23A2B",
+    danger: "#FF3B30",
     code: "#F4F4F4",
     panel: "#FAFAFA",
 };
@@ -61,7 +61,7 @@ const DARK: Palette = Palette {
     accent_fill: "#FFFFFF",
     on_accent: "#000000",
     accent_dim: "#333333",
-    danger: "#F0A7A7",
+    danger: "#FF453A",
     code: "#111111",
     panel: "#1B1B1B",
 };
@@ -126,6 +126,7 @@ headerbar.flat-header windowhandle > box { padding: 0 6px; }
 .tertiary { color: @cd_tertiary; }
 .warning-text { color: @cd_warning; }
 .danger-text { color: @cd_danger; }
+button.destructive-action { background: #D92D20; color: white; }
 .small { font-size: 11px; }
 .footnote { font-size: 10px; }
 .headline { font-size: 13px; font-weight: 700; }

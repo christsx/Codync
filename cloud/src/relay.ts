@@ -622,11 +622,11 @@ export class ComputerRelay extends DurableObject<Env> {
     this.setMeta("lastSeenAt", String(now));
     this.sql.exec("UPDATE mailbox SET state = 'queued' WHERE state = 'delivering'");
     this.sql.exec("UPDATE hookbox SET state = 'queued' WHERE state = 'delivering'");
+    await this.recordPresence(false, now);
     if (!this.readyHost(exclude)) {
       const presence = JSON.stringify(this.presence(exclude));
       for (const [ws] of this.devices()) send(ws, presence);
     }
-    await this.recordPresence(false, now);
   }
 
   private async recordPresence(online: boolean, now: number): Promise<void> {

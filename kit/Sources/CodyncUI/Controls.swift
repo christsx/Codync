@@ -855,7 +855,7 @@ private struct DialogButtonStyle: ButtonStyle {
             .font(InterfaceMetrics.body.weight(.medium))
             .foregroundStyle(destructive ? Color.white : (prominent ? Palette.onAccent : Palette.text))
             .padding(.vertical, InterfaceMetrics.value(mac: 8, mobile: 12))
-            .background(destructive ? Palette.danger : (prominent ? Palette.accentFill : Palette.bubbleUser), in: Capsule())
+            .background(destructive ? Palette.dangerFill : (prominent ? Palette.accentFill : Palette.bubbleUser), in: Capsule())
             .opacity(configuration.isPressed ? 0.85 : 1)
             .scaleEffect(configuration.isPressed ? Motion.pressScale : 1)
             .animation(Motion.press, value: configuration.isPressed)

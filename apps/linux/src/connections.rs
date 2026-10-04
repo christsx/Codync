@@ -47,7 +47,7 @@ pub fn card(ui: &App, entry: &Value) -> gtk::Widget {
         body.append(&username);
         body.append(&input);
         body.append(&label(
-            "Saved securely on this computer. The bot types it into the sign-in page but never sees it.",
+            "Saved securely on this computer. The sidekick types it into the sign-in page but never sees it.",
             &["small", "secondary"],
         ));
     } else if secret {
@@ -317,32 +317,12 @@ pub fn credentials(ui: &App) {
     );
     help.set_wrap(true);
     body.append(&help);
-    let composio = gtk::PasswordEntry::builder()
-        .placeholder_text("Composio API key (for hosted apps)")
-        .show_peek_icon(true)
-        .build();
-    body.append(&composio);
-    let setup = gtk::Button::with_label("Set up hosted apps");
-    body.append(&setup);
-    let ui2 = ui.clone();
-    setup.connect_clicked(move |button| {
-        button.set_sensitive(false);
-        let (ui, composio, button) = (ui2.clone(), composio.clone(), button.clone());
-        client::call(
-            "setComposioKey",
-            json!({"key":composio.text().as_str()}),
-            move |r| {
-                button.set_sensitive(true);
-                match r {
-                    Ok(_) => {
-                        composio.set_text("");
-                        toast(&ui, "Hosted apps configured");
-                    }
-                    Err(e) => toast(&ui, &e),
-                }
-            },
-        );
-    });
+    let apps_help = label(
+        "Connect apps from Marketplace and sign in to their accounts. Sidekicks manages the connection service.",
+        &["secondary"],
+    );
+    apps_help.set_wrap(true);
+    body.append(&apps_help);
     let saved = gtk::Box::builder()
         .orientation(gtk::Orientation::Vertical)
         .spacing(8)
@@ -559,7 +539,7 @@ fn reveal(ui: &App, results: &gtk::Box, pending: &Rc<RefCell<Vec<Value>>>) {
     }
 }
 
-fn hosted_app(ui: &App, entry: Value, toolkit: String) {
+pub(crate) fn hosted_app(ui: &App, entry: Value, toolkit: String) {
     let (window, body) = dialog(ui, "Connect app");
     let ui = ui.clone();
     client::call("composioConnect", json!({"toolkit":toolkit}), move |r| {

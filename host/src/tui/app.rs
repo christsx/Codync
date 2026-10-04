@@ -75,7 +75,7 @@ impl Mark {
 }
 
 #[derive(Clone, Debug)]
-#[allow(clippy::struct_excessive_bools, reason = "mirrors the host's bot JSON")]
+#[allow(clippy::struct_excessive_bools, reason = "mirrors the host's sidekick JSON")]
 pub struct Bot {
     pub id: String,
     pub name: String,
@@ -436,11 +436,11 @@ pub enum Action {
 pub const NEW_GROUP: &str = "New group chat";
 
 pub const ACTIONS: [(&str, &str, Action); 10] = [
-    ("New bot…", "n", Action::NewBot),
+    ("New sidekick…", "n", Action::NewBot),
     ("New group chat…", "m", Action::NewGroup),
     ("Marketplace: agents, connectors, skills…", "A", Action::Market),
-    ("Memory of this bot…", "M", Action::Memory),
-    ("Routines of this bot…", "R", Action::Routines),
+    ("Memory of this sidekick…", "M", Action::Memory),
+    ("Routines of this sidekick…", "R", Action::Routines),
     ("Refresh agents", "", Action::RefreshAgents),
     ("Pair a phone…", "P", Action::Pair),
     ("Usage", "U", Action::Usage),
@@ -500,7 +500,10 @@ pub struct FolderPicker {
 
 pub const COLORS: [&str; 11] =
     ["black", "brown", "red", "orange", "yellow", "green", "cyan", "blue", "violet", "magenta", "gray"];
-pub const SHAPES: [&str; 8] = ["blob", "pebble", "squircle", "tablet", "wedge", "hex", "cloud", "teardrop"];
+pub const SHAPES: [&str; 18] = [
+    "clover", "flower", "triangle", "square", "blob", "ghost", "circle", "drop", "star", "droid", "mech", "alien",
+    "hexagon", "cat", "cloud", "pill", "pebble", "puddle",
+];
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Field {
@@ -539,7 +542,7 @@ pub struct Toggle {
     pub on: bool,
 }
 
-#[allow(clippy::struct_excessive_bools, reason = "independent bot settings and save state")]
+#[allow(clippy::struct_excessive_bools, reason = "independent sidekick settings and save state")]
 pub struct Form {
     pub bot_id: Option<String>,
     pub name: Editor,
@@ -828,7 +831,7 @@ impl App {
 
     /// Name of an entry's author (a group reply's bot), as the apps show it.
     pub fn author_name(&self, id: Option<&str>) -> String {
-        id.and_then(|id| self.bots.get(id)).map_or_else(|| "A deleted bot".into(), |b| b.name.clone())
+        id.and_then(|id| self.bots.get(id)).map_or_else(|| "A deleted sidekick".into(), |b| b.name.clone())
     }
 
     /// The turns of the lane on screen, oldest first: the trace steps through these.
@@ -910,7 +913,7 @@ impl App {
                 }
             }
             None => self.flash(match want {
-                Mark::Need => "No bot needs you",
+                Mark::Need => "No sidekick needs you",
                 Mark::Unread => "Nothing unread",
                 _ => "No match",
             }),
@@ -1339,7 +1342,7 @@ impl App {
             }
             KeyCode::Char('c') if ctrl => {
                 if draft.text.is_empty() {
-                    self.flash("esc then s stops the bot");
+                    self.flash("esc then s stops the sidekick");
                 } else {
                     draft.clear();
                 }
@@ -1555,7 +1558,7 @@ impl App {
             KeyCode::Char('x') => {
                 if let Some(b) = self.bot() {
                     let (detail, note) = if b.group {
-                        ("Its conversation goes away.".into(), "Its bots stay.".into())
+                        ("Its conversation goes away.".into(), "Its sidekicks stay.".into())
                     } else {
                         (
                             "Its conversation and settings go away.".into(),
@@ -1865,7 +1868,7 @@ impl App {
             return;
         }
         if g.members.is_empty() {
-            g.error = Some("Pick at least one bot.".into());
+            g.error = Some("Pick at least one sidekick.".into());
             return;
         }
         let typed = g.name.text.trim();
@@ -2323,7 +2326,7 @@ impl App {
             return;
         }
         if f.bot_id.is_some() && f.name.text.trim().is_empty() {
-            f.error = Some("Give the bot a name.".into());
+            f.error = Some("Give the sidekick a name.".into());
             return;
         }
         let model = f.model.text.trim();
@@ -2607,7 +2610,7 @@ mod tests {
     #[test]
     fn lanes_split_the_chat_from_its_threads() {
         let g = Bot::parse(&json!({"id": "g", "kind": "group", "members": ["a", "b"], "workingThread": "r"}))
-            .expect("a bot with an id parses");
+            .expect("a sidekick with an id parses");
         assert!(g.group && g.members == ["a", "b"]);
         assert!(g.works_in(Some("r")) && !g.works_in(None));
         let (tx, _rx) = tokio::sync::mpsc::unbounded_channel();

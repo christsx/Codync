@@ -114,7 +114,7 @@ async fn supervise(hub: &Arc<Hub>, url: &str) {
     loop {
         if !registered {
             if let Err(e) = cloud::register(hub, url).await {
-                tracing::warn!(error = format!("{e:#}"), "couldn't register with the Codync cloud");
+                tracing::warn!(error = format!("{e:#}"), "couldn't register with the Sidekicks cloud");
                 cloud::update_status(hub, |s| s.last_error = Some(format!("{e:#}")));
                 sleep(register_wait.wait()).await;
                 continue;

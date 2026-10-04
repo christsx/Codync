@@ -12,10 +12,6 @@ use vte::prelude::*;
 
 pub fn open(ui: &App) {
     let (_, body) = dialog(ui, "Marketplace");
-    let connectors = gtk::Button::with_label("Connectors");
-    body.append(&connectors);
-    let ui2 = ui.clone();
-    connectors.connect_clicked(move |_| crate::connections::marketplace(&ui2));
     let credentials = gtk::Button::with_label("Credentials");
     body.append(&credentials);
     let ui2 = ui.clone();
@@ -28,9 +24,30 @@ pub fn open(ui: &App) {
         Ok(v) => {
             ui2.state.borrow_mut().hello["backends"] = v["backends"].clone();
             for backend in v["backends"].as_array().into_iter().flatten().filter(|b| {
-                b["available"] == true || b["installed"] == true || b["curated"] == true
+                [
+                    "codex-acp",
+                    "claude-acp",
+                    "cursor",
+                    "gemini",
+                    "opencode",
+                    "glm-acp-agent",
+                    "kimi",
+                    "factory-droid",
+                ]
+                .contains(
+                    &b["registry"]
+                        .as_str()
+                        .or(b["id"].as_str())
+                        .unwrap_or_default(),
+                )
             }) {
-                let button = gtk::Button::with_label(backend["name"].as_str().unwrap_or("Agent"));
+                let button = brand_button(
+                    backend["name"].as_str().unwrap_or("Agent"),
+                    backend["registry"]
+                        .as_str()
+                        .or(backend["id"].as_str())
+                        .unwrap_or_default(),
+                );
                 agents.append(&button);
                 let (ui, backend) = (ui2.clone(), backend.clone());
                 button.connect_clicked(move |_| agent(&ui, &backend));
@@ -38,6 +55,46 @@ pub fn open(ui: &App) {
         }
         Err(e) => agents.append(&label(&e, &["danger-text"])),
     });
+    body.append(&label("Popular apps", &["headline"]));
+    let apps = gtk::Box::builder()
+        .orientation(gtk::Orientation::Vertical)
+        .spacing(8)
+        .build();
+    body.append(&apps);
+    let ui_apps = ui.clone();
+    client::call("composioToolkits", json!({}), move |result| match result {
+        Ok(page) => {
+            for item in page["items"].as_array().into_iter().flatten() {
+                let title = format!(
+                    "{} · {}",
+                    item["name"].as_str().unwrap_or("App"),
+                    if item["connected"] == true {
+                        "Connected"
+                    } else {
+                        "Connect"
+                    }
+                );
+                let button = brand_button(&title, item["slug"].as_str().unwrap_or_default());
+                apps.append(&button);
+                let (ui, slug) = (
+                    ui_apps.clone(),
+                    item["slug"].as_str().unwrap_or_default().to_owned(),
+                );
+                button.connect_clicked(move |_| {
+                    crate::connections::hosted_app(&ui, Value::Null, slug.clone())
+                });
+            }
+        }
+        Err(error) => apps.append(&label(&error, &["danger-text"])),
+    });
+    let advanced_tools = gtk::Expander::builder().label("Advanced: skills").build();
+    let skills_body = gtk::Box::builder()
+        .orientation(gtk::Orientation::Vertical)
+        .spacing(8)
+        .build();
+    advanced_tools.set_child(Some(&skills_body));
+    body.append(&advanced_tools);
+    let body = skills_body;
     body.append(&label("Skills", &["headline"]));
     let search = gtk::SearchEntry::new();
     body.append(&search);
@@ -80,7 +137,7 @@ fn skills(ui: &App, list: &gtk::Box, query: &str) {
                 crate::dialogs::confirm(
                     &ui,
                     "Remove skill?",
-                    "Bots will no longer have this skill.",
+                    "Sidekicks will no longer have this skill.",
                     "Remove",
                     true,
                     move || {
@@ -206,9 +263,20 @@ fn load_auth(ui: &App, id: &str, body: &gtk::Box) {
             let (ui, id) = (ui.clone(), id.clone());
             login.connect_clicked(move |_| setup(&ui, &id, "login", None));
         }
+        let advanced = gtk::Expander::builder().label("Advanced: API keys").build();
+        let advanced_body = gtk::Box::builder()
+            .orientation(gtk::Orientation::Vertical)
+            .spacing(8)
+            .build();
+        advanced.set_child(Some(&advanced_body));
+        body.append(&advanced);
         for method in v["methods"].as_array().into_iter().flatten() {
             let button = gtk::Button::with_label(method["name"].as_str().unwrap_or("Sign in"));
-            body.append(&button);
+            if method["kind"] == "envVar" {
+                advanced_body.append(&button);
+            } else {
+                body.append(&button);
+            }
             let (ui, id, method, body) = (ui.clone(), id.clone(), method.clone(), body.clone());
             button.connect_clicked(move |button| match method["kind"].as_str() {
                 Some("terminal") => setup(&ui, &id, "login", method["id"].as_str()),
@@ -425,4 +493,104 @@ fn setup(ui: &App, backend: &str, step: &str, method: Option<&str>) {
             }
         });
     });
+}
+
+fn brand_button(title: &str, brand: &str) -> gtk::Button {
+    let data: &[u8] = match brand {
+        "hubspot" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-hubspot.imageset/logo.png"
+        ),
+        "codex-acp" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-openai.imageset/dark.png"
+        ),
+        "claude-acp" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-claude.imageset/logo.png"
+        ),
+        "cursor" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-cursor.imageset/dark.png"
+        ),
+        "gemini" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-gemini.imageset/logo.png"
+        ),
+        "antigravity-acp" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-google.imageset/logo.png"
+        ),
+        "github-copilot-cli" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-github.imageset/dark.png"
+        ),
+        "amp-acp" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-ampcode.imageset/logo.png"
+        ),
+        "auggie" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-augmentcode.imageset/logo.png"
+        ),
+        "codebuddy-code" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-codebuddy.imageset/logo.png"
+        ),
+        "deepagents" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-langchain.imageset/logo.jpeg"
+        ),
+        "devin" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-devin.imageset/dark.png"
+        ),
+        "factory-droid" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-factory.imageset/logo.png"
+        ),
+        "grok-build" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-x.imageset/logo.jpeg"
+        ),
+        "junie" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-jetbrains.imageset/logo.png"
+        ),
+        "kilo" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-kilo.imageset/logo.png"
+        ),
+        "minimax-code" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-minimax.imageset/logo.jpeg"
+        ),
+        "mistral-vibe" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-mistral.imageset/logo.png"
+        ),
+        "opencode" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-opencode.imageset/logo.png"
+        ),
+        "poolside" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-poolside.imageset/logo.png"
+        ),
+        "qwen-code" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-qwen.imageset/logo.png"
+        ),
+        "slack" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-slack.imageset/logo.png"
+        ),
+        "github" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-github.imageset/dark.png"
+        ),
+        "gmail" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-gmail.imageset/logo.png"
+        ),
+        "googledrive" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-googledrive.imageset/logo.png"
+        ),
+        "googlecalendar" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-googlecalendar.imageset/logo.png"
+        ),
+        "notion" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-notion.imageset/logo.png"
+        ),
+        "linear" => include_bytes!(
+            "../../../kit/Sources/CodyncUI/Resources/BrandLogos.xcassets/brand-linear.imageset/dark.png"
+        ),
+        _ => return gtk::Button::with_label(title),
+    };
+    let button = gtk::Button::new();
+    let row = gtk::Box::new(gtk::Orientation::Horizontal, 10);
+    if let Ok(texture) = gtk::gdk::Texture::from_bytes(&gtk::glib::Bytes::from_static(data)) {
+        let image = gtk::Image::from_paintable(Some(&texture));
+        image.set_pixel_size(28);
+        row.append(&image);
+    }
+    row.append(&label(title, &[]));
+    button.set_child(Some(&row));
+    button
 }

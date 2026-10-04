@@ -57,7 +57,7 @@ struct MemoryCard: View {
             VStack(alignment: .leading, spacing: InterfaceMetrics.value(mac: 10, mobile: 14)) {
                 if facts.isEmpty {
                     Text(loaded
-                        ? "Nothing yet. The bot remembers who you are and what you work on as you chat."
+                        ? "Nothing yet. The sidekick remembers who you are and what you work on as you chat."
                         : "Loading…")
                         .font(InterfaceMetrics.secondary)
                         .foregroundStyle(Palette.secondary)
@@ -86,7 +86,7 @@ struct MemoryCard: View {
             .background(Palette.bubbleAgent, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
         }
         .task(id: botId) { await load() }
-        .codyncDialog("Forget everything this bot remembers?", isPresented: $confirmClear) {
+        .codyncDialog("Forget everything this sidekick remembers?", isPresented: $confirmClear) {
             [DialogAction("Forget everything", destructive: true) { clear() }]
         }
     }

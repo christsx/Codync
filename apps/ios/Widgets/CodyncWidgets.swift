@@ -59,8 +59,8 @@ struct BotsWidget: Widget {
             BotsWidgetView(entry: entry)
                 .containerBackground(Palette.surface, for: .widget)
         }
-        .configurationDisplayName("Bots")
-        .description("Bots that need you, running tasks, and their current activity.")
+        .configurationDisplayName("Sidekicks")
+        .description("Sidekicks that need you, running tasks, and their current activity.")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge, .accessoryCircular, .accessoryRectangular, .accessoryInline])
     }
 }
@@ -80,15 +80,15 @@ struct BotsWidgetView: View {
         if !entry.paired {
             switch family {
             case .accessoryInline:
-                Text("Connect Codync to your computer")
+                Text("Connect Sidekicks to your computer")
             case .accessoryCircular:
                 Image(systemName: "desktopcomputer")
-                    .accessibilityLabel("Connect Codync to your computer")
+                    .accessibilityLabel("Connect Sidekicks to your computer")
             case .accessoryRectangular:
                 Label("Connect a computer", systemImage: "desktopcomputer")
                     .font(.caption)
             default:
-                EmptyWidget(text: "Open Codync to pair with your computer.")
+                EmptyWidget(text: "Open Sidekicks to pair with your computer.")
             }
         } else {
             switch family {
@@ -242,7 +242,7 @@ struct UsageWidgetView: View {
         } else if family == .accessoryInline || family == .accessoryCircular || family == .accessoryRectangular {
             Text("No usage yet")
         } else {
-            EmptyWidget(text: SharedStore.activeContext.computers.isEmpty ? "Open Codync to pair with your computer." : "No usage reported yet.")
+            EmptyWidget(text: SharedStore.activeContext.computers.isEmpty ? "Open Sidekicks to pair with your computer." : "No usage reported yet.")
         }
     }
 
@@ -411,7 +411,7 @@ struct ProviderUsageView: View {
             if let provider, !provider.windows.isEmpty {
                 ProviderWidgetCard(provider: provider, layout: family == .systemSmall ? .small : family == .systemLarge ? .large : .medium, date: entry.date)
             } else {
-                EmptyWidget(text: "Open Codync to connect a computer and check \(entry.provider.capitalized) usage.")
+                EmptyWidget(text: "Open Sidekicks to connect a computer and check \(entry.provider.capitalized) usage.")
             }
         }
         .containerBackground(Palette.surface, for: .widget)

@@ -97,11 +97,11 @@ private struct InstallPage: View {
                     .padding(.top, 8)
 
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Install Codync\non your computer")
+                        Text("Install Sidekicks\non your computer")
                             .font(.system(size: 30, weight: .semibold))
                             .tracking(-0.5)
                             .foregroundStyle(Palette.text)
-                        Text("Your bots run there. This iPhone is how you talk to them.")
+                        Text("Your sidekicks run there. This iPhone is how you talk to them.")
                             .font(.body)
                             .foregroundStyle(Palette.secondary)
                     }
@@ -122,7 +122,7 @@ private struct InstallPage: View {
                             CommandBlock("brew install leepokai/codync/codync-host\ncodync-host install")
                         }
                         Text(os == .mac
-                             ? "Open Codync and it sets up the host on its own."
+                             ? "Open Sidekicks and it sets up the host on its own."
                              : "codync-host install keeps it running in the background.")
                             .font(.subheadline)
                             .foregroundStyle(Palette.secondary)
@@ -218,7 +218,7 @@ private struct ScanPage: View {
                         .tracking(-0.5)
                         .foregroundStyle(Palette.text)
                     Text(os == .mac
-                         ? "On your Mac, click Codync in the menu bar, then Pair iPhone."
+                         ? "On your Mac, click Sidekicks in the menu bar, then Pair iPhone."
                          : "On your computer, run this in a terminal:")
                         .font(.body)
                         .foregroundStyle(Palette.secondary)
@@ -245,7 +245,7 @@ private struct ScanPage: View {
                     VStack(alignment: .leading, spacing: 6) {
                         Text(error).font(.footnote).foregroundStyle(Palette.danger)
                         // The usual cause: the phone has no road to the computer yet.
-                        Label("Check that this iPhone and the computer are on the same Wi-Fi or both on Tailscale, or that “Reach from anywhere” is on in Codync on the computer.",
+                        Label("Check that this iPhone and the computer are on the same Wi-Fi or both on Tailscale, or that “Reach from anywhere” is on in Sidekicks on the computer.",
                               systemImage: "wifi.exclamationmark")
                             .font(.footnote)
                             .foregroundStyle(Palette.secondary)
@@ -261,7 +261,7 @@ private struct ScanPage: View {
                     Label("Connects on Wi-Fi, over Tailscale, or from anywhere through Cloudflare, on its own. End-to-end encrypted.",
                           systemImage: "lock.fill")
                     if tailscaleOn {
-                        Label("Tailscale is on: Codync connects over it directly.", systemImage: "checkmark.circle.fill")
+                        Label("Tailscale is on: Sidekicks connects over it directly.", systemImage: "checkmark.circle.fill")
                     } else {
                         Button { openURL(Tailscale.downloadURL) } label: {
                             Label("Use Tailscale? Direct and faster away from home.", systemImage: "arrow.up.right")

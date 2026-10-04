@@ -67,7 +67,7 @@ pub fn memory(buf: &mut Buffer, area: Rect, app: &App, m: &MemorySheet) {
                 inner.x,
                 inner.y + 1,
                 inner.width,
-                "Nothing yet. The bot remembers who you are and what you work on as you chat.",
+                "Nothing yet. The sidekick remembers who you are and what you work on as you chat.",
                 t.secondary.patch(t.panel),
             );
         }
@@ -100,7 +100,7 @@ pub fn routines(buf: &mut Buffer, area: Rect, app: &App, l: &RoutineList) {
                 inner.x,
                 inner.y + 1,
                 inner.width,
-                "No routines. c asks the bot for one; n sets one up here.",
+                "No routines. c asks the sidekick for one; n sets one up here.",
                 t.secondary.patch(t.panel),
             );
         }
@@ -155,7 +155,7 @@ pub fn routine(buf: &mut Buffer, area: Rect, f: &RoutineForm) {
         buf,
         Rect::new(vx, inner.y + 2, vw, 4),
         &f.instruction,
-        "What the bot does each time",
+        "What the sidekick does each time",
         f.field == RoutineField::Instruction,
     );
     put(buf, inner.x, inner.y + 7, 9, "When", label(f.field == RoutineField::When));
@@ -328,6 +328,9 @@ pub fn agent(buf: &mut Buffer, area: Rect, app: &App, a: &AgentSetup) {
                 };
                 let d = m["description"].as_str().map_or(fallback, str::to_owned);
                 (icon, s(m, "name").to_owned(), d)
+            }
+            SetupRow::Advanced => {
+                ("⚿", if a.advanced { "Hide advanced options" } else { "Advanced: API keys" }.to_owned(), String::new())
             }
             SetupRow::Check => ("↻", "Check again".to_owned(), String::new()),
         };
