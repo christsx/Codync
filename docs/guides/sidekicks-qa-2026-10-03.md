@@ -30,3 +30,9 @@ Status: not ready for TestFlight upload. Local fixes have not been merged or dep
 ## Follow-up: mobile authentication
 
 Unsigned simulator sign-in reproduced Keychain -34018 and Clerk fallback-endpoint failure. Rebuilt with ad hoc simulator signing; correct Sidekicks Clerk endpoint verified in logs, Google OAuth opened and reached a QR-code login step. Full callback and session completion remain pending the user completing Google sign-in. No backend Native API setting was changed.
+
+## Follow-up: Apple signing resolved
+
+Christian Garcia team 9S7MDN3QVL is signed into Xcode. Replaced upstream-only iOS bundle IDs with com.christsx.Sidekicks.ios and its two extension IDs, and replaced the App Group with group.com.christsx.Sidekicks in every participating target and SharedStore. Shared Swift tests passed (73). Signed Release archive succeeded at /tmp/sidekicks-testflight.xcarchive; App Store Connect distribution export succeeded at /tmp/sidekicks-testflight-ipa/Sidekicks.ipa. Version 2.3.1, build 24. These temporary local artifacts should be preserved outside /tmp if retained long term.
+
+The earlier missing-account blocker is resolved. Upload and tester distribution are still pending App Store Connect browser login and creation/verification of the Sidekicks app record. No build uploaded. Native Apple sign-in and the own-team APNs relay remain unverified. Signing configuration changes are pushed on codex/sidekicks-testflight.
