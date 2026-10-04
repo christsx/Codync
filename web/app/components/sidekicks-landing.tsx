@@ -4,12 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { BotAvatar, type BotAvatarType } from "bot-avatars";
 import {
-  ArrowDown,
   ArrowUp,
   ArrowRight,
   Cloud,
   Desktop,
-  GithubLogo,
   MagnifyingGlass,
   SquaresFour,
   CaretDown,
@@ -130,7 +128,7 @@ export default function SidekicksLanding() {
             <a href="#faq">FAQ</a>
           </div>
           <a className="button small" href="#download">
-            Get Sidekicks <ArrowDown size={14} />
+            Get Sidekicks
           </a>
         </nav>
       </header>
@@ -309,7 +307,6 @@ export default function SidekicksLanding() {
           </Reveal>
           <div className="workflow-lines">
             <article>
-              <span>01</span>
               <div>
                 <h3>A conversation for every project.</h3>
                 <p>
@@ -319,7 +316,6 @@ export default function SidekicksLanding() {
               </div>
             </article>
             <article>
-              <span>02</span>
               <div>
                 <h3>Progress and approvals, together.</h3>
                 <p>
@@ -329,7 +325,6 @@ export default function SidekicksLanding() {
               </div>
             </article>
             <article>
-              <span>03</span>
               <div>
                 <h3>Choose where it runs.</h3>
                 <p>
@@ -461,18 +456,30 @@ export default function SidekicksLanding() {
         </section>
       </main>
       <footer className="site-footer container">
-        <a className="wordmark" href="#">
-          <Avatar type="flower" color="#f65baa" size={29} />
-          Sidekicks
-        </a>
-        <p>A little crew. A lot done.</p>
-        <div>
+        <div className="footer-brand">
+          <a className="wordmark" href="#">
+            <Avatar type="flower" color="#f65baa" size={36} />
+            Sidekicks
+          </a>
+          <p>© 2026 Sidekicks</p>
+        </div>
+        <nav className="footer-group" aria-label="Product links">
+          <h3>Sidekicks</h3>
+          <a href="#preview">The app</a>
+          <a href="#workflow">How it works</a>
+          <a href="#faq">Questions</a>
+        </nav>
+        <nav className="footer-group" aria-label="Download links">
+          <h3>Get Sidekicks</h3>
+          <a href={`${GITHUB}/releases`}>Mac releases</a>
+          <a href="#download">iPhone beta</a>
+          <a href={GITHUB}>GitHub</a>
+        </nav>
+        <nav className="footer-group" aria-label="Legal links">
+          <h3>Legal</h3>
           <a href="/privacy">Privacy</a>
           <a href="/terms">Terms</a>
-          <a href={GITHUB} aria-label="Sidekicks on GitHub">
-            <GithubLogo size={19} />
-          </a>
-        </div>
+        </nav>
       </footer>
     </>
   );

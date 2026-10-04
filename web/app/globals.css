@@ -1826,3 +1826,124 @@ input {
     max-width: 100%;
   }
 }
+
+/* Open feature layout and grouped footer, without repeated rules. */
+.workflow-lines {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: none;
+  gap: 44px;
+  margin-top: 52px;
+}
+.workflow-lines article {
+  display: block;
+  border: 0;
+  padding: 0;
+}
+.workflow-lines h3 {
+  font-size: 23px;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-bottom: 16px;
+}
+.workflow-lines p {
+  font-size: 17px;
+  line-height: 1.65;
+  color: #aaa5aa;
+}
+.section-heading p,
+.everywhere-card p,
+.tools-section p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #aaa5aa;
+}
+.agent-strip p {
+  font-size: 15px;
+  color: #999;
+}
+.agent-strip span {
+  font-size: 16px;
+}
+.faq-list details {
+  border: 0;
+  padding: 22px 0;
+}
+.faq-list summary {
+  font-size: 18px;
+  color: #e3dfe3;
+}
+.faq-list p {
+  font-size: 17px;
+  line-height: 1.65;
+  color: #aaa5aa;
+}
+.download-section .download-status,
+.beta-note {
+  font-size: 14px;
+  color: #969096;
+  line-height: 1.6;
+}
+.site-footer {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  align-items: start;
+  gap: 50px;
+  padding: 65px 0 60px;
+  border: 0;
+}
+.site-footer > .footer-brand {
+  display: block;
+}
+.site-footer .wordmark {
+  font-size: 23px;
+}
+.site-footer .footer-brand p {
+  font-size: 14px;
+  color: #989298;
+  margin-top: 22px;
+  display: block;
+}
+.footer-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 15px;
+  color: #b7b0b7;
+}
+.footer-group h3 {
+  font-size: 15px;
+  color: #f1edf1;
+  margin: 0 0 5px;
+  font-weight: 500;
+}
+.footer-group a:hover {
+  color: #fff;
+}
+@media (max-width: 700px) {
+  .workflow-lines {
+    grid-template-columns: 1fr;
+    gap: 34px;
+    margin-top: 35px;
+  }
+  .workflow-lines h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+  .workflow-lines p {
+    font-size: 16px;
+  }
+  .site-footer {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 35px 20px;
+    padding-top: 40px;
+  }
+  .site-footer > .footer-brand {
+    grid-column: 1/-1;
+  }
+  .section-heading p,
+  .everywhere-card p,
+  .tools-section p {
+    font-size: 16px;
+  }
+}
