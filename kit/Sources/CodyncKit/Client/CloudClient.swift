@@ -52,6 +52,15 @@ public struct CloudClient: Sendable {
 
     public func me() async throws -> CloudAccount { try await request("GET", "v1/me") }
 
+    public struct WorkspaceResponse: Decodable, Sendable {
+        public let state: String
+        public let pairingUrl: String?
+    }
+
+    public func startWorkspace() async throws -> WorkspaceResponse {
+        try await request("POST", "v1/workspace", body: [String: String](), signed: true)
+    }
+
     /// Registers this device key with the account (Clerk + proof of the key).
     public func registerDevice(name: String, platform: String) async throws {
         struct Res: Decodable {}

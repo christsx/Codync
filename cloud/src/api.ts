@@ -277,6 +277,14 @@ export const claimCanonical = (claimId: string, nonce: string, userId: string, c
 
 export const health = async () => ({ ok: true, version: VERSION });
 
+/** Provision only for the signed-in, registered device; never accept a user or sandbox ID from a client. */
+export async function cloudWorkspace(c: Ctx) {
+  const u = await user(c);
+  await device(c, u.userId);
+  const { workspace } = await import("./workspace");
+  return workspace(c, u.userId);
+}
+
 /**
  * Where a connector's sign-in page returns when the user signed in on the phone. Stateless: it bounces
  * the query (code, state or error) to the app, which hands it to the host over the E2E channel. The code

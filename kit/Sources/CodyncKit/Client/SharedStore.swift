@@ -32,7 +32,7 @@ public enum SharedStore {
             self.suite = suite
         }
 
-        private static let names = ["computers", "bots", "usage", "lastComputerId"]
+        private static let names = ["computers", "bots", "usage", "lastComputerId", "workspaceComputerId"]
         private func key(_ name: String) -> String { accountID == nil ? name : "account.\(id).\(name)" }
         public static func digest(_ value: String) -> String {
             SHA256.hash(data: Data(value.utf8)).map { String(format: "%02x", $0) }.joined()
@@ -62,6 +62,11 @@ public enum SharedStore {
         public var lastComputerId: ComputerID? {
             get { defaults.string(forKey: key("lastComputerId")) }
             nonmutating set { defaults.set(newValue, forKey: key("lastComputerId")) }
+        }
+
+        public var workspaceComputerId: ComputerID? {
+            get { defaults.string(forKey: key("workspaceComputerId")) }
+            nonmutating set { defaults.set(newValue, forKey: key("workspaceComputerId")) }
         }
 
         /// Deep links carry the context they were made in, so an old widget or activity

@@ -28,13 +28,7 @@ struct RootView: View {
                     WelcomeView { withAnimation(Motion.reduced(Motion.layout, reduceMotion)) { welcomed = true } }
                         .transition(.move(edge: .leading).combined(with: .opacity))
                 } else {
-                    PairingView(onSkip: { onboardingCompleted = true }) {
-                        if account.isSignedIn {
-                            AccountSwitcherButton()
-                        } else {
-                            BackButton { withAnimation(Motion.reduced(Motion.layout, reduceMotion)) { welcomed = false } }
-                        }
-                    }
+                    WorkspaceSetupView { onboardingCompleted = true }
                     .transition(.move(edge: .trailing).combined(with: .opacity))
                 }
             } else {

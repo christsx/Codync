@@ -73,8 +73,9 @@ private func link(_ overrides: [String: String?] = [:]) -> String {
     alice.computers = [v.computer]
     alice.usage = [v.computer.id: Usage()]
     alice.lastComputerId = v.computer.id
-    #expect(bob.computers.isEmpty && bob.usage.isEmpty && bob.lastComputerId == nil)
+    alice.workspaceComputerId = v.computer.id
+    #expect(bob.computers.isEmpty && bob.usage.isEmpty && bob.lastComputerId == nil && bob.workspaceComputerId == nil)
     #expect(SharedStore.Context(accountID: "user_alice", suite: suite).computers == [v.computer])
     alice.erase()
-    #expect(alice.computers.isEmpty && alice.usage.isEmpty && alice.lastComputerId == nil)
+    #expect(alice.computers.isEmpty && alice.usage.isEmpty && alice.lastComputerId == nil && alice.workspaceComputerId == nil)
 }

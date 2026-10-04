@@ -20,9 +20,14 @@ struct SettingsView: View {
     @State private var access: AccessTarget?
     @State private var confirmStartOver = false
     @State private var confirmRemoveCopy: CloudComputer?
+    @State private var settingUpWorkspace = false
 
     var body: some View {
         CardForm {
+            CardSection("Cloud Workspace", footer: "Run your sidekicks without a laptop. Your computer remains an optional workspace.") {
+                Button("Set up Cloud Workspace") { settingUpWorkspace = true }
+                    .buttonStyle(.secondary)
+            }
             CardSection("Computers", footer: app.account.isSignedIn
                         ? "Computers in your account need your OK on the computer before this iPhone can use them."
                         : "Each sidekick runs on its own computer. Sign in to see the computers in your account.") {
@@ -113,6 +118,9 @@ struct SettingsView: View {
         .task { await accounts.refreshCloud() }
         .codyncSheet(isPresented: $addingComputer) {
             PairingView(inModal: true)
+        }
+        .codyncSheet(isPresented: $settingUpWorkspace) {
+            WorkspaceSetupView(inModal: true) { settingUpWorkspace = false }
         }
         .codyncSheet(item: $access) { target in
             AccessRequestView(computer: target.computer, pending: accounts.pendingAccess[target.id] != nil)

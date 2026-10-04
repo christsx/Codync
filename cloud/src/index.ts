@@ -1,6 +1,7 @@
 // Codync cloud: accounts (Clerk), computers, access grants (D1) and the end-to-end encrypted relay
 // (one ComputerRelay Durable Object per computer). The cloud only ever sees ciphertext and routing
-// metadata; the host stays the sole authority on which devices may decrypt (docs/reference/remote-relay.md).
+// metadata; personally paired hosts authorize their devices. Managed cloud provisioning also
+// requests short-lived pairing offers through Daytona (docs/guides/cloud-workspace.md).
 
 import * as api from "./api";
 import { ApiError, type Ctx } from "./api";
@@ -9,6 +10,9 @@ import type { ComputerRelay } from "./relay";
 export { ComputerRelay } from "./relay";
 
 export interface Env {
+  DAYTONA_API_KEY?: string;
+  DAYTONA_SNAPSHOT?: string;
+  WORKSPACE_USERS?: string;
   COMPOSIO_API_KEY?: string;
   APPS_LIMITER?: RateLimit;
   DB: D1Database;
@@ -36,6 +40,7 @@ const MAX_REQUEST = 128 * 1024;
 
 const ID = "([A-Za-z0-9_-]{1,64})";
 const routes: [string, RegExp, Handler][] = [
+  ["POST", /^\/v1\/workspace$/, api.cloudWorkspace],
   ["GET", /^\/v1\/health$/, api.health],
   ["GET", /^\/v1\/oauth\/callback$/, api.oauthCallback],
   ["GET", /^\/v1\/me$/, api.me],

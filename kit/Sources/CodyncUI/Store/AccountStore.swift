@@ -56,6 +56,7 @@ public final class AccountStore {
     private var accessPolls: [ComputerID: Task<Void, Never>] = [:]
     private var isActive = true
     private var retired = false
+    private var workspaceStarting = false
     /// Asked once per launch: a denied or cancelled request isn't repeated behind the user's back.
     private var asked: Set<ComputerID> = []
 
@@ -95,6 +96,34 @@ public final class AccountStore {
     public func store(for id: ComputerID) -> BotStore? { stores[id] }
 
     // MARK: computers
+
+    /// Create/resume the account's cloud host, then use the same encrypted channel as other hosts.
+    public func connectWorkspace(deviceName: String, platform: String) async throws {
+        guard let cloud, !retired else {
+            throw CloudError(status: 401, code: "unauthenticated", message: "Sign in to start your Cloud Workspace.")
+        }
+        guard !workspaceStarting else {
+            throw CloudError(status: 409, code: "workspaceStarting", message: "Your Cloud Workspace is already starting.")
+        }
+        workspaceStarting = true
+        defer { workspaceStarting = false }
+        try await cloud.registerDevice(name: deviceName, platform: platform)
+        for _ in 0..<24 {
+            try Task.checkCancellation()
+            let response = try await cloud.startWorkspace()
+            guard !retired else { throw CancellationError() }
+            if response.state == "ready", let link = response.pairingUrl {
+                var pairing = try Pairing.parse(link)
+                pairing.computer.name = "Cloud Workspace"
+                let computer = try await pair(pairing, deviceName: deviceName, platform: platform)
+                storage.workspaceComputerId = computer.id
+                storage.lastComputerId = computer.id
+                return
+            }
+            try await Task.sleep(for: .seconds(3))
+        }
+        throw CloudError(status: 503, code: "workspaceStarting", message: "Your Cloud Workspace is still starting. Try again shortly.")
+    }
 
     /// QR pairing (§4.1); the computer is saved in this context and connected.
     public func pair(_ pairing: Pairing, deviceName: String, platform: String) async throws -> Computer {
@@ -172,6 +201,13 @@ public final class AccountStore {
 
     public func refreshCloud() async {
         guard let cloud, !retired else { return }
+        // A stopped managed workspace wakes when mobile returns; never wake a physical computer
+        // or silently switch an existing conversation's execution destination.
+        if clientKind == "ios", !workspaceStarting,
+           let id = storage.workspaceComputerId, computers.contains(where: { $0.id == id }),
+           stores[id]?.connection != .online {
+            try? await connectWorkspace(deviceName: "iPhone", platform: "ios")
+        }
         do {
             let list = try await cloud.computers()
             guard !retired else { return }
