@@ -22,7 +22,7 @@ const crew = [
     name: "Codex",
     role: "Coding agent",
     type: "clover" as BotAvatarType,
-    color: "#ff8b32",
+    color: "#f58632",
     task: "Polish the onboarding flow",
     reply:
       "The onboarding is simpler now. I tightened the spacing, cleaned up the buttons, and kept the dark theme. Ready for your review.",
@@ -90,10 +90,10 @@ function Avatar({
         color={color}
         size={size}
         shading="fabric"
-        saturation={type === "clover" ? 1.85 : 1.15}
-        brightness={type === "clover" ? 1.15 : 1}
-        shadow={type === "clover" ? 0.3 : 1.15}
-        lightFront={type === "clover" ? 60 : 32}
+        saturation={type === "clover" ? 1.6 : 1.15}
+        brightness={type === "clover" ? 1.05 : 1}
+        shadow={type === "clover" ? 0.6 : 1.15}
+        lightFront={type === "clover" ? 45 : 32}
         highlight={type === "clover" ? 1.7 : 1.45}
         shine={type === "clover" ? 0.3 : 0}
         furDensity={0.65}
@@ -114,13 +114,7 @@ export default function SidekicksLanding() {
       <header className="site-header">
         <nav className="site-nav" aria-label="Main navigation">
           <a href="#" className="wordmark">
-            <Image
-              src="/sidekicks/logo.webp"
-              width={36}
-              height={36}
-              alt=""
-              priority
-            />
+            <Avatar type="clover" color="#ff52ad" size={36} />
             Sidekicks<span className="beta">BETA</span>
           </a>
           <div className="nav-links">
