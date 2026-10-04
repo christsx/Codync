@@ -37,3 +37,7 @@ The refined landing defaults to a clearly labeled example conversation in the de
 The product page now uses editorial typography and a plain mobile-access section instead of a decorative phone mockup. Integration logos appear inline, and availability copy explicitly describes the private beta. The hero links to the project’s Mac releases rather than promising an available installer.
 
 The earlier centered landing layout is restored per user preference. The uppercase Mac/iPhone beta label is removed; the dashboard example, quieter motion, native system font, and dark background remain. The mobile phone preview and original section arrangement are restored.
+
+## Production hosting
+
+Deployed to the Vercel project `sidekicks` in `ccdev-8130s-projects`. The production fallback is https://sidekicks-eight.vercel.app. Both `usesidekicks.com` and `www.usesidekicks.com` are assigned to this project. Namecheap BasicDNS holds an apex A record pointing to `76.76.21.21` and a `www` CNAME pointing to `cname.vercel-dns.com`. Deploy from `web/` with `vercel deploy --prod` using the ignored local `.vercel` project link.
