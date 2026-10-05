@@ -1584,15 +1584,6 @@ summary {
 .product-input span {
   flex: 1;
 }
-.preview-reset {
-  background: none;
-  border: 0;
-  color: #777;
-  font-size: 10px;
-  margin-top: 12px;
-  cursor: pointer;
-  align-self: center;
-}
 .everywhere-card {
   background: transparent;
 }
@@ -1988,7 +1979,6 @@ input {
 .details-agent p span, .details-agent small { color: #999; }
 .details-agent small { display: flex; align-items: center; gap: 8px; font-size: 12px; }
 .details-agent > div { margin-top: 8px; line-height: 1.5; }
-.preview-section .preview-reset { display: block; margin: 14px auto 0; font-size: 11px; }
 @media (max-width: 900px) {
   .dashboard-details { display: none; }
   .desktop-sidebar { width: 28%; }

@@ -313,9 +313,6 @@ export default function SidekicksLanding() {
                 </aside>
               )}
             </div>
-            <button className="preview-reset" onClick={() => setDashboardStarted(!dashboardStarted)}>
-              {dashboardStarted ? "View welcome screen" : "View conversation"}
-            </button>
           </Reveal>
         </section>
         <section
