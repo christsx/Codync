@@ -142,7 +142,7 @@ function Avatar({
 }
 
 export default function SidekicksLanding() {
-  const [dashboardStarted, setDashboardStarted] = useState(true);
+  const [dashboardStarted, setDashboardStarted] = useState(false);
   return (
     <>
       <header className="site-header">
