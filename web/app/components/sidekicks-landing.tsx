@@ -504,6 +504,7 @@ export default function SidekicksLanding() {
             Sidekicks
           </a>
           <p>© 2026 Sidekicks</p>
+          <p>Built by <a href="https://www.algility.com">Algility</a></p>
         </div>
         <nav className="footer-group" aria-label="Product links">
           <h3>Sidekicks</h3>
