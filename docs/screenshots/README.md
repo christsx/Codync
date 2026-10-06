@@ -1,6 +1,6 @@
 # Sidekicks screenshots
 
-- `sidekicks-icon.png`: the Sidekicks pink mascot, copied from this repository's website assets.
+- `sidekicks-icon.png`: the Sidekicks pink mascot, with its dark background removed using imagegen; saved as a transparent PNG for the README.
 - `sidekicks-web.png`: screenshot of our local Sidekicks website, captured October 5, 2026. Its product preview is illustrative.
 - `sidekicks-iphone.png`: actual native iPhone welcome screen, captured from an isolated simulator on October 5, 2026.
 
