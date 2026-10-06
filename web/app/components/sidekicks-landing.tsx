@@ -141,7 +141,7 @@ function Avatar({
 }
 
 export default function SidekicksLanding() {
-  const [dashboardStarted, setDashboardStarted] = useState(true);
+  const [dashboardStarted, setDashboardStarted] = useState(false);
   return (
     <>
       <header className="site-header">
@@ -312,9 +312,6 @@ export default function SidekicksLanding() {
                 </aside>
               )}
             </div>
-            <button className="preview-reset" onClick={() => setDashboardStarted(!dashboardStarted)}>
-              {dashboardStarted ? "View welcome screen" : "View conversation"}
-            </button>
           </Reveal>
         </section>
         <section
