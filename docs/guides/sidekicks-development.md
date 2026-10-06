@@ -186,3 +186,8 @@ shared Apple account model, including during session restoration. The Mac's
 explicit local-use choice is no longer persisted as completed authentication.
 Mobile already routes signed-out users to Welcome. Linux/TUI use host-local
 execution and have no Clerk account welcome gate, so their UI is unaffected.
+
+Welcome crew colors now use the existing magenta, blue, and violet palette on
+iPhone and Mac, matching Sidekicks branding. Linux and TUI do not render this
+Apple account welcome crew; the shared avatar palette and agent color choices
+remain available on their existing screens.

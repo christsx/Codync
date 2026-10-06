@@ -9,6 +9,7 @@ Source review, a passing build, local integration tests and production acceptanc
 |---|---|
 | Set up a mobile Cloud Workspace | [Cloud Workspace](guides/cloud-workspace.md) |
 | Connect Granola meeting notes | [Granola](guides/granola.md) |
+| Explore the iPhone features | [Mobile feature tour](guides/mobile-feature-tour.md) |
 | Review our screenshots | [Screenshot notes](screenshots/README.md) |
 | Find a module or decide where a file belongs | [File structure](architecture/file-structure.md) |
 | Understand clients, host, cloud and data ownership | [Architecture](architecture/overview.md) |

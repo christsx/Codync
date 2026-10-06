@@ -45,6 +45,17 @@ provider support and signed-in workflows must be verified for each environment.
 *Actual Sidekicks iPhone app captured in an isolated simulator. No account data or
 meeting notes are included.*
 
+Browse the [mobile feature tour](docs/guides/mobile-feature-tour.md) for the full feature inventory.
+These native screens use isolated demo data; messages and approvals are samples.
+
+| Your crew | Chat and approvals | Customize an agent |
+|---|---|---|
+| <img src="docs/screenshots/sidekicks-mobile-roster.png" width="240" alt="Agent roster"> | <img src="docs/screenshots/sidekicks-mobile-chat.png" width="240" alt="Chat and pending approval"> | <img src="docs/screenshots/sidekicks-mobile-agent.png" width="240" alt="Agent settings"> |
+| Group conversations | Scheduled routines | Provider marketplace |
+| <img src="docs/screenshots/sidekicks-mobile-group.png" width="240" alt="Group chat"> | <img src="docs/screenshots/sidekicks-mobile-routines.png" width="240" alt="Disabled demo routine"> | <img src="docs/screenshots/sidekicks-mobile-marketplace.png" width="240" alt="Providers and connector sign-in requirement"> |
+| Widgets | Live Activities | Cloud setup |
+| <img src="docs/screenshots/sidekicks-mobile-widgets.png" width="240" alt="Usage widget preview"> | <img src="docs/screenshots/sidekicks-mobile-activities.png" width="240" alt="Live Activity preview"> | <img src="docs/screenshots/sidekicks-mobile-cloud.png" width="240" alt="Cloud Workspace setup"> |
+
 The iPhone beta is **invite-only through TestFlight**. Build 2.4.0 (30) was uploaded;
 processing and pilot distribution were not confirmed during documentation review.
 Later source changes, including Granola and the sign-out fix, are not in build 30.
