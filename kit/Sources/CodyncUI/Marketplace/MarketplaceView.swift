@@ -591,11 +591,6 @@ private struct AgentSheet: View {
             }
             // Some CLIs drop the current sign-in the moment a new one starts: no options once signed in.
             if signedIn != true, !checking {
-                if auth?.login == true {
-                    optionRow("Sign in", detail: "In a terminal on \(model.hostName). Links open here.", icon: "terminal") {
-                        go(.terminal(nil))
-                    }
-                }
                 if auth?.methods.contains(where: { $0.kind == .envVar }) == true {
                     Button(advanced ? "Hide advanced options" : "Advanced: API keys") {
                         withAnimation(Motion.layout) { advanced.toggle() }

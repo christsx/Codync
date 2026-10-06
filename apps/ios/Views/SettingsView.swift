@@ -22,23 +22,10 @@ struct SettingsView: View {
     @State private var confirmRemoveCopy: CloudComputer?
     @State private var settingUpWorkspace = false
     @State private var settingUpRepository = false
+    @State private var workDestination: ComputerID?
 
     var body: some View {
         CardForm {
-            CardSection("Cloud Workspace", footer: "Run your sidekicks without a laptop. Your computer remains an optional workspace.") {
-                Button("Set up Cloud Workspace") { settingUpWorkspace = true }
-                    .buttonStyle(.secondary)
-                if let id = accounts.storage.workspaceComputerId, let store = accounts.store(for: id) {
-                    Button("Connect AI provider") { closeSheets { app.marketplace = id } }
-                        .buttonStyle(.secondary).disabled(store.connection != .online)
-                    Button("Connect GitHub & clone repository") { settingUpRepository = true }
-                        .buttonStyle(.secondary).disabled(store.connection != .online)
-                    Text("Create your sidekick on Cloud Workspace and choose the cloned project folder. Mac sidekicks and chats stay on your Mac.")
-                        .font(.footnote).foregroundStyle(Palette.secondary)
-                    Text("Verify: close your Mac, send a task from this iPhone, and confirm a reply and file change. Cloud computing continues to accrue usage while the workspace is running.")
-                        .font(.footnote).foregroundStyle(Palette.secondary)
-                }
-            }
             CardSection("Computers", footer: app.account.isSignedIn
                         ? "Computers in your account need your OK on the computer before this iPhone can use them."
                         : "Each sidekick runs on its own computer. Sign in to see the computers in your account.") {
@@ -69,6 +56,33 @@ struct SettingsView: View {
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
+            }
+
+            CardSection("Where new work runs", footer: "Use your paired laptop while it is open. Enable Daytona when you need to work with your laptop closed. Existing agents, chats and project files stay in their original workspace.") {
+                ForEach(accounts.computers.filter { $0.id != accounts.storage.workspaceComputerId }) { computer in
+                    Button {
+                        withAnimation(Motion.layout) {
+                            accounts.storage.lastComputerId = computer.id
+                            workDestination = computer.id
+                            accounts.selection = nil
+                        }
+                    } label: {
+                        Label("Use \(computer.name)", systemImage: workDestination == computer.id ? "checkmark.circle.fill" : "laptopcomputer")
+                    }
+                    .buttonStyle(.secondary)
+                }
+                Button("Enable Daytona cloud workspace") { withAnimation(Motion.layout) { settingUpWorkspace = true } }
+                    .buttonStyle(.secondary)
+                if let id = accounts.storage.workspaceComputerId, let store = accounts.store(for: id) {
+                    Button("Connect AI provider") { closeSheets { app.marketplace = id } }
+                        .buttonStyle(.secondary).disabled(store.connection != .online)
+                    Button("Connect GitHub & clone repository") { settingUpRepository = true }
+                        .buttonStyle(.secondary).disabled(store.connection != .online)
+                    Text("Create your sidekick on Cloud Workspace and choose the cloned project folder. Mac sidekicks and chats stay on your Mac.")
+                        .font(.footnote).foregroundStyle(Palette.secondary)
+                    Text(workDestination == id ? "Daytona is selected for new work. Computing usage continues while the workspace is running." : "Your laptop is selected. Enable Daytona to switch new work to the cloud.")
+                        .font(.footnote).foregroundStyle(Palette.secondary)
+                }
             }
 
             CardSection("Notifications", footer: "Get a result summary, a request for input, or a failure notice. Notification previews follow your iOS settings.") {
@@ -126,7 +140,10 @@ struct SettingsView: View {
         }
         .refreshable { await accounts.refreshCloud() }
         .page("Computers & settings", pushed: pushed)
-        .task { await accounts.refreshCloud() }
+        .task {
+            workDestination = accounts.storage.lastComputerId
+            await accounts.refreshCloud()
+        }
         .codyncSheet(isPresented: $addingComputer) {
             PairingView(inModal: true)
         }
@@ -136,7 +153,11 @@ struct SettingsView: View {
             }
         }
         .codyncSheet(isPresented: $settingUpWorkspace) {
-            WorkspaceSetupView(inModal: true) { settingUpWorkspace = false }
+            WorkspaceSetupView(inModal: true) {
+                workDestination = accounts.storage.lastComputerId
+                accounts.selection = nil
+                settingUpWorkspace = false
+            }
         }
         .codyncSheet(item: $access) { target in
             AccessRequestView(computer: target.computer, pending: accounts.pendingAccess[target.id] != nil)

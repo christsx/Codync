@@ -204,7 +204,8 @@ public final class AccountStore {
         // A stopped managed workspace wakes when mobile returns; never wake a physical computer
         // or silently switch an existing conversation's execution destination.
         if clientKind == "ios", !workspaceStarting,
-           let id = storage.workspaceComputerId, computers.contains(where: { $0.id == id }),
+           let id = storage.workspaceComputerId, storage.lastComputerId == id,
+           computers.contains(where: { $0.id == id }),
            stores[id]?.connection != .online {
             try? await connectWorkspace(deviceName: "iPhone", platform: "ios")
         }

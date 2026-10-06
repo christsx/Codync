@@ -179,8 +179,8 @@ struct BotListView: View {
 
     /// Cloud users create in their workspace even when it is reconnecting; never silently fall back to a Mac.
     private func newBot() {
-        let workspace = allStores.first { $0.computer.id == accounts.storage.workspaceComputerId }
-        guard let store = workspace ?? onlineStores.first ?? allStores.first else { return }
+        let preferred = onlineStores.first { $0.computer.id == accounts.storage.lastComputerId }
+        guard let store = preferred ?? onlineStores.first ?? allStores.first else { return }
         editing = EditTarget(computerId: store.computer.id, draft: BotDraft())
     }
 }

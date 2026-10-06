@@ -257,12 +257,6 @@ fn load_auth(ui: &App, id: &str, body: &gtk::Box) {
             text.set_wrap(true);
             body.append(&text);
         }
-        if v["login"] == true {
-            let login = gtk::Button::with_label("Sign in in terminal");
-            body.append(&login);
-            let (ui, id) = (ui.clone(), id.clone());
-            login.connect_clicked(move |_| setup(&ui, &id, "login", None));
-        }
         let advanced = gtk::Expander::builder().label("Advanced: API keys").build();
         let advanced_body = gtk::Box::builder()
             .orientation(gtk::Orientation::Vertical)

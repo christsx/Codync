@@ -119,7 +119,6 @@ pub struct AgentSetup {
 
 pub enum SetupRow {
     Install,
-    Login,
     Method(Value),
     Advanced,
     Check,
@@ -704,9 +703,6 @@ impl App {
         let signed_in =
             a.auth.as_ref().map_or_else(|| b.map(|b| &b["signedIn"]) == Some(&json!(true)), |v| v["signedIn"] == true);
         if !signed_in && !a.busy {
-            if a.auth.as_ref().is_some_and(|v| v["login"] == true) {
-                rows.push(SetupRow::Login);
-            }
             for m in a.auth.as_ref().and_then(|v| v["methods"].as_array()).into_iter().flatten() {
                 if m["kind"] != "envVar" || a.advanced {
                     rows.push(SetupRow::Method(m.clone()));
@@ -736,7 +732,6 @@ impl App {
                 let size = json!({"cols": cols, "rows": rows_n});
                 match rows.get(a.cursor) {
                     Some(SetupRow::Install) => self.start_setup(&backend, "install", None, &size),
-                    Some(SetupRow::Login) => self.start_setup(&backend, "login", None, &size),
                     Some(SetupRow::Method(m)) => match m["kind"].as_str() {
                         Some("terminal") => self.start_setup(&backend, "login", m["id"].as_str(), &size),
                         Some("envVar") => {

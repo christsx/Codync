@@ -204,3 +204,20 @@ The iPhone, Mac, Linux and terminal clients all use the existing shared setup
 terminal API, so this host change does not require a client UI update. It uses
 the [official Codex account API](https://learn.chatgpt.com/docs/app-server#authentication-endpoints),
 not an identity-only website OAuth flow or a standalone consent-page link.
+
+### Laptop first, optional Daytona switching
+
+New iPhone setup uses the existing install-and-scan computer pairing flow.
+After pairing, open **Computers & settings → Where new work runs**. Choose
+**Use [computer name]** while your laptop is available, or **Enable Daytona cloud
+workspace** when you want cloud execution. New Sidekicks prefer the selected
+online destination; an unavailable destination falls back to an online host.
+Existing conversations keep their original execution host. Switching does not
+copy repositories, credentials or conversation history between hosts.
+
+The iPhone only automatically resumes a saved Daytona workspace when it is the
+selected destination. Selecting a laptop does not stop or delete Daytona; cloud
+usage continues while it is running. QR onboarding and Daytona provisioning are
+iPhone-specific; Mac, Linux and terminal clients retain their local setup.
+All clients now show provider-specific authentication methods without the generic
+manual terminal sign-in fallback. API-key-only providers keep their key forms.

@@ -23,7 +23,7 @@ struct RootView: View {
                 WelcomeView {}
                     .transition(.opacity)
             } else if !onboardingCompleted && accounts.computers.isEmpty && accounts.cloudComputers.isEmpty {
-                WorkspaceSetupView { onboardingCompleted = true }
+                PairingView(onSkip: { onboardingCompleted = true }) { AccountSwitcherButton() }
                     .transition(.move(edge: .trailing).combined(with: .opacity))
             } else {
                 tabs

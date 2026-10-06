@@ -319,7 +319,6 @@ pub fn agent(buf: &mut Buffer, area: Rect, app: &App, a: &AgentSetup) {
         let base = row(buf, inner, y, i == a.cursor);
         let (icon, title, detail) = match rw {
             SetupRow::Install => ("↓", "Install".to_owned(), format!("Runs the official installer on {}.", app.host)),
-            SetupRow::Login => ("›_", "Sign in".to_owned(), format!("In a terminal on {}.", app.host)),
             SetupRow::Method(m) => {
                 let (icon, fallback) = match s(m, "kind") {
                     "terminal" => ("›_", format!("In a terminal on {}.", app.host)),
