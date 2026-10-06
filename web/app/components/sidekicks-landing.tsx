@@ -348,40 +348,51 @@ export default function SidekicksLanding() {
             <div className="section-heading">
               <h2>One place for the work you hand off.</h2>
               <p>
-                Your agents, conversations, and account connections in one app.
+                Bring your agents, conversations, and connected tools together.
               </p>
             </div>
           </Reveal>
           <div className="workflow-lines">
-            <article><div><h3>Keep your agents within reach.</h3><p>Show the floating Mac panel from the menu bar. See who’s working, send a task, stop a run, or open a conversation to review an approval.</p></div></article>
-            <article><div><h3>Teach them how you work.</h3><p>Set standing instructions, review memory, and choose skills for each Sidekick. Give them your project’s context without training a new model.</p></div></article>
-            <article><div><h3>Give repeat work a routine.</h3><p>Set up routines from Mac or iPhone. Keep recurring tasks alongside the conversations they belong to.</p></div></article>
-            <article><div><h3>Follow along from your phone.</h3><p>Create Sidekicks, send tasks, and review requests on iPhone. Widgets, Live Activities, and the Dynamic Island keep current work close.</p></div></article>
             <article>
               <div>
-                <h3>A conversation for every project.</h3>
-                <p>
-                  Keep a feature, a fix, and a review in separate conversations.
-                  Pick the coding agent for each one.
-                </p>
+                <h3>Keep your crew within reach.</h3>
+                <p>Open the floating Mac panel to see who’s working, send a task, stop a run, or review an approval.</p>
               </div>
             </article>
             <article>
               <div>
-                <h3>Progress and approvals, together.</h3>
-                <p>
-                  Follow progress and review permission requests in the same
-                  conversation.
-                </p>
+                <h3>Make each Sidekick your own.</h3>
+                <p>Add standing instructions, review memory, and choose skills so each agent understands how you work.</p>
               </div>
             </article>
             <article>
               <div>
-                <h3>Choose where it runs.</h3>
-                <p>
-                  Work on your computer, or use a Cloud Workspace in the private
-                  beta.
-                </p>
+                <h3>Put recurring work on a schedule.</h3>
+                <p>Create routines from Mac or iPhone and keep them alongside the conversations they belong to.</p>
+              </div>
+            </article>
+            <article>
+              <div>
+                <h3>Stay connected from your phone.</h3>
+                <p>Create Sidekicks, send tasks, and review approvals on iPhone. Follow progress through widgets, Live Activities, and the Dynamic Island.</p>
+              </div>
+            </article>
+            <article>
+              <div>
+                <h3>Give every project its own conversation.</h3>
+                <p>Keep features, fixes, and reviews organized, with the coding agent you choose for each.</p>
+              </div>
+            </article>
+            <article>
+              <div>
+                <h3>Follow progress. Stay in control.</h3>
+                <p>See task updates and permission requests in the same conversation.</p>
+              </div>
+            </article>
+            <article>
+              <div>
+                <h3>Work wherever you need.</h3>
+                <p>Run agents on your computer or in a Cloud Workspace, available in the private beta.</p>
               </div>
             </article>
           </div>
