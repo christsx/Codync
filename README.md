@@ -1,171 +1,131 @@
 <div align="center">
 
-<img src="apps/linux/data/com.pokai.Codync.svg" width="128" alt="Codync icon">
+<img src="docs/screenshots/sidekicks-icon.png" width="112" alt="Sidekicks pink furry mascot">
 
-# Codync
+# Sidekicks
 
-**The open-source, 1:1 alternative to Grok Bot and Muse.**<br>
-Your coding agents, as teammates you can message.
+**A little crew. A lot done.**
 
-[![App Store](https://img.shields.io/badge/App_Store-iOS-0D96F6?logo=apple&logoColor=white)](https://apps.apple.com/app/codync/id6760984418)
-[![Homebrew](https://img.shields.io/badge/Homebrew-codync-FBB040?logo=homebrew&logoColor=white)](https://github.com/leepokai/homebrew-codync)
-[![Release](https://img.shields.io/github/v/release/leepokai/Codync?color=black)](https://github.com/leepokai/Codync/releases/latest)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-<br>
-![iOS](https://img.shields.io/badge/iOS-18+-black?logo=apple)
-![macOS](https://img.shields.io/badge/macOS-14+-black?logo=apple)
-![Linux](https://img.shields.io/badge/Linux-x86__64%20%7C%20arm64-black?logo=linux&logoColor=white)
-![Rust](https://img.shields.io/badge/host-Rust-B7410E?logo=rust)
-![Swift](https://img.shields.io/badge/apps-SwiftUI-F05138?logo=swift&logoColor=white)
+Your AI coding agents, together on Mac and iPhone.
 
-<a href="https://youtu.be/awhZJPjJaPc"><img src="docs/screenshots/launch-film.jpg" width="760" alt="Watch the Codync launch film on YouTube (1:26)"></a>
+[Website](https://usesidekicks.com) · [Documentation](docs/README.md) · [Source](https://github.com/christsx/Sidekicks) · [MIT license](LICENSE)
 
-<a href="https://apps.apple.com/app/codync/id6760984418"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" height="54" alt="Download on the App Store"></a>
+<img src="docs/screenshots/sidekicks-web.png" width="900" alt="Sidekicks website with its pink mascot and welcome preview">
+
+*Our website and illustrative product preview. The preview is not a live agent session.*
 
 </div>
 
-Codync turns the coding agents on your computer — Claude Code, Codex, Cursor, Pi, OpenCode, Grok Build, Gemini, Copilot and ~40 more — into persistent *bots* you delegate to from your iPhone, Mac, Linux desktop or any terminal, the way you'd message a colleague. Pick who, say what, put the phone away. You get a notification when a bot finishes or needs your approval.
+Sidekicks brings coding agents into persistent conversations. Give each sidekick
+a name, instructions, a project, and a model provider. Send work, review approvals,
+and follow progress from your desktop or phone.
 
-> Why bots? On a phone, "find the right working session, then pick an environment" is too slow. With bots you already know who to hand the intent to: open the chat, type, done.
+## What you can do
 
-## Why Codync
+- **Choose your coding agent.** Codex, Claude Code, Cursor, Gemini, OpenCode, Kimi,
+  Z.ai through the GLM adapter, and other agents from the ACP registry.
+- **Build your crew.** Named sidekicks, character avatars, group conversations,
+  reply threads, standing instructions, memory, and routines.
+- **Connect your tools.** The marketplace supports MCP connectors and browser
+  sign-in. Granola adds meeting notes and decisions to your agent's context.
+- **Work from iPhone.** Conversations, approvals, notifications, widgets, and
+  Live Activities use the same host as desktop.
+- **Use a Cloud Workspace.** An account's private Daytona sandbox runs the host
+  independently of the Mac. Connect providers and GitHub inside that workspace.
+- **Track work on Mac.** The native app includes a menu bar and an optional floating
+  agent panel. Linux and terminal clients are also available.
 
-- **Free and open source.** No subscription, no paid tier, MIT licensed. It runs on your computer with the agents and accounts you already have.
-- **Bring any coding agent.** Claude Code, Codex, Cursor, Gemini, Copilot, OpenCode, Pi, Grok Build and ~40 more — everything in the [ACP registry](https://agentclientprotocol.com/registry). Installed agents are found automatically, the rest are fetched on first use, and every bot picks its own. Mix them freely: a Claude bot can ask a Codex bot for a review.
-- **Many bots, one team.** Run as many bots as you like side by side, each with its own agent, project folder and approvals, all working at once. Put several in a **group chat** and they answer in turn, like a team channel; `@name` picks who replies. Start a **thread** on any message to branch off without cluttering the main chat.
-- **Built in Rust.** `codync-host` is one small, fast Rust binary for macOS and Linux (static on Linux, runs on any distro) that drives every agent, keeps the transcripts and serves every client.
-- **Native on every platform.** SwiftUI on iPhone and Mac, GTK 4 / libadwaita on Linux, and a terminal UI for SSH. No web views, no Electron.
-- **A 1:1 Grok Bot / Muse alternative.** Persistent named bots, group chats, reply threads, bots asking each other for help, approval cards, per-bot memory, remote screen, voice calls and "needs you / done" notifications — the same features, without being tied to one model or one subscription.
-- **Reach your computer from anywhere, free.** The hosted Cloudflare relay is included at no cost: no Tailscale, no VPN, no port forwarding. Traffic is end-to-end encrypted between your phone and your computer, so the relay only forwards ciphertext. Same Wi-Fi or Tailscale? The phone connects directly instead.
-- **Every computer, one app.** Sign in and your iPhone lists every computer on your account (Mac, Linux desktop, server or cloud VM); tap **Connect**, confirm a 6-digit code on that computer, and its bots show up next to the others. A new bot can live on any of them, and the Mac app reaches your SSH machines too. Each computer approves each device itself, so an account alone never unlocks a computer.
-- **Remote screen.** See and control your computer from the iPhone over WebRTC (hardware H.264), and let bots use the screen themselves through the built-in `computer` tool.
-- **Voice calls.** Talk to a bot hands-free from the iPhone and hear its replies read aloud.
-- **Private push.** Notification text is sealed to your phone's key, so the push relay never sees what your bots said.
+These describe the source implementation. Installed builds can lag behind it;
+provider support and signed-in workflows must be verified for each environment.
 
-## Platforms
+## iPhone app
 
-| | Platform | App | Highlights |
-|---|---|---|---|
-| 📱 | **iPhone** | Native SwiftUI | Chat with bots, approvals, push notifications, Live Activity, widgets, remote screen, voice calls |
-| 💻 | **macOS** | Native SwiftUI, menu bar + window | Runs the host, chat window, usage in the menu bar, iPhone pairing |
-| 🐧 | **Linux** | Native GTK 4 / libadwaita | Runs the host (desktop or headless server), chat app |
-| ⌨️ | **Terminal** | `codync-host tui` | Message your bots from any terminal, over SSH too |
+<img src="docs/screenshots/sidekicks-iphone.png" width="280" alt="Sidekicks native iPhone welcome and sign-in screen">
 
-The host (`codync-host`, Rust) runs on macOS and Linux; every client talks to it, so all your bots and chats are the same everywhere.
+*Actual Sidekicks iPhone app captured in an isolated simulator. No account data or
+meeting notes are included.*
 
-## How it works
+Browse the [mobile feature tour](docs/guides/mobile-feature-tour.md) for the full feature inventory.
+These native screens use isolated demo data; messages and approvals are samples.
 
-```text
-Remote Apple client ⇄ encrypted channel (direct or Cloudflare cloud/) ⇄ codync-host ⇄ ACP agent
-Local / SSH client  ⇄ loopback HTTP + SSE                             ⇄ codync-host
-Host notifications → APNs worker (relay/) → iPhone
+| Your crew | Chat and approvals | Customize an agent |
+|---|---|---|
+| <img src="docs/screenshots/sidekicks-mobile-roster.png" width="240" alt="Agent roster"> | <img src="docs/screenshots/sidekicks-mobile-chat.png" width="240" alt="Chat and pending approval"> | <img src="docs/screenshots/sidekicks-mobile-agent.png" width="240" alt="Agent settings"> |
+| Group conversations | Scheduled routines | Provider marketplace |
+| <img src="docs/screenshots/sidekicks-mobile-group.png" width="240" alt="Group chat"> | <img src="docs/screenshots/sidekicks-mobile-routines.png" width="240" alt="Disabled demo routine"> | <img src="docs/screenshots/sidekicks-mobile-marketplace.png" width="240" alt="Providers and connector sign-in requirement"> |
+| Widgets | Live Activities | Cloud setup |
+| <img src="docs/screenshots/sidekicks-mobile-widgets.png" width="240" alt="Usage widget preview"> | <img src="docs/screenshots/sidekicks-mobile-activities.png" width="240" alt="Live Activity preview"> | <img src="docs/screenshots/sidekicks-mobile-cloud.png" width="240" alt="Cloud Workspace setup"> |
+
+The iPhone beta is **invite-only through TestFlight**. Build 2.4.0 (30) was uploaded;
+processing and pilot distribution were not confirmed during documentation review.
+Later source changes, including Granola and the sign-out fix, are not in build 30.
+There is no public TestFlight invitation or verified public App Store release yet.
+
+## Choose where your agent runs
+
+| Workspace | Mac can be closed? | Setup |
+|---|---|---|
+| Your Mac | No | Install and authenticate the coding provider on that Mac; pair the iPhone |
+| Cloud Workspace | Yes | Enabled pilot account, Daytona workspace, provider login, and repository access |
+| Linux or another server | Yes, if that server stays running | Run the host there and pair your client |
+
+Existing Mac agents, chats, and credentials are not automatically migrated to the
+cloud. Each workspace owns its files and provider credentials. Cloud compute and
+AI provider usage can incur charges. The pilot workspace disables inactivity
+auto-stop, so compute usage continues while it is running.
+
+Start with [Cloud Workspace setup](docs/guides/cloud-workspace.md),
+[provider and connector setup](docs/features/connector-credentials.md), and
+[Granola](docs/guides/granola.md).
+
+## Build from source
+
+The active pilot work lives on `codex/sidekicks-testflight` in this repository.
+Public signed Sidekicks installers and a Sidekicks Homebrew tap are not published.
+
+```sh
+git clone --branch codex/sidekicks-testflight https://github.com/christsx/Sidekicks.git
+cd Sidekicks
+xcodegen generate --spec apps/project.yml
+xcodebuild build -project apps/Codync.xcodeproj -scheme macOS -configuration Debug
 ```
 
-- **Bots** have a name, a character avatar, standing instructions, an agent backend, a project folder and a permission policy. Each bot has **a persistent main chat and optional reply threads**; the agent sessions underneath are an implementation detail (resumed with `session/load`, restarted with *New session*).
-- **Group chats** hold several bots and you. Each message starts a short room turn: the bots you @-mention (or everyone) reply one at a time, each in its own session, and can react to each other, up to 3 rounds. See [group chats and threads](docs/features/groups-and-threads.md).
-- **Bots can ask each other for help.** Tell one “ask Reviewer to check these changes.” The built-in `team` MCP server lets it discover your other visible bots and wait for a reply. Requests appear in both chats; each recipient keeps its own agent, folder and approvals. Native subagents stay under the coding agent's control. See [bot collaboration](docs/features/bot-collaboration.md).
-- **The chat only shows what matters**: your messages, each turn's final reply, approval cards and notices. Every tool call, diff, plan and thought is one tap away in *Full conversation*. While a bot works, its row shows what it's doing right now.
-- **Agents are detected automatically**: the host hydrates PATH from your login shell (plus Homebrew, ~/.local/bin, nvm, bun, volta, asdf, mise, pnpm…), finds every harness you have installed, and prefers its native ACP mode. Anything else in the official [ACP registry](https://agentclientprotocol.com/registry) can be picked too — Codync fetches it on first use (npx, uvx or a checksummed binary).
-- **codync-host** (Rust, macOS + Linux) runs on your computer. It speaks the [Agent Client Protocol](https://agentclientprotocol.com) to each agent, keeps transcripts in SQLite, and serves the phone. Every change carries a global `rev`, so the phone reconnects with `since: rev` and never misses anything.
-- **Usage limits** come from your local installs, with no extra login: Claude via `claude -p /usage` (a local command, no model call) plus Claude Code's status line, Codex via `~/.codex/sessions`. The phone, widgets and menu bar only see percentages.
-- **Push** goes through a tiny relay that holds the APNs key. The phone trades its device token for an encrypted ticket; the host only ever holds tickets.
+Use the `iOS` scheme in Xcode for iPhone or simulator builds. Configure your own
+account and cloud services using the [development guide](docs/guides/development.md)
+and [environment guide](docs/guides/environments-and-deployment.md).
 
-UI patterns (roster, character avatars, approval cards, trace sheet, "needs you / done" notifications) follow Grok Bot.
+For the host and terminal client:
 
-## Install
-
-**One line** (macOS or Linux):
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/leepokai/Codync/main/packaging/install.sh | sh
+```sh
+cd host
+cargo build
+cargo run -- serve
+# In another terminal, after starting the host:
+cargo run -- tui
 ```
 
-On a Mac it installs the app (the host ships inside it); on Linux the host, plus the desktop app when a display is present. Add `sh -s -- --host-only` for servers and headless Macs. Re-run it to upgrade.
+The executable remains `codync-host`; Swift modules, bundle identifiers, and source
+paths retain their existing technical names. The product is called **Sidekicks**.
 
-**Mac** — [download codync-macos.dmg](https://github.com/leepokai/Codync/releases/latest/download/codync-macos.dmg) and drag it to Applications, or:
+## Repository map
 
-```bash
-brew install --cask leepokai/codync/codync
-```
-
-All three install the same signed, notarized app.
-
-Open Codync: it sets up the host on first launch. **Open Codync** opens the full window; **Pair iPhone…** shows the QR code.
-
-**iPhone** — [get Codync on the App Store](https://apps.apple.com/app/codync/id6760984418) (iOS 18+, free), then scan the QR code from **Pair iPhone…** on the Mac, the Linux app or `codync-host pair`.
-
-**Linux** — the host, plus the native GTK 4 / libadwaita app:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/leepokai/Codync/main/packaging/install.sh | sh
-# or: brew install leepokai/codync/codync-host
-codync-host install   # systemd --user service
-codync-host pair      # QR code in the terminal, or Settings in the app
-```
-
-The script also installs the desktop app (`codync`, with its `.desktop` file and icon) when you're in a graphical session; it needs GTK 4 and libadwaita. By hand: unpack `codync-linux-<arch>.tar.gz` from [Releases](https://github.com/leepokai/Codync/releases/latest) and run `bin/codync`.
-
-Building the Linux app yourself needs `libgtk-4-dev libadwaita-1-dev`: `cargo install --path apps/linux`.
-
-**Linux server / cloud VM** — the host runs headless on any distro (static binary, x86_64 + arm64). Setup, remote access and limitations: [docs/guides/linux-servers.md](docs/guides/linux-servers.md).
-
-**Remote access** works out of the box through the free Cloudflare relay, end-to-end encrypted; the phone switches to a direct connection on the same network or over Tailscale. Details: [remote relay](docs/reference/remote-relay.md).
-
-**Agents** — install and sign in to whichever you use; Codync finds them. Claude Code, Codex and Pi run through their ACP adapters (fetched by `npx`, so Node.js is needed for those).
-
-`codync-host install` also routes Claude Code's status line through `codync-host statusline` so live limits reach the host; an existing status line keeps working (it's wrapped, and restored on `uninstall`).
-
-## `codync-host`
-
-| Command | |
+| Directory | Purpose |
 |---|---|
-| `codync-host install` / `uninstall` | background service (launchd on macOS, systemd `--user` on Linux) |
-| `codync-host tui [--url … --token …]` | message your bots from a terminal (this computer by default; SSH-friendly) |
-| `codync-host pair [--json]` | pairing QR code / link |
-| `codync-host status` | installed? running? |
-| `codync-host serve [--port 19222]` | run in the foreground |
-| `codync-host statusline [-- <your command>]` | Claude Code status line command (wraps yours) |
-| `codync-host reset-token` | rotate the local loopback bearer token |
-| `codync-host cloud` | cloud enablement, URL and status |
-| `codync-host devices` | list/revoke authorized remote devices |
-| `codync-host access` | review device access requests |
+| `apps/` | Native iPhone, Mac, and Linux clients |
+| `apps/shared/` | Apple account integration |
+| `kit/` | Shared Swift models, transport, and interface |
+| `host/` | Rust host, ACP agents, transcript storage, MCP, and terminal UI |
+| `cloud/` | Accounts, encrypted relay, and Cloud Workspace provisioning |
+| `relay/` | Encrypted push delivery |
+| `web/` | Sidekicks website |
+| `packaging/` | Host, app, and sandbox distribution tooling |
+| `docs/` | Setup, architecture, features, and verification records |
 
-Data lives in `~/.codync`. The local bearer token authorizes loopback helpers and SSH-forwarded callers. Remote devices use individual keys and grants over the encrypted channel; revoke a lost device through device management rather than rotating the loopback token. Host methods and caller permissions live in `host/src/api/mod.rs`.
+Build checks and contributor conventions are in [AGENTS.md](AGENTS.md).
 
-## Repository
+## Attribution and license
 
-| Path | |
-|---|---|
-| `host/` | `codync-host` — Rust daemon: ACP client, SQLite transcript, HTTP/SSE API, push, usage |
-| `kit/` | Swift package: `CodyncKit` (wire models, host client, theme, avatars) and `CodyncUI` (store + chat screens shared by iPhone and Mac) |
-| `apps/ios/` | iOS app: pairing, roster, push, Live Activity glue |
-| `apps/ios/Widgets/` | Bots, usage and per-provider usage widgets + bot Live Activity |
-| `apps/macos/` | Menu bar + native chat window; installs/monitors the host |
-| `apps/linux/` | Native Linux app (GTK 4 + libadwaita, Rust) |
-| `cloud/` | Cloudflare accounts, D1, encrypted channel relay and offline mailbox |
-| `apps/shared/` | Shared Apple account integration and environment configuration |
-| `apps/screen-macos/`, `apps/screen-linux/` | Platform screen capture/input helpers |
-| `docs/` | [Documentation index](docs/README.md) and [file structure](docs/architecture/file-structure.md) |
-| `relay/` | Cloudflare Worker APNs relay with encrypted per-device tickets |
-| `web/` | Website (Next.js static export, deployed on Vercel) |
-| `packaging/` | Homebrew cask and formula templates (published to `leepokai/homebrew-codync` on release) and `install.sh` (the curl installer) |
-
-Build, install, restart and full checks: [development guide](docs/guides/development.md).
-
-The Xcode project is generated: `xcodegen generate --spec apps/project.yml`.
-
-```bash
-cd host && cargo test            # host
-cd kit && swift test             # shared Swift
-cd apps/linux && cargo test      # Linux app (needs GTK dev packages)
-cd cloud && npm test            # cloud API / channel relay
-cd relay && npm test             # relay tickets
-```
-
-## Versioning
-
-The major version is the phone ↔ host protocol: apps work with hosts of the same major version.
-
-## License
-
-MIT
+Sidekicks is developed in this repository from the MIT-licensed
+[Codync project by Po Kai Lee](https://github.com/leepokai/Codync).
+The original copyright notice is preserved in [LICENSE](LICENSE).
+See [our screenshot notes](docs/screenshots/README.md) for image provenance.

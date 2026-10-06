@@ -93,7 +93,7 @@ Host delivery is currently best effort with a 10-second request timeout. There i
 
 The previous public fallback was literally `Codync / Done`. Any missing `sealed`, `ctx`, inaccessible shared key, failed authentication or extension packaging problem kept that fallback. Device verification reproduced a more specific cause: five authorized device identities pointed to this phone. One current identity decrypted the completion normally; four obsolete identities produced generic fallbacks for the same event. The batched Worker path now selects the latest registration for the physical token across those identities.
 
-Registration previously accumulated random tickets, including tickets with obsolete/missing push keys. Re-registering now removes those old records for the same device. The fallback itself now says “Your task is complete. Open Codync to read the result.” Failure and input requests have distinct fallback sentences.
+Registration previously accumulated random tickets, including tickets with obsolete/missing push keys. Re-registering now removes those old records for the same device. The fallback itself now says “Your task is complete. Open Sidekicks to read the result.” Failure and input requests have distinct fallback sentences.
 
 For a phone that still shows fallback text:
 

@@ -68,7 +68,7 @@ Enable Apple for sign-up and sign-in in both Clerk environments, and register
 provisioning profiles after adding this entitlement. Native setup is described
 in [Clerk's Apple sign-in guide](https://clerk.com/docs/ios/guides/configure/auth-strategies/sign-in-with-apple).
 
-On 2026-09-30, Apple sign-up/sign-in was enabled in Codync's development and
+On 2026-09-30, Apple sign-up/sign-in was enabled in Sidekicks's development and
 production Clerk instances. Production's connection required custom credentials:
 Services ID `com.pokai.Codync.signin`, primary App ID `com.pokai.Codync.ios`,
 domain `clerk.codync.dev` and return URL
@@ -105,7 +105,7 @@ identity, so phones see the old computer as **No access** (if they were connecte
 or as an older copy once the new one is reachable, and offer to remove it; pair
 again or ask for access to reach the new one.
 
-On the Mac, open Codync in the menu bar and choose **Pair iPhone**, then scan the
+On the Mac, open Sidekicks in the menu bar and choose **Pair iPhone**, then scan the
 code on the phone (or paste its `codync://pair` link). The host approves the phone's
 device key; the phone saves the computer in its current account context. This
 works when the phone uses Apple Hide My Email and the Mac uses Google. Automatic
@@ -133,7 +133,7 @@ network failures leave the user in the custom account menu with a retryable
 error. Log out calls Clerk's sign-out API.
 
 The custom account menu displays the authenticated email and avatar when
-available. `AccountSession.sessionToken()` hands the session JWT to the Codync
+available. `AccountSession.sessionToken()` hands the session JWT to the Sidekicks
 cloud client. A Clerk session never authorizes a computer by itself: each
 computer approves each device after comparing a 6-digit code
 ([remote relay protocol](../reference/remote-relay.md) §4.2). Conversations are not uploaded.
@@ -207,7 +207,7 @@ ssh-agent only (`BatchMode`: nothing prompts for a password or passphrase); a re
 stops with a message instead of retrying. The remote command searches Homebrew,
 `~/.local/bin` and the Mac app bundle for `codync-host` too, since `sh -l` doesn't read
 `~/.zprofile`. At launch the app kills tunnels a crashed or force-quit copy left behind
-(`pkill` on the `.codync/ssh_known_hosts` argument only Codync's tunnels carry). Debug
+(`pkill` on the `.codync/ssh_known_hosts` argument only Sidekicks's tunnels carry). Debug
 builds run `SSH.selfCheck()` at launch (argv, `ssh -G` parsing, validation).
 
 ## Verification boundaries

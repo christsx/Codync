@@ -92,7 +92,7 @@ Current Mac icon master: `sidekicks-plush-clover-big-eyes.png`. Built-in image e
 
 New sidekicks default to Codex in shared Apple drafts and Linux when installed. Existing configured sidekicks keep their backend; unavailable Codex falls back to an installed backend. TUI already explicitly asks the user to choose an agent.
 
-Remaining user-facing Codync strings replaced with Sidekicks across native clients, widgets, and host messages, including Personal · managed by Sidekicks. Existing module/bundle/service identifiers and real repository URLs stay stable. Mac/iOS builds verified; changed Rust text requires a rebuilt host/Linux client and cargo is unavailable locally.
+Remaining user-facing Sidekicks strings replaced with Sidekicks across native clients, widgets, and host messages, including Personal · managed by Sidekicks. Existing module/bundle/service identifiers and real repository URLs stay stable. Mac/iOS builds verified; changed Rust text requires a rebuilt host/Linux client and cargo is unavailable locally.
 
 Desktop first-account onboarding now gates the dashboard: local computer online, verified Codex auth, optional apps using the existing Marketplace, then create a sidekick or enter dashboard. Completion is scoped to the Clerk user ID, so returning accounts skip setup. Reuses settings/auth flows without collecting credentials in onboarding. Mac-only per user request; iOS pairing and Linux/TUI setup remain unchanged.
 
@@ -167,3 +167,27 @@ xcodebuild -project apps/Codync.xcodeproj -scheme iOS -configuration Release -sd
 ```
 
 Terminate the old simulator app, install the signed build, and relaunch. On 2026-10-03 this reached the correct ultimate-chow-8201 Clerk endpoint and opened Google authentication successfully. Google credential completion and the callback/session still require live verification. Physical-device/TestFlight signing remains blocked by the missing owning Apple Developer account.
+
+## Sidekicks Apple signing ownership
+
+Xcode now uses Christian Garcia team 9S7MDN3QVL. iOS distribution bundle IDs are com.christsx.Sidekicks.ios, com.christsx.Sidekicks.ios.LiveActivity, and com.christsx.Sidekicks.ios.NotificationService. The app, widgets, notification extension and SharedStore use group.com.christsx.Sidekicks; the former Sidekicks identifiers belong to another team and cannot be provisioned by ours. This shared-storage namespace starts fresh; old development caches are not migrated. The registered Google callback remains com.pokai.Codync.ios://callback and is independent of the distribution bundle ID. Native Apple sign-in configuration and our own APNs relay credentials still need verification for this new App ID.
+
+
+### Mac floating agent panel
+
+The menu bar’s **Floating agent panel** toggle opens a persistent, top-center companion panel below the menu bar and camera cutout. It works on screens without a notch. Expand it to select visible account agents, inspect activity, send a task, stop work, or open the existing conversation for approvals, instructions, memory and routines. It uses the shared account roster; no separate agent runtime or permissions are introduced. The preference persists across launches. Display changes reposition the panel.
+
+This is a Mac window-management feature. iOS already exposes the shared agent actions plus widgets, Live Activities and Dynamic Island; Linux and TUI retain their roster and actions because they have no macOS panel/window API. No shared capability or protocol changed. The web landing page describes the existing mobile and configuration surfaces; the notch preview was removed at the user’s request.
+
+Validation: macOS Debug build (code signing disabled) passed; web ESLint, TypeScript and production build passed. Browser checked notch expansion and the 390px mobile viewport (no horizontal overflow). Native live-agent interactions and installation were not exercised; the installed app was not replaced.
+
+Sign-out now immediately excludes the successfully removed Clerk session in the
+shared Apple account model, including during session restoration. The Mac's
+explicit local-use choice is no longer persisted as completed authentication.
+Mobile already routes signed-out users to Welcome. Linux/TUI use host-local
+execution and have no Clerk account welcome gate, so their UI is unaffected.
+
+Each welcome sidekick now uses a distinct supported color on iPhone and Mac:
+magenta, blue, violet, cyan, green, orange, red, yellow and brown. Linux and TUI do not render this
+Apple account welcome crew; the shared avatar palette and agent color choices
+remain available on their existing screens.
