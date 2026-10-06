@@ -60,6 +60,7 @@
 		EBB0417A5FB2CE6D514D21BE /* ClerkKit in Frameworks */ = {isa = PBXBuildFile; productRef = D9AB2F442A5F243653EAE936 /* ClerkKit */; };
 		EC14C7513A8D2999D97D5ABA /* Screen.app in Embed Dependencies */ = {isa = PBXBuildFile; fileRef = 741B706007BA1B91CB853699 /* Screen.app */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F171F16563D1FF6308697173 /* CodyncUI in Frameworks */ = {isa = PBXBuildFile; productRef = 06C9F37C6502131CAF0F145E /* CodyncUI */; };
+		F6C3B3C58C21E3C3B69AFBCC /* AgentNotchPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11ED97FEAE81D761CDFE6596 /* AgentNotchPanel.swift */; };
 		F842AE1C5ED96AF9A7F5D16C /* Widgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6D734BEE7CD3F84677B0218B /* Widgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F93D9960F7C20B2E629C1736 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = AF460014351882D22C34DAA7 /* Sparkle */; };
 		F97C489DDB806224CEFCEB57 /* ScreenHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B2CB561A43ED9F2F1A4391 /* ScreenHelper.swift */; };
@@ -130,6 +131,7 @@
 		0829A4FCADAC108E8C2DB2F1 /* Widgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Widgets.entitlements; sourceTree = "<group>"; };
 		08D070CB1CE05D4848C09C52 /* com.pokai.Codync.screen.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = com.pokai.Codync.screen.plist; sourceTree = "<group>"; };
 		0A87B0091DAF0E4807D62017 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		11ED97FEAE81D761CDFE6596 /* AgentNotchPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentNotchPanel.swift; sourceTree = "<group>"; };
 		1318104275E5BEC47B7088AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		14B7967A8F027FF28EAEA893 /* HostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostController.swift; sourceTree = "<group>"; };
 		1E47C60032C326157E0386B8 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -414,6 +416,7 @@
 		EAAB62E0536250B727076FAD /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				11ED97FEAE81D761CDFE6596 /* AgentNotchPanel.swift */,
 				B71D3227DAFDD03155870401 /* ChatWindow.swift */,
 				9F70117FA3097C5A6F28C89B /* ComputersView.swift */,
 			);
@@ -757,6 +760,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68C9357B769268E8FA5BC746 /* AccountSession.swift in Sources */,
+				F6C3B3C58C21E3C3B69AFBCC /* AgentNotchPanel.swift in Sources */,
 				56D1B234EB2E4DE200BCA764 /* ChatWindow.swift in Sources */,
 				C263D5693212EB0812A232D9 /* CodyncMacApp.swift in Sources */,
 				2299EC1A2CE18A03C8AF9A0A /* ComputerStatus.swift in Sources */,
@@ -824,7 +828,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CODYNC_ENV = dev;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 30;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 9S7MDN3QVL;
@@ -841,7 +845,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.3.1;
+				MARKETING_VERSION = 2.4.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -996,7 +1000,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CODYNC_ENV = dev;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 30;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 9S7MDN3QVL;
@@ -1019,7 +1023,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.3.1;
+				MARKETING_VERSION = 2.4.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
