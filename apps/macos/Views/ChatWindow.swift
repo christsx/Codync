@@ -8,7 +8,7 @@ struct ChatWindow: View {
     @Environment(HostController.self) private var host
     @Environment(AccountSession.self) private var account
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @AppStorage("macAccountOnboardingCompleted") private var accountOnboardingCompleted = false
+    @State private var accountOnboardingCompleted = false
 
     @AppStorage("sidekicksDesktopSetupAccounts") private var setupAccounts = ""
     @State private var completedSetupAccount: String?
@@ -57,7 +57,7 @@ struct ChatWindow: View {
         .animation(Motion.reduced(Motion.layout, reduceMotion), value: showsChat)
         .animation(Motion.reduced(Motion.layout, reduceMotion), value: host.state)
         .animation(Motion.reduced(Motion.fade, reduceMotion), value: accountOnboardingCompleted)
-        .onChange(of: account.isSignedIn) { _, signedIn in
+        .onChange(of: account.isSignedIn, initial: true) { _, signedIn in
             accountOnboardingCompleted = signedIn
         }
         .task {

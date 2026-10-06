@@ -14,6 +14,11 @@ final class AccountSession {
     var errorMessage: String?
 
     var showSwitcher = false
+    // The SDK may briefly retain the removed session after the server confirms sign-out.
+    // Persist its identity so it cannot restore the main screen on the next launch.
+    private var signedOutSessionID = UserDefaults.standard.string(forKey: "sidekicksSignedOutSessionID") {
+        didSet { UserDefaults.standard.set(signedOutSessionID, forKey: "sidekicksSignedOutSessionID") }
+    }
 
     struct Account: Identifiable {
         let id: String
@@ -22,11 +27,15 @@ final class AccountSession {
         let avatarURL: URL?
     }
 
-    var userID: String? { clerk?.session?.status == .active ? clerk?.user?.id : nil }
+    var userID: String? {
+        guard let session = clerk?.session, session.status == .active,
+              session.id != signedOutSessionID else { return nil }
+        return clerk?.user?.id
+    }
     var accounts: [Account] {
         var seen = Set<String>()
         return (clerk?.auth.sessions ?? []).compactMap { session in
-            guard session.status == .active, session.expireAt > .now,
+            guard session.id != signedOutSessionID, session.status == .active, session.expireAt > .now,
                   let user = session.user, seen.insert(user.id).inserted else { return nil }
             return Account(id: user.id, sessionID: session.id,
                            email: user.primaryEmailAddress?.emailAddress ?? "Sidekicks account",
@@ -159,6 +168,8 @@ final class AccountSession {
         defer { isBusy = false }
         do {
             try await clerk.auth.signOut(sessionId: sessionID)
+            signedOutSessionID = sessionID
+            showSwitcher = false
         } catch {
             errorMessage = "Couldn't sign out. Check your connection and try again."
         }
@@ -170,8 +181,14 @@ final class AccountSession {
         isBusy = true
         errorMessage = nil
         defer { isBusy = false }
+        let activeID = clerk.session?.id
         for session in clerk.auth.sessions {
-            try? await clerk.auth.signOut(sessionId: session.id)
+            do {
+                try await clerk.auth.signOut(sessionId: session.id)
+                if session.id == activeID { signedOutSessionID = session.id }
+            } catch {
+                errorMessage = "Couldn't sign out of every account. Check your connection and try again."
+            }
         }
     }
 
