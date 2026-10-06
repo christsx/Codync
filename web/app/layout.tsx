@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     url: "https://usesidekicks.com",
     siteName: "Sidekicks",
     type: "website",
-    images: [{ url: "/sidekicks/share-preview.png", width: 1200, height: 630, alt: "Sidekicks — A little crew. A lot done." }],
+    images: [{ url: "/sidekicks/share-preview.png", width: 1672, height: 941, alt: "The colorful nine-character Sidekicks crew — A little crew. A lot done." }],
   },
   twitter: {
     card: "summary_large_image",

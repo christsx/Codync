@@ -43,3 +43,8 @@ The earlier centered landing layout is restored per user preference. The upperca
 Deployed to the Vercel project `sidekicks` in `ccdev-8130s-projects`. The production fallback is https://sidekicks-eight.vercel.app. Both `usesidekicks.com` and `www.usesidekicks.com` are assigned to this project. Namecheap BasicDNS holds an apex A record pointing to `76.76.21.21` and a `www` CNAME pointing to `cname.vercel-dns.com`. Deploy from `web/` with `vercel deploy --prod` using the ignored local `.vercel` project link.
 
 The footer uses grouped Product, Download, and Legal links inspired by the x.ai/bot reference, with larger readable text. Feature descriptions use open columns without numbered divider rows; FAQ dividers and the header download arrow are removed.
+
+The social sharing preview uses the approved nine-character crew promo artwork.
+`web/public/sidekicks/crew-promo.png` is the source; the share-preview script copies
+it to the Open Graph, Twitter and public preview assets. Native image dimensions
+and descriptive alt text are supplied. These are promotional illustrations.
