@@ -1,4 +1,4 @@
-# Codync cloud
+# Sidekicks cloud
 
 Cloudflare Worker for accounts and the off-LAN relay (spec: [docs/reference/remote-relay.md](../docs/reference/remote-relay.md)).
 

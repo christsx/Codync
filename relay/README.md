@@ -1,4 +1,4 @@
-# Codync relay
+# Sidekicks relay
 
 Cloudflare Worker that holds the APNs key and forwards pushes for codync-host.
 The phone exchanges its APNs token for an AES-GCM **ticket** (`POST /register`);

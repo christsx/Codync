@@ -92,7 +92,7 @@ Current Mac icon master: `sidekicks-plush-clover-big-eyes.png`. Built-in image e
 
 New sidekicks default to Codex in shared Apple drafts and Linux when installed. Existing configured sidekicks keep their backend; unavailable Codex falls back to an installed backend. TUI already explicitly asks the user to choose an agent.
 
-Remaining user-facing Codync strings replaced with Sidekicks across native clients, widgets, and host messages, including Personal · managed by Sidekicks. Existing module/bundle/service identifiers and real repository URLs stay stable. Mac/iOS builds verified; changed Rust text requires a rebuilt host/Linux client and cargo is unavailable locally.
+Remaining user-facing Sidekicks strings replaced with Sidekicks across native clients, widgets, and host messages, including Personal · managed by Sidekicks. Existing module/bundle/service identifiers and real repository URLs stay stable. Mac/iOS builds verified; changed Rust text requires a rebuilt host/Linux client and cargo is unavailable locally.
 
 Desktop first-account onboarding now gates the dashboard: local computer online, verified Codex auth, optional apps using the existing Marketplace, then create a sidekick or enter dashboard. Completion is scoped to the Clerk user ID, so returning accounts skip setup. Reuses settings/auth flows without collecting credentials in onboarding. Mac-only per user request; iOS pairing and Linux/TUI setup remain unchanged.
 
@@ -170,7 +170,7 @@ Terminate the old simulator app, install the signed build, and relaunch. On 2026
 
 ## Sidekicks Apple signing ownership
 
-Xcode now uses Christian Garcia team 9S7MDN3QVL. iOS distribution bundle IDs are com.christsx.Sidekicks.ios, com.christsx.Sidekicks.ios.LiveActivity, and com.christsx.Sidekicks.ios.NotificationService. The app, widgets, notification extension and SharedStore use group.com.christsx.Sidekicks; the former Codync identifiers belong to another team and cannot be provisioned by ours. This shared-storage namespace starts fresh; old development caches are not migrated. The registered Google callback remains com.pokai.Codync.ios://callback and is independent of the distribution bundle ID. Native Apple sign-in configuration and our own APNs relay credentials still need verification for this new App ID.
+Xcode now uses Christian Garcia team 9S7MDN3QVL. iOS distribution bundle IDs are com.christsx.Sidekicks.ios, com.christsx.Sidekicks.ios.LiveActivity, and com.christsx.Sidekicks.ios.NotificationService. The app, widgets, notification extension and SharedStore use group.com.christsx.Sidekicks; the former Sidekicks identifiers belong to another team and cannot be provisioned by ours. This shared-storage namespace starts fresh; old development caches are not migrated. The registered Google callback remains com.pokai.Codync.ios://callback and is independent of the distribution bundle ID. Native Apple sign-in configuration and our own APNs relay credentials still need verification for this new App ID.
 
 
 ### Mac floating agent panel

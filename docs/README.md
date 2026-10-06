@@ -1,12 +1,15 @@
-# Codync documentation
+# Sidekicks documentation
 
-Current documentation describes the checked-out implementation. Last reviewed: **2026-09-26**.
+Current documentation describes the checked-out implementation. Branding reviewed: **2026-10-05**. Technical verification dates are recorded per guide.
 Source review, a passing build, local integration tests and production acceptance are different checks; a feature documented here is not a claim that its deployed service has been verified.
 
 ## Start here
 
 | Task | Read |
 |---|---|
+| Set up a mobile Cloud Workspace | [Cloud Workspace](guides/cloud-workspace.md) |
+| Connect Granola meeting notes | [Granola](guides/granola.md) |
+| Review our screenshots | [Screenshot notes](screenshots/README.md) |
 | Find a module or decide where a file belongs | [File structure](architecture/file-structure.md) |
 | Understand clients, host, cloud and data ownership | [Architecture](architecture/overview.md) |
 | Build, install, restart and run checks | [Development](guides/development.md) |

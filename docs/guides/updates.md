@@ -12,7 +12,7 @@ there has been no keyboard/mouse input for ten minutes, and the local host repor
 no working bots, pending input, or running setup terminals. A staged update can
 also install when quitting. Manual installation can interrupt work.
 
-Before replacement, Codync unregisters its screen helper and stops the host,
+Before replacement, Sidekicks unregisters its screen helper and stops the host,
 waiting for its data lock to be released. If cleanup fails, installation pauses
 with a retry action. A persistent restart marker makes the next app launch
 reinstall the host service from the new bundle; remote screen registration is
@@ -58,8 +58,8 @@ computer identity within 30 seconds. Startup failure restores and restarts the
 previous binary. Data is preserved; this is binary rollback, not database rollback
 or recovery from power loss during installation.
 
-Bundled hosts are updated with the Mac app. Homebrew hosts use
-`brew upgrade leepokai/codync/codync-host`, followed by `codync-host install`.
+Bundled hosts are updated with the Mac app. A Sidekicks Homebrew tap is not published yet; source-installed hosts are rebuilt
+from this repository, followed by `codync-host install`.
 Development builds must be rebuilt. The independent updater refuses to overwrite
 those installations. The Linux desktop executable remains package-managed or
 manually installed; its update controls update the host.
@@ -97,4 +97,4 @@ used. Building locally or configuring secrets does not publish a release.
 - [Grok Bot's safe relaunch gate](https://github.com/b-nnett/grok-bot-0.18-reconstructed/blob/main/source/electron-main/update/safe-relaunch-gate.ts)
 
 Grok Bot supplied the reference for opt-in, staged updates and idle-gated restart.
-Codync uses app inactivity and input idle time; it does not require a locked screen.
+Sidekicks uses app inactivity and input idle time; it does not require a locked screen.

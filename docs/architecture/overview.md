@@ -1,6 +1,6 @@
 # Architecture
 
-Codync keeps agents and their working files on a computer. Clients address that computer's bots; the host owns execution, transcripts and authorization.
+Sidekicks keeps agents and their working files on a computer. Clients address that computer's bots; the host owns execution, transcripts and authorization.
 
 ## Runtime paths
 

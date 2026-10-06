@@ -14,7 +14,7 @@ Status: build 2.3.1 (25) is Testing in the internal TestFlight pilot, with the a
 ## Fixes made
 
 - Persist offline host presence before notifying devices, eliminating the observed stale online-state race. Existing regression test passes.
-- Release pilot builds now select our Sidekicks development Clerk/backend configuration rather than upstream Codync production. Xcode project regenerated. This remains a private development environment, not public production configuration.
+- Release pilot builds now select our Sidekicks development Clerk/backend configuration rather than upstream Sidekicks production. Xcode project regenerated. This remains a private development environment, not public production configuration.
 
 ## Release blockers and outstanding validation
 

@@ -19,14 +19,18 @@ Distro and C library don't matter. From the first release built by the updated w
 Run as the user who owns the agents (not root, unless the agents are root's):
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/leepokai/Codync/main/packaging/install.sh | sh -s -- --host-only
-# or: brew install leepokai/codync/codync-host
+git clone --branch codex/sidekicks-testflight https://github.com/christsx/Codync.git
+cd Codync/host
+cargo build --release
+mkdir -p "$HOME/.local/bin"
+cp target/release/codync-host "$HOME/.local/bin/"
+export PATH="$HOME/.local/bin:$PATH"
 codync-host install                    # systemd --user service, restarts on crash
 sudo loginctl enable-linger "$USER"    # keep it running after you log out of SSH
 codync-host status
 ```
 
-The script puts `codync-host` in `~/.local/bin` (`/usr/local/bin` as root; override with `CODYNC_BIN_DIR`), checks its SHA-256, and restarts the service on upgrade. `install` saves the current `PATH` into the service, so install Node and the agents first. If you add an agent later and the host doesn't find it, run `codync-host install` again. `install` needs a real login session (SSH login, not `sudo su user`), otherwise `systemctl --user` can't reach the user's service manager.
+Public Sidekicks Linux installers are not published; build from this repository for now. `install` saves the current `PATH` into the service, so install Node and the agents first. If you add an agent later and the host doesn't find it, run `codync-host install` again. `install` needs a real login session (SSH login, not `sudo su user`), otherwise `systemctl --user` can't reach the user's service manager.
 
 Other commands work the same as on a desktop: `codync-host pair`, `codync-host tui`, `codync-host uninstall` (keeps data in `~/.codync`). Logs go to the journal: `journalctl --user -u codync-host -f`.
 
@@ -35,7 +39,7 @@ Other commands work the same as on a desktop: `codync-host pair`, `codync-host t
 The phone connects over the encrypted device channel. The pairing link lists only **Tailscale** and **private (LAN/VPC)** addresses; the host never advertises a public IP.
 
 - **Tailscale (recommended for VMs):** install Tailscale on the VM and on the phone, then `codync-host pair`. The Tailscale name comes first in the link. You don't need to open port 19222 in the cloud firewall.
-- **Cloudflare cloud:** `codync-host cloud --url https://…` if you run your own Codync cloud. The production cloud isn't live yet (see [environments](environments-and-deployment.md)).
+- **Cloudflare cloud:** `codync-host cloud --url https://…` if you run your own Sidekicks cloud. The production cloud isn't live yet (see [environments](environments-and-deployment.md)).
 - **Mac app over SSH:** the Mac app can attach an SSH computer and tunnel to its loopback API ([Accounts and SSH](accounts-and-ssh.md)). From any terminal: `ssh -L 19222:127.0.0.1:19222 vm`, then `codync-host tui` locally.
 
 The host listens on `0.0.0.0:19222`. The local API (`/api/*`, `/events`, terminals; bearer token) answers **loopback callers only**, so a public address never exposes it. From outside, only `/health` (host id, computer id, version) and the end-to-end encrypted device channel answer, and the channel only serves devices holding this host's pairing keys. Keep 19222 closed in the cloud firewall anyway unless you deliberately pair over a VPN or private network.
