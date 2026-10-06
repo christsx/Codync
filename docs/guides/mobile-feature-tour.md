@@ -1,6 +1,6 @@
 # Sidekicks on iPhone
 
-The [README gallery](../../README.md#iphone-app) shows native screens captured on October 5, 2026, with isolated demo data. The welcome crew uses the same supported magenta, blue and violet colors as Mac.
+The [README gallery](../../README.md#iphone-app) shows native screens captured on October 5, 2026, with isolated demo data. Each welcome sidekick has its own color: pink, blue, violet, cyan, green, orange, red, yellow or brown, matching Mac.
 
 | Feature | Where to find it / details |
 |---|---|
