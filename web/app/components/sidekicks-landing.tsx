@@ -389,12 +389,6 @@ export default function SidekicksLanding() {
                 <p>See task updates and permission requests in the same conversation.</p>
               </div>
             </article>
-            <article>
-              <div>
-                <h3>Work wherever you need.</h3>
-                <p>Run agents on your computer or in a Cloud Workspace, available in the private beta.</p>
-              </div>
-            </article>
           </div>
         </section>
         <section className="everywhere-section container">
