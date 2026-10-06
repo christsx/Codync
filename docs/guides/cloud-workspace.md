@@ -161,3 +161,21 @@ restarted with the file backend. Live credential unlock and encrypted temporary
 login save/remove passed twice, including after restarting with the persisted
 key. No real provider sign-in was performed. The temporary transfer sandbox was
 deleted. Desktop host behavior and mobile binaries are unchanged by this fix.
+
+## ChatGPT sign-in from a phone
+
+Cloud Codex setup exposes **Sign in with ChatGPT** as a setup terminal running
+`codex login --device-auth`. Open the newly generated link and enter the one-time
+code on the phone. Enable device-code login in ChatGPT security settings (or ask
+the workspace administrator) when required. The bare OpenAI consent URL is not
+a reusable login link; it requires the session created by an active auth flow.
+Cloud setup retains advertised API-key options and leaves desktop/other agent
+sign-in methods unchanged. The shared mobile terminal already supports this
+method, so installing another iPhone build is unnecessary.
+
+Deployed October 6, 2026: device-login snapshot `sidekicks-host-2-4-0-device-v5`,
+cloud version `95121395-f155-4b12-b68e-f0a15831aefe`, and an updated host in the
+existing workspace. Live `agentAuth` returned `sidekicks-device-auth` with terminal
+kind, replacing `chat-gpt` with agent kind. All 203 host tests, formatting and
+strict Clippy passed. Credential smoke checks passed after deployment. Completion
+of the user's OpenAI authorization remains user-operated and was not verified.

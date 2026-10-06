@@ -320,7 +320,22 @@ fn methods(backend: &str, init: &Value, cmd: &Cmd) -> Vec<Method> {
     let keyed: Vec<String> =
         out.iter().filter(|m| matches!(m.kind, MethodKind::EnvVar { .. })).map(|m| m.name.clone()).collect();
     out.retain(|m| !matches!(m.kind, MethodKind::Agent) || !keyed.contains(&m.name));
-    out
+    cloud_auth_methods(backend, out, std::env::var_os("CODYNC_VAULT_KEY_FILE").is_some())
+}
+
+fn cloud_auth_methods(backend: &str, mut methods: Vec<Method>, headless: bool) -> Vec<Method> {
+    if backend == "codex" && headless {
+        // Browser callbacks on the remote host cannot reach a browser on the phone.
+        // Keep API-key options; replace subscription/browser options with device login.
+        methods.retain(|method| matches!(method.kind, MethodKind::EnvVar { .. }));
+        methods.insert(0, Method {
+            id: "sidekicks-device-auth".into(),
+            name: "Sign in with ChatGPT".into(),
+            description: Some("Open the link on your phone and enter the one-time code. Enable device code login in ChatGPT security settings if requested.".into()),
+            kind: MethodKind::Terminal { command: "codex login --device-auth".into() },
+        });
+    }
+    methods
 }
 
 /// The terminal command for a method found by the last check.
@@ -406,6 +421,21 @@ mod tests {
         ]});
         assert_eq!(model_config(&session).unwrap()["id"], "engine");
         assert!(model_config(&json!({"configOptions": [{"id": "model", "type": "boolean"}]})).is_none());
+    }
+
+    #[test]
+    fn cloud_codex_uses_device_login_and_keeps_api_keys() {
+        let init = json!({"authMethods": [
+            {"id":"chatgpt", "name":"ChatGPT"},
+            {"id":"key", "name":"API key", "type":"env_var", "vars":[{"name":"OPENAI_API_KEY"}]}
+        ]});
+        let options = methods("x", &init, &cmd());
+        let cloud = cloud_auth_methods("codex", options.clone(), true);
+        assert_eq!(cloud.len(), 2);
+        assert!(matches!(&cloud[0].kind, MethodKind::Terminal { command } if command == "codex login --device-auth"));
+        assert!(matches!(cloud[1].kind, MethodKind::EnvVar { .. }));
+        assert!(matches!(cloud_auth_methods("codex", options.clone(), false)[0].kind, MethodKind::Agent));
+        assert!(matches!(cloud_auth_methods("claude", options, true)[0].kind, MethodKind::Agent));
     }
 
     fn cmd() -> Cmd {
