@@ -6,6 +6,7 @@ import SwiftUI
 @main
 struct CodyncMacApp: App {
     @NSApplicationDelegateAdaptor(CodyncAppDelegate.self) private var appDelegate
+    @AppStorage("showAgentNotch") private var showAgentNotch = false
     @State private var updates = UpdatesManager()
     @State private var host: HostController
     @State private var account: AccountSession
@@ -25,11 +26,18 @@ struct CodyncMacApp: App {
         updates.start(host: host)
     }
 
+    private func syncNotch() {
+        if showAgentNotch {
+            AgentNotchController.shared.show(host: host) { openWindow(id: "chat"); NSApp.activate() }
+        } else { AgentNotchController.shared.hide() }
+    }
+
     var body: some Scene {
         // First scene: the one SwiftUI opens at launch and when the Dock icon is clicked.
         Window("Sidekicks", id: "chat") {
             ChatWindow()
-                .task { launch() }
+                .task { launch(); syncNotch() }
+                .onChange(of: showAgentNotch) { _, _ in syncNotch() }
                 .modalHost()
                 .environment(host)
                 .environment(account)
@@ -48,7 +56,8 @@ struct CodyncMacApp: App {
         } label: {
             // The Codync mark; a dot joins it when a bot needs you.
             Image(host.needsAttention ? "MenuBarIconAlert" : "MenuBarIcon")
-                .task { launch() }
+                .task { launch(); syncNotch() }
+                .onChange(of: showAgentNotch) { _, _ in syncNotch() }
                 .onChange(of: account.userID) { _, userID in host.switchAccount(to: userID) }
                 // A device asking for access: bring up the window that holds the approval sheet.
                 .onChange(of: host.currentApproval?.id) { _, id in
@@ -78,6 +87,7 @@ struct CodyncMacApp: App {
 
 /// A system menu: macOS owns layout, selection, keyboard navigation and submenus.
 struct MenuView: View {
+    @AppStorage("showAgentNotch") private var showAgentNotch = false
     @Environment(UpdatesManager.self) private var updates
     @Environment(HostController.self) private var host
     @Environment(\.openWindow) private var openWindow
@@ -86,6 +96,7 @@ struct MenuView: View {
 
     var body: some View {
         Text(status)
+        Toggle("Floating agent panel", isOn: $showAgentNotch)
         Button("Open Sidekicks") { open("chat") }
             .keyboardShortcut("o")
         if host.state == .running {

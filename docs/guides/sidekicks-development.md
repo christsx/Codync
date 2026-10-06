@@ -171,3 +171,18 @@ Terminate the old simulator app, install the signed build, and relaunch. On 2026
 ## Sidekicks Apple signing ownership
 
 Xcode now uses Christian Garcia team 9S7MDN3QVL. iOS distribution bundle IDs are com.christsx.Sidekicks.ios, com.christsx.Sidekicks.ios.LiveActivity, and com.christsx.Sidekicks.ios.NotificationService. The app, widgets, notification extension and SharedStore use group.com.christsx.Sidekicks; the former Codync identifiers belong to another team and cannot be provisioned by ours. This shared-storage namespace starts fresh; old development caches are not migrated. The registered Google callback remains com.pokai.Codync.ios://callback and is independent of the distribution bundle ID. Native Apple sign-in configuration and our own APNs relay credentials still need verification for this new App ID.
+
+
+### Mac floating agent panel
+
+The menu bar’s **Floating agent panel** toggle opens a persistent, top-center companion panel below the menu bar and camera cutout. It works on screens without a notch. Expand it to select visible account agents, inspect activity, send a task, stop work, or open the existing conversation for approvals, instructions, memory and routines. It uses the shared account roster; no separate agent runtime or permissions are introduced. The preference persists across launches. Display changes reposition the panel.
+
+This is a Mac window-management feature. iOS already exposes the shared agent actions plus widgets, Live Activities and Dynamic Island; Linux and TUI retain their roster and actions because they have no macOS panel/window API. No shared capability or protocol changed. The web landing page describes the existing mobile and configuration surfaces; the notch preview was removed at the user’s request.
+
+Validation: macOS Debug build (code signing disabled) passed; web ESLint, TypeScript and production build passed. Browser checked notch expansion and the 390px mobile viewport (no horizontal overflow). Native live-agent interactions and installation were not exercised; the installed app was not replaced.
+
+Sign-out now immediately excludes the successfully removed Clerk session in the
+shared Apple account model, including during session restoration. The Mac's
+explicit local-use choice is no longer persisted as completed authentication.
+Mobile already routes signed-out users to Welcome. Linux/TUI use host-local
+execution and have no Clerk account welcome gate, so their UI is unaffected.

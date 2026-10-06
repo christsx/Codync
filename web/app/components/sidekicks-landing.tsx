@@ -11,7 +11,6 @@ import {
   Folder,
   ChatText,
   ArrowUp,
-  ArrowRight,
   Cloud,
   Desktop,
   MagnifyingGlass,
@@ -357,6 +356,10 @@ export default function SidekicksLanding() {
             </div>
           </Reveal>
           <div className="workflow-lines">
+            <article><div><h3>Keep your agents within reach.</h3><p>Show the floating Mac panel from the menu bar. See who’s working, send a task, stop a run, or open a conversation to review an approval.</p></div></article>
+            <article><div><h3>Teach them how you work.</h3><p>Set standing instructions, review memory, and choose skills for each Sidekick. Give them your project’s context without training a new model.</p></div></article>
+            <article><div><h3>Give repeat work a routine.</h3><p>Set up routines from Mac or iPhone. Keep recurring tasks alongside the conversations they belong to.</p></div></article>
+            <article><div><h3>Follow along from your phone.</h3><p>Create Sidekicks, send tasks, and review requests on iPhone. Widgets, Live Activities, and the Dynamic Island keep current work close.</p></div></article>
             <article>
               <div>
                 <h3>A conversation for every project.</h3>
