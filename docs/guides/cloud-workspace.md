@@ -131,3 +131,33 @@ and repository access. Provider secrets must be entered only in the app's setup.
   remain pending the user's account and interactive authorization. Existing
   sandboxes retain their original image; changing the snapshot does not migrate
   their files or upgrade their host. New workspaces receive the new image.
+
+## Headless credential storage
+
+Cloud Workspace hosts explicitly set `CODYNC_VAULT_KEY_FILE` to
+`/home/daytona/.codync/vault.key`. This removes the dependency on an unlocked
+Linux desktop Secret Service session. The host generates a random 32-byte key
+with owner-only permissions (0600) and keeps credential records encrypted with
+XChaCha20-Poly1305 in SQLite. The key stays inside the account’s private persistent
+workspace; it is not included in the image or sent to the phone or cloud worker.
+Backups must retain both the database and this key. Workspace filesystem access
+can expose both, so this is a headless storage alternative rather than OS keychain
+isolation. Missing keys, invalid key files and insecure permissions fail closed;
+existing encrypted records are never silently replaced.
+
+Mac and normal Linux desktop hosts continue using the OS keychain unless this
+backend is explicitly selected. iPhone uses the remote host’s credential vault;
+no new mobile build is needed for this server-side fix. Existing workspaces need
+the updated host and environment, not just a new snapshot setting.
+
+Validation: 202 host tests passed (one OS-keychain test intentionally ignored),
+format and strict Clippy passed, five workspace provisioning tests and cloud
+TypeScript checks passed.
+
+Deployment on October 6, 2026: snapshot `sidekicks-host-2-4-0-vault-v4` and
+pilot cloud version `b348f584-eaf6-4241-8811-59d6a74a724a`. The existing pilot
+workspace received the updated host in its user-local bin directory and was
+restarted with the file backend. Live credential unlock and encrypted temporary
+login save/remove passed twice, including after restarting with the persisted
+key. No real provider sign-in was performed. The temporary transfer sandbox was
+deleted. Desktop host behavior and mobile binaries are unchanged by this fix.

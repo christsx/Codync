@@ -40,6 +40,7 @@ export async function workspace(c: Ctx, userId: string) {
         autoStopInterval: 0, autoArchiveInterval: 10080, autoDeleteInterval: -1,
         env: {
           CODYNC_CLOUD_URL: c.url.origin, CODYNC_HOME: "/home/daytona/.codync",
+          CODYNC_VAULT_KEY_FILE: "/home/daytona/.codync/vault.key",
           NPM_CONFIG_PREFIX: "/home/daytona/.local",
           PATH: "/home/daytona/.local/bin:/usr/local/bin:/usr/bin:/bin",
         },
@@ -66,7 +67,7 @@ export async function workspace(c: Ctx, userId: string) {
     const input = b64url(utf8(JSON.stringify({ ...challenge, userId })));
     const response = await fetch(`${base.href.replace(/\/$/, "")}/${sandbox.id}/process/execute`, {
       method: "POST", headers: { Authorization: `Bearer ${c.env.DAYTONA_API_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ command: `python3 /opt/sidekicks/workspace.py ${input}`, timeout: 10 }),
+      body: JSON.stringify({ command: `CODYNC_VAULT_KEY_FILE=/home/daytona/.codync/vault.key python3 /opt/sidekicks/workspace.py ${input}`, timeout: 10 }),
       signal: AbortSignal.timeout(15000),
     });
     if (!response.ok) throw new ApiError("workspaceUnavailable", "Your cloud workspace is starting. Try again shortly.", 503);

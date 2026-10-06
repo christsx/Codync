@@ -1,5 +1,6 @@
 //! Encrypted records backed by the operating system credential store. The database
-//! contains ciphertext only; its random master key lives in Keychain/Secret Service.
+//! contains ciphertext only; its random master key lives in Keychain/Secret Service
+//! or an explicitly configured private key file for headless workspaces.
 use crate::{LockExt, store::Store};
 use anyhow::{Result, anyhow, bail};
 use base64::{Engine, engine::general_purpose::STANDARD};
@@ -26,8 +27,11 @@ pub async fn unlock(hub: Arc<crate::hub::Hub>) -> Result<()> {
             store.kv_set("vault.id", &id)?;
             id
         };
+        let key = if let Some(path) = std::env::var_os("CODYNC_VAULT_KEY_FILE") {
+            file_key(std::path::Path::new(&path), store.kv_read("vault.initialized")?.is_some())?
+        } else {
         let entry = keyring::Entry::new(SERVICE, &id).map_err(|_| unavailable())?;
-        let key = match entry.get_secret() {
+        match entry.get_secret() {
             Ok(key) => key,
             Err(keyring::Error::NoEntry) => {
                 if store.kv_read("vault.initialized")?.is_some() {
@@ -39,6 +43,7 @@ pub async fn unlock(hub: Arc<crate::hub::Hub>) -> Result<()> {
                 key
             }
             Err(_) => return Err(unavailable()),
+        }
         };
         if key.len() != 32 { bail!("Invalid credential key; restore this computer's keychain."); }
         store.kv_set("vault.initialized", "true")?;
@@ -46,6 +51,54 @@ pub async fn unlock(hub: Arc<crate::hub::Hub>) -> Result<()> {
         Ok(())
     }).await??;
     Ok(())
+}
+
+/// Explicit headless-workspace backend. Never silently bypass a desktop keychain.
+/// The persistent key must travel with workspace backups; it is not stored in SQLite.
+#[cfg(unix)]
+fn file_key(path: &std::path::Path, initialized: bool) -> Result<Vec<u8>> {
+    use std::{
+        fs::OpenOptions,
+        io::{Read, Write},
+        os::unix::fs::{OpenOptionsExt, PermissionsExt},
+    };
+    let open = || OpenOptions::new().read(true).custom_flags(libc::O_NOFOLLOW).open(path);
+    let mut file = match open() {
+        Ok(file) => file,
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => {
+            if initialized {
+                bail!(
+                    "The workspace credential key is missing; restore its key file. Encrypted credentials were preserved."
+                );
+            }
+            let mut key = Zeroizing::new(vec![0; 32]);
+            getrandom::fill(&mut key).map_err(|_| anyhow!("Could not generate credential key"))?;
+            let mut created = OpenOptions::new()
+                .write(true)
+                .create_new(true)
+                .mode(0o600)
+                .custom_flags(libc::O_NOFOLLOW)
+                .open(path)
+                .map_err(|_| anyhow!("Could not create the private workspace credential key"))?;
+            created.write_all(&key)?;
+            created.sync_all()?;
+            drop(created);
+            open()?
+        }
+        Err(_) => bail!("Could not open the private workspace credential key"),
+    };
+    let metadata = file.metadata()?;
+    if !metadata.is_file() || metadata.permissions().mode() & 0o077 != 0 || metadata.len() != 32 {
+        bail!("Workspace credential key must be a private 32-byte file (permissions 0600)");
+    }
+    let mut key = vec![0; 32];
+    file.read_exact(&mut key)?;
+    Ok(key)
+}
+
+#[cfg(not(unix))]
+fn file_key(_: &std::path::Path, _: bool) -> Result<Vec<u8>> {
+    bail!("Workspace file credential storage is only supported on Unix")
 }
 
 fn unavailable() -> anyhow::Error {
@@ -95,6 +148,34 @@ pub fn write(store: &Store, slot: &str, value: &str) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[cfg(unix)]
+    #[test]
+    fn headless_key_persists_and_rejects_missing_or_public_keys() {
+        use std::os::unix::fs::PermissionsExt;
+        let dir = std::env::temp_dir().join(format!("vault-test-{}", uuid::Uuid::new_v4()));
+        std::fs::create_dir(&dir).unwrap();
+        let path = dir.join("vault.key");
+        assert!(file_key(&path, true).is_err());
+        let key = file_key(&path, false).unwrap();
+        assert_eq!(key.len(), 32);
+        assert_eq!(file_key(&path, true).unwrap(), key);
+        let store = Store::open(std::path::Path::new(":memory:")).unwrap();
+        *store.secret_key.locked() = Some(Zeroizing::new(key));
+        write(&store, "token", "test secret").unwrap();
+        *store.secret_key.locked() = Some(Zeroizing::new(file_key(&path, true).unwrap()));
+        assert_eq!(read(&store, "token").unwrap().as_deref(), Some("test secret"));
+        std::fs::set_permissions(&path, std::fs::Permissions::from_mode(0o644)).unwrap();
+        assert!(file_key(&path, true).is_err());
+        std::fs::remove_file(&path).unwrap();
+        assert!(file_key(&path, true).is_err());
+        assert!(!path.exists());
+        let target = dir.join("target");
+        std::fs::write(&target, [0; 32]).unwrap();
+        std::os::unix::fs::symlink(&target, &path).unwrap();
+        assert!(file_key(&path, false).is_err());
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+
     #[test]
     #[ignore = "requires an unlocked OS keychain or Secret Service session"]
     fn platform_keyring_roundtrip() {

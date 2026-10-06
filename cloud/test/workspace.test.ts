@@ -63,6 +63,7 @@ describe("Cloud Workspace access", () => {
         expect(input.autoStopInterval).toBe(0);
         expect(input.env).not.toHaveProperty("DAYTONA_API_KEY");
         expect(input.env.CODYNC_CLOUD_URL).toBe("https://cloud.test");
+        expect(input.env.CODYNC_VAULT_KEY_FILE).toBe("/home/daytona/.codync/vault.key");
         saved = true;
       } else if (!saved) return new Response(null, { status: 404 });
       return Response.json({ id: "sandbox_one", state: "pending_build", autoStopInterval: 0 });

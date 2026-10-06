@@ -16,7 +16,7 @@
     }
   ],
   "vars": {
-    "DAYTONA_SNAPSHOT": "sidekicks-host-2-4-0-v1",
+    "DAYTONA_SNAPSHOT": "sidekicks-host-2-4-0-vault-v4",
     "CLERK_ISSUER": "https://ultimate-chow-8201.clerk.accounts.dev",
     "CLERK_JWT_KEY": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtD1I8+zMIksZAq1X7J8H\njqJAcddJtA+9ZTrU+VWiD5ajV8M5tm0tmL5UN36BqB257DAMtRhzCZyxse8M+jfT\n+/RrAI7Xf9CMa0TT4h/aG0Ji/9e6vEOmFhqnDOBqgSBOv4+aY2pSZhb+acfdD33d\nBLwAHOoBQ3gup+zpWjdKhBdkvEDzhzUoM9xqVWJl1Hhb5l2fBhJboAFR0lCBDEfk\nOgzb/8W2fqb/Ciwn+Y5razt/rXQYzKcEO4pwwiz5dJsXgiBXEQtUGAdJRSFoSINW\nC4F1bHR8Lk/8MeTT9jrJe1eQqFoRubgcRcAW1XKWvVcwafb9VQSpIaXb739+rcX/\nPQIDAQAB\n-----END PUBLIC KEY-----\n"
   },

@@ -9,7 +9,9 @@ import time
 import urllib.request
 
 home = Path(os.environ.get("CODYNC_HOME", "/home/daytona/.codync"))
-home.mkdir(parents=True, exist_ok=True)
+home.mkdir(parents=True, exist_ok=True, mode=0o700)
+# Headless Linux has no unlocked desktop Secret Service session.
+os.environ["CODYNC_VAULT_KEY_FILE"] = str(home / "vault.key")
 
 
 def call(method, body):

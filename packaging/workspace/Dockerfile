@@ -12,6 +12,7 @@ COPY packaging/workspace/workspace.py /opt/sidekicks/workspace.py
 RUN useradd --create-home --shell /bin/bash daytona
 USER daytona
 ENV CODYNC_HOME=/home/daytona/.codync
+ENV CODYNC_VAULT_KEY_FILE=/home/daytona/.codync/vault.key
 WORKDIR /home/daytona
 # The host starts on demand through workspace.py. This image contains no accounts,
 # pairing keys, API credentials, local databases, or preauthenticated agents.
