@@ -1,14 +1,14 @@
 {
   "fill": {
-    "solid": "extended-srgb:0.08000,0.04000,0.03000,1.00000"
+    "solid": "extended-srgb:0.05000,0.04000,0.05000,1.00000"
   },
   "groups": [
     {
       "layers": [
         {
           "glass": false,
-          "image-name": "sidekicks-orange-light.png",
-          "name": "Sidekicks plush clover",
+          "image-name": "sidekicks-pink-mascot.png",
+          "name": "Sidekicks pink mascot",
           "position": {
             "scale": 0.8,
             "translation-in-points": [

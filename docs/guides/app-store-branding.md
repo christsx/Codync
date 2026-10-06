@@ -13,3 +13,10 @@ editing website metadata does not change the App Store icon.
 Build 2.3.1 (29) contains this icon update and was successfully archived and
 uploaded to App Store Connect on October 4, 2026. This is an iOS distribution branding change;
 macOS, Linux, shared SwiftUI, and terminal UI behavior are unaffected.
+
+The Mac Icon Composer configuration now selects `sidekicks-pink-mascot.png`
+instead of the legacy orange mascot. The installed Mac app inspected on October
+5 remained version 2.3.1; source and website updates do not replace installed apps.
+The current iOS icon asset is pink. Seeing an orange Home Screen icon requires
+checking the installed TestFlight version and updating to a distributed pink-icon
+build; distribution to this tester has not been verified.
