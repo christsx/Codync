@@ -215,7 +215,10 @@ fn unique_id(base: &str, taken: &[String]) -> String {
 
 /// Well-known connectors shown before you search, by MCP Registry name.
 /// Names that aren't in the registry (yet) are simply skipped.
+const GRANOLA: &str = "ai.granola/mcp";
+
 const FEATURED: &[&str] = &[
+    GRANOLA,
     "io.github.github/github-mcp-server",
     "app.linear/linear",
     "com.notion/mcp",
@@ -258,7 +261,20 @@ async fn registry_page(search: &str, cursor: &str, limit: usize) -> Result<(Vec<
 }
 
 /// One registry server by exact name (its latest version).
+/// Granola publishes its endpoint directly, so maintain an explicit first-party catalog entry.
+fn granola_server() -> Value {
+    json!({
+        "name": GRANOLA, "title": "Granola", "version": "hosted",
+        "description": "Search meeting notes and transcripts, find decisions, and extract action items. Connect with your Granola account.",
+        "websiteUrl": "https://help.granola.ai/article/granola-mcp",
+        "remotes": [{"type": "streamable-http", "url": "https://mcp.granola.ai/mcp"}],
+    })
+}
+
 async fn registry_server(name: &str) -> Result<Value> {
+    if name == GRANOLA {
+        return Ok(granola_server());
+    }
     let mut url = reqwest::Url::parse(MCP_REGISTRY)?;
     url.path_segments_mut().map_err(|()| anyhow!("bad registry URL"))?.extend([name, "versions", "latest"]);
     let v = get_json(url.as_str()).await.with_context(|| format!("{name} isn't in the MCP Registry"))?;
@@ -409,6 +425,12 @@ fn listing(server: &Value, installed: &[Connector]) -> Option<Value> {
 pub async fn browse_connectors(store: &crate::store::Store, search: &str, cursor: &str) -> Result<Value> {
     let installed = connectors(store)?;
     let search = search.trim();
+    // Resolve the official connector without depending on the community registry search.
+    if search.eq_ignore_ascii_case("granola") && cursor.is_empty() {
+        return Ok(
+            json!({"items": listing(&granola_server(), &installed).into_iter().collect::<Vec<_>>(), "nextCursor": null}),
+        );
+    }
     let mut servers: Vec<Value> = if search.is_empty() && cursor.is_empty() {
         let lookups = FEATURED.iter().map(|n| registry_server(n));
         futures::future::join_all(lookups).await.into_iter().filter_map(Result::ok).collect()
@@ -542,7 +564,7 @@ pub async fn install_connector(store: &crate::store::Store, name: &str, option: 
         _ => bail!("unknown install option"),
     }
     if let Some(url) = &c.url
-        && oauth::required(url, &c.headers).await
+        && (name == GRANOLA || oauth::required(url, &c.headers).await)
     {
         c.oauth = Some(oauth::OAuth::default());
     }
@@ -847,6 +869,16 @@ pub fn skills_brief(store: &crate::store::Store, enabled: &[String]) -> Option<S
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn granola_offers_official_hosted_connector_without_api_key_inputs() {
+        let server = granola_server();
+        let entry = listing(&server, &[]).unwrap();
+        assert_eq!(entry["title"], "Granola");
+        assert_eq!(entry["options"][0]["id"], "remote:0");
+        assert_eq!(entry["options"][0]["inputs"], json!([]));
+        assert_eq!(server["remotes"][0]["url"], "https://mcp.granola.ai/mcp");
+    }
 
     #[test]
     fn registry_arguments_become_words() {
