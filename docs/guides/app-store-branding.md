@@ -20,3 +20,8 @@ instead of the legacy orange mascot. The installed Mac app inspected on October
 The current iOS icon asset is pink. Seeing an orange Home Screen icon requires
 checking the installed TestFlight version and updating to a distributed pink-icon
 build; distribution to this tester has not been verified.
+
+The signed Mac Debug build 2.4.0 was installed at `/Applications/Sidekicks.app`
+and launched after stopping the old app and host. Its signature verified.
+iOS 2.4.0 (31) passed a signed device build; direct installation was blocked
+by the paired iPhone being locked. Build 31 has not been uploaded to TestFlight.
