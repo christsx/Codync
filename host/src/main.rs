@@ -62,6 +62,8 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Sub {
+    /// Sign Codex in with `ChatGPT` using the supported device-code account API.
+    ChatgptLogin,
     /// Run the host in the foreground (what the background service runs).
     Serve {
         #[arg(long, default_value_t = service::DEFAULT_PORT)]
@@ -301,6 +303,7 @@ fn write_token_file(token: &str) -> Result<()> {
 async fn main() -> Result<()> {
     let cli = Cli::parse();
     match cli.cmd.unwrap_or(Sub::Serve { port: service::DEFAULT_PORT, bind: "0.0.0.0".into() }) {
+        Sub::ChatgptLogin => agent::chatgpt::login().await,
         Sub::Serve { port, bind } => serve(&bind, port).await,
         Sub::Pair { port, json } => pair(port, json).await,
         Sub::Info { port, json } => info(port, json).await,

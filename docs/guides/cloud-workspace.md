@@ -179,3 +179,28 @@ existing workspace. Live `agentAuth` returned `sidekicks-device-auth` with termi
 kind, replacing `chat-gpt` with agent kind. All 203 host tests, formatting and
 strict Clippy passed. Credential smoke checks passed after deployment. Completion
 of the user's OpenAI authorization remains user-operated and was not verified.
+
+### ChatGPT sign-in in a cloud workspace
+
+Sidekicks uses Codex app-server's managed `chatgptDeviceCode` account API for
+cloud Codex sign-in. In the agent's setup screen, select **Sign in with ChatGPT**,
+open the displayed `https://auth.openai.com/codex/device` link on your phone or
+computer, and enter the fresh code. Return to the setup screen after approving.
+The host waits for the matching `account/login/completed` notification and
+reports a rejection or expiration instead of assuming that opening a browser
+completed authentication. The generic Codex **Sign in** action uses the same flow.
+Enable device code login in ChatGPT security settings if OpenAI asks for it.
+
+Codex owns token storage and refresh. Headless sign-in explicitly selects Codex's
+supported `cli_auth_credentials_store="file"` backend so an unavailable Linux
+keyring cannot block persistence. Codex stores these credentials in its private
+credential file under `CODEX_HOME` (normally `~/.codex`); they are not encrypted
+by the Sidekicks vault. Restrict workspace access and protect backups of this
+file. Sidekicks' own connector/API credentials remain encrypted in its vault.
+The app receives only the verification URL, one-time code and completion state,
+not access or refresh tokens. Desktop sign-in keeps its existing storage behavior.
+
+The iPhone, Mac, Linux and terminal clients all use the existing shared setup
+terminal API, so this host change does not require a client UI update. It uses
+the [official Codex account API](https://learn.chatgpt.com/docs/app-server#authentication-endpoints),
+not an identity-only website OAuth flow or a standalone consent-page link.

@@ -127,6 +127,9 @@ impl Terms {
             }
             // Some CLIs (codex) delete the current credentials the moment a new sign-in starts.
             Step::Login if backends::signed_in(backend) == Some(true) => bail!("{name} is already signed in"),
+            Step::Login if backend == "codex" && method == Some("sidekicks-device-auth") => {
+                crate::agent::chatgpt::command()?
+            }
             Step::Login => match method {
                 Some(m) => crate::agent::auth::terminal_command(backend, m)
                     .ok_or_else(|| anyhow!("That sign-in option is gone; check {name} again"))?,

@@ -656,6 +656,9 @@ pub fn login_available(id: &str) -> bool {
 
 /// Codync's own sign-in command for `id`, with `{bin}` resolved.
 pub async fn login_command(id: &str) -> anyhow::Result<String> {
+    if id == "codex" && std::env::var_os("CODYNC_VAULT_KEY_FILE").is_some() {
+        return super::chatgpt::command();
+    }
     let h = harness(id).ok_or_else(|| anyhow::anyhow!("no sign-in command for {id}"))?;
     let bin = match h.bins.iter().find_map(|b| which(b)) {
         Some(p) => shell_quote(&p.to_string_lossy()),
