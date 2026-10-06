@@ -190,6 +190,17 @@ pub const HARNESSES: &[Harness] = &[
         signed_in: None,
     },
     Harness {
+        id: "glm-acp-agent",
+        name: "Z.ai (GLM)",
+        bins: &["glm-acp-agent"],
+        local: Some("{bin}"),
+        registry: Some("glm-acp-agent"),
+        setup: "Install GLM Agent (npm install -g glm-acp-agent) and run `glm-acp-agent --setup` with your Z.ai Coding Plan API key.",
+        install: Some(Install::Npm("glm-acp-agent")),
+        login: "{bin} --setup",
+        signed_in: None,
+    },
+    Harness {
         id: "kimi",
         name: "Kimi Code",
         bins: &["kimi"],

@@ -6,6 +6,7 @@ import SwiftUI
 struct WorkspaceSetupView: View {
     var inModal = false
     var complete: () -> Void
+    @Environment(AppStore.self) private var app
     @Environment(AccountStore.self) private var accounts
     @Environment(AccountSession.self) private var account
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -29,7 +30,7 @@ struct WorkspaceSetupView: View {
                     .font(.system(size: 72)).foregroundStyle(Palette.accent)
                 Text("Your sidekicks.\nAnywhere you are.")
                     .font(.system(size: 32, weight: .semibold)).multilineTextAlignment(.center)
-                Text("Run your sidekicks in your own Cloud Workspace. No laptop needed. Connect your coding agent after setup.")
+                Text("Run your sidekicks in your own Cloud Workspace. No laptop needed. Connect Z.ai, Kimi, or another coding agent in the cloud after setup.")
                     .foregroundStyle(Palette.secondary).multilineTextAlignment(.center)
                 if let error {
                     Text(error).font(.subheadline).foregroundStyle(Palette.secondary)
@@ -57,7 +58,15 @@ struct WorkspaceSetupView: View {
                 defer { busy = false }
                 do {
                     try await accounts.connectWorkspace(deviceName: UIDevice.current.name, platform: "ios")
+                    let workspaceId = accounts.storage.workspaceComputerId
                     complete()
+                    // Allow a settings sheet to dismiss before presenting the workspace marketplace.
+                    if let workspaceId {
+                        Task { @MainActor in
+                            try? await Task.sleep(for: .milliseconds(450))
+                            app.marketplace = workspaceId
+                        }
+                    }
                 } catch is CancellationError {
                 } catch { self.error = error.localizedDescription }
             }

@@ -36,10 +36,11 @@ Release checklist:
    isolation, cloud-only pairing, agent installation/login and a real task with
    the laptop shut down. Then upload a new iOS build.
 
-Auto-stop is 30 minutes; files persist and automatic deletion is disabled.
-Long-running tasks need lifecycle monitoring to prevent stopping during a run;
-background processes alone do not reset Daytona's inactivity timer. Do not claim
-unattended long-running tasks are supported before that monitoring is implemented.
+Auto-stop is disabled for new workspaces and reconciled on the next setup of an
+existing workspace. Files persist and automatic deletion is disabled. This avoids
+inactivity interrupting jobs, but compute usage continues until the workspace is
+stopped in Daytona. The pilot backend now applies this policy; a full provider task with the Mac closed
+is still awaiting account sign-in and verification.
 
 This setup UI is iOS-only because desktop, Linux and the TUI already run the host
 on their own machine. Their local execution and pairing screens are unchanged.
@@ -79,3 +80,54 @@ shows 2.3.1 (26) as Testing in Sidekicks Internal Pilot, with test instructions
 saved. Full mobile pairing, coding-agent
 authentication, an actual agent task with the laptop offline, and visual review
 still need verification in TestFlight.
+
+### Provider setup from iPhone
+
+After starting a Cloud Workspace, iPhone opens that workspace's marketplace.
+Install and sign in to Z.ai (GLM) or Kimi there before creating the sidekick.
+Z.ai uses the community GLM ACP adapter and a Z.ai Coding Plan key through
+`glm-acp-agent --setup`; Kimi uses its CLI login flow. Setup runs on the selected
+workspace, so credentials and code remain there rather than depending on the Mac.
+Existing Mac sidekicks are not migrated automatically. Cloud access is still
+restricted to accounts enrolled in `WORKSPACE_USERS`. Returning to iPhone wakes
+an existing stopped cloud workspace; the revised unattended policy must be deployed before relying on long jobs.
+
+### Mobile repository setup and verification
+
+Settings → Cloud Workspace now offers provider setup and GitHub repository setup.
+GitHub setup uses the CLI device/browser flow, configures Git credentials, validates
+an OWNER/REPO name, and clones into `~/projects`. Select the resulting folder when
+creating a cloud sidekick. The workspace image includes `gh`; existing snapshots
+must be rebuilt with the new host and selected in `DAYTONA_SNAPSHOT` before this
+command is available. Personal Mac databases, provider credentials, and chats are
+not copied to the cloud. Existing Mac agents must be recreated there deliberately.
+
+Cloud onboarding and its checklist are iOS-only: Mac/Linux/TUI are host-local
+clients and do not provision Daytona. The shared setup terminal and host command
+work on the selected host; their existing agent setup behavior is unchanged.
+
+Before calling the workflow verified: sign in on iPhone, start the workspace,
+authenticate a provider and GitHub, clone a test repository, create a cloud agent,
+close the Mac, and request a file edit. Confirm the reply, the actual file change,
+and repository access. Provider secrets must be entered only in the app's setup.
+
+### October 5 implementation and release
+
+- Cloud: 106 tests and TypeScript checks passed. Existing workspace auto-stop
+  reconciliation and concurrent provisioning are covered.
+- Host: 178 unit tests passed (one ignored), integration suites passed, formatting
+  and Clippy passed. GitHub setup runs through a real shell with fixture credentials
+  and checks valid cloning plus invalid-input rejection.
+- Shared Swift: 73 tests passed. Mac build and signed iOS archive passed.
+- Snapshot `sidekicks-host-2-4-0-v1` is active. A temporary private sandbox confirmed
+  host 2.4.0, GitHub CLI availability, and no `/Users/chris` filesystem access; it
+  was stopped with automatic deletion enabled.
+- Pilot Worker deployed as `5c0b9eb0-4f9b-4982-9923-4cb0c3634dbd`, selecting that
+  snapshot. Health passed and anonymous provisioning returned 401.
+- iOS 2.4.0 build 30 uploaded successfully to App Store Connect. Apple processing
+  and assignment to the internal TestFlight group remain unverified. Upload reports
+  the existing missing WebRTC framework dSYM warning.
+- Account enrollment, actual provider/GitHub login, and Mac-closed file-edit testing
+  remain pending the user's account and interactive authorization. Existing
+  sandboxes retain their original image; changing the snapshot does not migrate
+  their files or upgrade their host. New workspaces receive the new image.

@@ -2,7 +2,7 @@ import { ApiError, createClaim, completeClaim, type Ctx } from "./api";
 import { sha256, b64url, utf8 } from "./auth";
 
 const API = "https://app.daytona.io/api";
-interface Sandbox { id: string; state: string; }
+interface Sandbox { id: string; state: string; autoStopInterval?: number; }
 interface Row { sandbox_id: string | null; }
 
 /** One private, persistent sandbox per account. A lost creation response is reconciled by name,
@@ -37,7 +37,7 @@ export async function workspace(c: Ctx, userId: string) {
       if (!(error instanceof ApiError) || error.code !== "sandboxNotFound" || row?.sandbox_id) throw error;
       sandbox = await provider<Sandbox>("/sandbox", "POST", {
         name, snapshot: c.env.DAYTONA_SNAPSHOT, public: false,
-        autoStopInterval: 30, autoArchiveInterval: 10080, autoDeleteInterval: -1,
+        autoStopInterval: 0, autoArchiveInterval: 10080, autoDeleteInterval: -1,
         env: {
           CODYNC_CLOUD_URL: c.url.origin, CODYNC_HOME: "/home/daytona/.codync",
           NPM_CONFIG_PREFIX: "/home/daytona/.local",
@@ -48,6 +48,11 @@ export async function workspace(c: Ctx, userId: string) {
     if (!sandbox.id || !/^[A-Za-z0-9_-]+$/.test(sandbox.id)) throw new ApiError("internal");
     await c.env.DB.prepare("UPDATE workspaces SET sandbox_id = ? WHERE user_id = ? AND lock_id = ?")
       .bind(sandbox.id, userId, lock).run();
+    // Apply the same unattended policy to already-created pilot workspaces.
+    // Provider failure must surface rather than promise a job will survive auto-stop.
+    if (sandbox.autoStopInterval !== 0) {
+      await provider(`/sandbox/${sandbox.id}/autostop/0`, "POST");
+    }
     if (sandbox.state === "stopped" || sandbox.state === "archived") {
       await provider(`/sandbox/${sandbox.id}/start`, "POST");
       return { state: "starting" };

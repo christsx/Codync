@@ -21,12 +21,23 @@ struct SettingsView: View {
     @State private var confirmStartOver = false
     @State private var confirmRemoveCopy: CloudComputer?
     @State private var settingUpWorkspace = false
+    @State private var settingUpRepository = false
 
     var body: some View {
         CardForm {
             CardSection("Cloud Workspace", footer: "Run your sidekicks without a laptop. Your computer remains an optional workspace.") {
                 Button("Set up Cloud Workspace") { settingUpWorkspace = true }
                     .buttonStyle(.secondary)
+                if let id = accounts.storage.workspaceComputerId, let store = accounts.store(for: id) {
+                    Button("Connect AI provider") { closeSheets { app.marketplace = id } }
+                        .buttonStyle(.secondary).disabled(store.connection != .online)
+                    Button("Connect GitHub & clone repository") { settingUpRepository = true }
+                        .buttonStyle(.secondary).disabled(store.connection != .online)
+                    Text("Create your sidekick on Cloud Workspace and choose the cloned project folder. Mac sidekicks and chats stay on your Mac.")
+                        .font(.footnote).foregroundStyle(Palette.secondary)
+                    Text("Verify: close your Mac, send a task from this iPhone, and confirm a reply and file change. Cloud computing continues to accrue usage while the workspace is running.")
+                        .font(.footnote).foregroundStyle(Palette.secondary)
+                }
             }
             CardSection("Computers", footer: app.account.isSignedIn
                         ? "Computers in your account need your OK on the computer before this iPhone can use them."
@@ -118,6 +129,11 @@ struct SettingsView: View {
         .task { await accounts.refreshCloud() }
         .codyncSheet(isPresented: $addingComputer) {
             PairingView(inModal: true)
+        }
+        .codyncSheet(isPresented: $settingUpRepository) {
+            if let id = accounts.storage.workspaceComputerId, let store = accounts.store(for: id) {
+                RepositorySetupView { settingUpRepository = false }.environment(store)
+            }
         }
         .codyncSheet(isPresented: $settingUpWorkspace) {
             WorkspaceSetupView(inModal: true) { settingUpWorkspace = false }

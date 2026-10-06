@@ -27,6 +27,19 @@ pub enum Step {
     Login,
 }
 
+// Fixed setup command; repository input is validated and passed as one argument.
+const GITHUB_SETUP: &str = r#"
+command -v gh >/dev/null || { echo 'GitHub CLI is missing. Update your Cloud Workspace image.'; exit 1; }
+gh auth status --hostname github.com >/dev/null 2>&1 || gh auth login --hostname github.com --git-protocol https --web || exit 1
+gh auth setup-git --hostname github.com || exit 1
+printf '\nRepository to clone (OWNER/REPO): '
+IFS= read -r repository
+printf '%s' "$repository" | LC_ALL=C grep -Eq '^[A-Za-z0-9][A-Za-z0-9-]*/[A-Za-z0-9_.-]+$'  || { echo 'Enter a GitHub OWNER/REPO.'; exit 1; }
+mkdir -p "$HOME/projects" && cd "$HOME/projects" || exit 1
+gh repo clone "$repository" || exit 1
+printf '\nRepository ready in %s/projects. Select its folder when creating your sidekick.\n' "$HOME"
+"#;
+
 enum Input {
     Data(Vec<u8>),
     Resize(u16, u16),
@@ -99,6 +112,12 @@ impl Terms {
         cols: u16,
         rows: u16,
     ) -> Result<String> {
+        if backend == "workspace-github" {
+            if step != Step::Login || method.is_some() {
+                bail!("Repository setup only supports GitHub sign-in");
+            }
+            return self.spawn((backend.to_owned(), step), GITHUB_SETUP, cols, rows);
+        }
         let h = backends::harness(backend);
         let name = h.map_or(backend, |h| h.name);
         let command = match step {
@@ -219,6 +238,36 @@ async fn run(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn github_setup_clones_in_projects_and_rejects_option_input() {
+        use std::io::Write;
+        use std::os::unix::fs::PermissionsExt;
+        use std::process::{Command, Stdio};
+        let dir = std::env::temp_dir().join(format!("github-setup-{}", uuid::Uuid::new_v4()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let gh = dir.join("gh");
+        std::fs::write(&gh, "#!/bin/sh\nprintf '%s\\n' \"$*\" >> \"$HOME/calls\"\n").unwrap();
+        std::fs::set_permissions(&gh, std::fs::Permissions::from_mode(0o755)).unwrap();
+        for (input, succeeds) in [("owner/project\n", true), ("--help\n", false), ("owner/repo;echo_bad\n", false)] {
+            let mut child = Command::new("/bin/sh")
+                .args(["-c", GITHUB_SETUP])
+                .env("HOME", &dir)
+                .env("PATH", format!("{}:/usr/bin:/bin", dir.display()))
+                .stdin(Stdio::piped())
+                .stdout(Stdio::null())
+                .stderr(Stdio::null())
+                .spawn()
+                .unwrap();
+            child.stdin.take().unwrap().write_all(input.as_bytes()).unwrap();
+            assert_eq!(child.wait().unwrap().success(), succeeds);
+        }
+        let calls = std::fs::read_to_string(dir.join("calls")).unwrap();
+        assert_eq!(calls.matches("repo clone").count(), 1);
+        assert!(calls.contains("repo clone owner/project"));
+        assert!(dir.join("projects").is_dir());
+        std::fs::remove_dir_all(dir).unwrap();
+    }
 
     #[tokio::test]
     async fn runs_in_a_pty_and_takes_input() {

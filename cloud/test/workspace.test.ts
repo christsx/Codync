@@ -25,6 +25,29 @@ describe("Cloud Workspace access", () => {
     expect(response.body.error.code).toBe("workspaceUnavailable");
   });
 
+  it("disables auto-stop on existing workspaces before returning a starting state", async () => {
+    const userId = `workspace_${crypto.randomUUID()}`;
+    const token = await clerkToken(userId);
+    await call("GET", "/v1/me", { token });
+    await env.DB.prepare("INSERT INTO workspaces(user_id, sandbox_id, created_at) VALUES (?, ?, ?)")
+      .bind(userId, "existing_sandbox", Date.now()).run();
+    const provider = vi.fn(async (_url: string | URL | Request, init?: RequestInit) =>
+      init?.method === "POST" ? new Response(null, { status: 204 })
+        : Response.json({ id: "existing_sandbox", state: "pending_build", autoStopInterval: 30 }));
+    vi.stubGlobal("fetch", provider);
+    const context = {
+      env: { ...env, DAYTONA_API_KEY: "test-only", DAYTONA_SNAPSHOT: "test-image", WORKSPACE_USERS: userId },
+      now: Date.now(), url: new URL("https://cloud.test/v1/workspace"),
+      req: new Request("https://cloud.test/v1/workspace"), raw: new Uint8Array(), exec: createExecutionContext(),
+    } as Ctx;
+    try {
+      expect(await workspace(context, userId)).toEqual({ state: "starting" });
+      expect(provider).toHaveBeenCalledWith("https://app.daytona.io/api/sandbox/existing_sandbox/autostop/0",
+        expect.objectContaining({ method: "POST" }));
+      expect(provider).toHaveBeenCalledTimes(2);
+    } finally { vi.unstubAllGlobals(); }
+  });
+
   it("reuses the account sandbox and keeps concurrent starts from creating duplicates", async () => {
     const userId = `workspace_${crypto.randomUUID()}`;
     const token = await clerkToken(userId);
@@ -37,11 +60,12 @@ describe("Cloud Workspace access", () => {
         const input = JSON.parse(init.body as string);
         expect(input.public).toBe(false);
         expect(input.autoDeleteInterval).toBe(-1);
+        expect(input.autoStopInterval).toBe(0);
         expect(input.env).not.toHaveProperty("DAYTONA_API_KEY");
         expect(input.env.CODYNC_CLOUD_URL).toBe("https://cloud.test");
         saved = true;
       } else if (!saved) return new Response(null, { status: 404 });
-      return Response.json({ id: "sandbox_one", state: "pending_build" });
+      return Response.json({ id: "sandbox_one", state: "pending_build", autoStopInterval: 0 });
     });
     vi.stubGlobal("fetch", provider);
     const context = {

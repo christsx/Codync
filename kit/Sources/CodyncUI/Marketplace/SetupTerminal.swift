@@ -10,7 +10,8 @@ import AppKit
 /// Installing or signing in to an agent, live: the command runs in a terminal
 /// on the computer and this screen is that terminal (links open here).
 struct SetupTerminalView: View {
-    let backend: Backend
+    let backendID: String
+    let backendName: String
     let step: SetupStep
     /// A terminal sign-in method the agent offered; nil runs Codync's own command.
     var method: AuthMethod?
@@ -20,12 +21,27 @@ struct SetupTerminalView: View {
     @Environment(\.openURL) private var openURL
     @State private var session = TermSession()
 
+    init(backend: Backend, step: SetupStep, method: AuthMethod? = nil, back: @escaping () -> Void) {
+        backendID = backend.id
+        backendName = backend.name
+        self.step = step
+        self.method = method
+        self.back = back
+    }
+
+    init(repositorySetup back: @escaping () -> Void) {
+        backendID = "workspace-github"
+        backendName = "GitHub & repository"
+        step = .login
+        self.back = back
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             ScreenHeader {
                 BackButton(action: back).keyboardShortcut(.cancelAction)
             } title: {
-                Text(step == .install ? "Install \(backend.name)" : method?.name ?? "Sign in to \(backend.name)")
+                Text(step == .install ? "Install \(backendName)" : method?.name ?? "Sign in to \(backendName)")
                     .font(InterfaceMetrics.body.weight(.semibold))
                     .foregroundStyle(Palette.text)
                     .lineLimit(1)
@@ -40,7 +56,7 @@ struct SetupTerminalView: View {
         .background(Palette.background)
         .task {
             guard let client = model.client else { return }
-            await session.run(client, backend: backend.id, step: step, method: method?.id)
+            await session.run(client, backend: backendID, step: step, method: method?.id)
             await model.refreshBackends()
         }
         .onDisappear { session.close() }
@@ -244,3 +260,10 @@ private struct TerminalSurface: NSViewRepresentable {
     func updateNSView(_ view: TerminalView, context: Context) {}
 }
 #endif
+
+/// GitHub device sign-in and repository cloning on the selected host.
+public struct RepositorySetupView: View {
+    private let back: () -> Void
+    public init(back: @escaping () -> Void) { self.back = back }
+    public var body: some View { SetupTerminalView(repositorySetup: back) }
+}

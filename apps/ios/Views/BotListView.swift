@@ -177,9 +177,10 @@ struct BotListView: View {
         }
     }
 
-    /// A new bot starts on the first computer online; the editor's Computer row can move it.
+    /// Cloud users create in their workspace even when it is reconnecting; never silently fall back to a Mac.
     private func newBot() {
-        guard let store = onlineStores.first ?? allStores.first else { return }
+        let workspace = allStores.first { $0.computer.id == accounts.storage.workspaceComputerId }
+        guard let store = workspace ?? onlineStores.first ?? allStores.first else { return }
         editing = EditTarget(computerId: store.computer.id, draft: BotDraft())
     }
 }
